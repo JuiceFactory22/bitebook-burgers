@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Burger Blastoff Nashville — A month of burgers. One passport.</title>
+<meta name="description" content="BiteBook runs city-wide food events. Locals grab a passport full of free-burger coupons. Restaurants get a room full of new regulars.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c140f;
+    --ink-soft:#3a2c22;
+    --paper:#f8efdd;
+    --paper-2:#f1e4c9;
+    --gold:#f2ac1d;
+    --tomato:#e0442a;
+    --teal:#127e73;
+    --teal-bright:#18a294;
+    --line:rgba(28,20,15,.14);
+    --shadow:22px 22px 0 rgba(28,20,15,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+  .display{font-family:'Bricolage Grotesque',sans-serif;line-height:.98;letter-spacing:-.02em}
+  .mono{font-family:'Space Mono',monospace}
+  a{color:inherit}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:var(--paper);
+    border-bottom:2.5px solid var(--ink);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1140px;margin:0 auto}
+  .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.45rem;letter-spacing:-.03em;display:flex;align-items:center;gap:9px}
+  .brand .dot{width:15px;height:15px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink);flex:none}
+  .cities-pill{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--ink);border-radius:40px;padding:6px 14px;background:var(--gold)}
+  @media(max-width:620px){.cities-pill{display:none}}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:74px 0 30px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:54px;align-items:center}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:22px}
+  h1.hero-title{font-size:clamp(3rem,7.2vw,5.6rem);font-weight:800}
+  h1.hero-title .swap{color:var(--tomato)}
+  .hero-sub{font-size:1.16rem;max-width:34ch;margin:26px 0 0;color:var(--ink-soft)}
+  .hero-scroll{margin-top:30px;font-family:'Space Mono',monospace;font-size:.8rem;letter-spacing:.05em;color:var(--ink-soft);display:flex;align-items:center;gap:10px}
+  .hero-scroll .arw{display:inline-block;animation:bob 1.8s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+  /* ---------- TICKET (signature) ---------- */
+  .ticket-stage{display:flex;justify-content:center;perspective:1200px}
+  .ticket{
+    width:100%;max-width:360px;
+    background:var(--paper);
+    border:2.5px solid var(--ink);
+    box-shadow:var(--shadow);
+    transform:rotate(3deg);
+    animation:drop 1.1s cubic-bezier(.2,.9,.25,1) both;
+    position:relative;
+  }
+  @keyframes drop{0%{opacity:0;transform:rotate(-6deg) translateY(-40px)}100%{opacity:1;transform:rotate(3deg) translateY(0)}}
+  .ticket-top{padding:22px 24px 18px;position:relative}
+  .ticket-kicker{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tomato);font-weight:700}
+  .ticket-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.5rem;line-height:.9;margin:8px 0 4px;letter-spacing:-.03em}
+  .ticket-sub{font-family:'Space Mono',monospace;font-size:.74rem;letter-spacing:.06em}
+  .stamp{
+    position:absolute;top:16px;right:16px;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:.62rem;letter-spacing:.05em;
+    color:var(--teal);border:2.5px solid var(--teal);border-radius:6px;
+    padding:7px 8px;text-align:center;line-height:1.15;transform:rotate(11deg);opacity:.9;text-transform:uppercase;
+  }
+  .perf{border-top:2.5px dashed var(--ink);position:relative;margin:0 0}
+  .perf::before,.perf::after{content:"";position:absolute;top:-13px;width:24px;height:24px;background:var(--paper-2);border:2.5px solid var(--ink);border-radius:50%}
+  .perf::before{left:-14px}
+  .perf::after{right:-14px}
+  .ticket-bot{padding:18px 24px 22px;display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+  .tk{font-family:'Space Mono',monospace}
+  .tk .lbl{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  .tk .val{font-size:.92rem;font-weight:700;margin-top:2px}
+  .route{grid-column:1/-1;font-family:'Space Mono',monospace;font-weight:700;font-size:1.05rem;letter-spacing:.14em;text-align:center;border-top:1.5px solid var(--line);padding-top:14px;margin-top:2px}
+  .route .arrow{color:var(--tomato)}
+
+  /* ---------- FORK ---------- */
+  .fork{padding:56px 0 20px}
+  .fork-head{text-align:center;margin-bottom:34px}
+  .fork-head h2{font-size:clamp(1.8rem,4vw,2.7rem);font-weight:800}
+  .fork-head p{color:var(--ink-soft);margin-top:8px;font-size:1.05rem}
+  .fork-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .path{
+    border:2.5px solid var(--ink);background:var(--paper);
+    padding:34px 30px;position:relative;
+    box-shadow:10px 10px 0 rgba(28,20,15,1);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .path:hover{transform:translate(-2px,-2px);box-shadow:14px 14px 0 rgba(28,20,15,1)}
+  .path.rest{background:var(--paper)}
+  .path.local{background:var(--teal);color:var(--paper)}
+  .path-tag{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;display:inline-block;padding:5px 11px;border:2px solid var(--ink);border-radius:30px;margin-bottom:18px}
+  .path.rest .path-tag{background:var(--gold)}
+  .path.local .path-tag{background:var(--gold);color:var(--ink);border-color:var(--ink)}
+  .path h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.9rem;line-height:1;letter-spacing:-.02em;margin-bottom:12px}
+  .path p.lede{font-size:1.02rem;margin-bottom:22px}
+  .path.rest p.lede{color:var(--ink-soft)}
+  .path.local p.lede{color:rgba(248,239,221,.9)}
+  .plist{list-style:none;margin:0 0 26px;display:flex;flex-direction:column;gap:10px}
+  .plist li{position:relative;padding-left:26px;font-size:.96rem}
+  .plist li::before{content:"";position:absolute;left:0;top:8px;width:11px;height:11px;background:var(--tomato);border:2px solid var(--ink);border-radius:50%}
+  .path.local .plist li::before{background:var(--gold)}
+
+  .city-btns{display:flex;flex-direction:column;gap:10px}
+  .btn{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.02rem;
+    border:2.5px solid var(--ink);padding:13px 18px;text-decoration:none;
+    background:var(--gold);color:var(--ink);cursor:pointer;
+    transition:transform .14s ease, box-shadow .14s ease;
+    box-shadow:5px 5px 0 rgba(28,20,15,1);
+  }
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 rgba(28,20,15,1)}
+  .btn:active{transform:translate(0,0);box-shadow:2px 2px 0 rgba(28,20,15,1)}
+  .btn .go{font-family:'Space Mono',monospace;font-weight:700}
+  .btn.tomato{background:var(--tomato);color:var(--paper)}
+  .btn.paper{background:var(--paper);color:var(--ink)}
+
+  /* email capture */
+  .capture{display:flex;flex-direction:column;gap:10px}
+  .capture input{
+    font-family:'Inter',sans-serif;font-size:1rem;padding:13px 16px;
+    border:2.5px solid var(--ink);background:var(--paper);color:var(--ink);width:100%;
+  }
+  .capture input:focus{outline:3px solid var(--gold);outline-offset:1px}
+  .cap-note{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.04em;color:rgba(248,239,221,.75);margin-top:2px}
+  .cap-success{display:none;font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem;padding:12px 0}
+
+  /* ---------- HOW ---------- */
+  .how{padding:64px 0 30px}
+  .how h2{font-size:clamp(1.8rem,4vw,2.7rem);font-weight:800;text-align:center;margin-bottom:8px}
+  .how .how-sub{text-align:center;color:var(--ink-soft);margin-bottom:42px;font-size:1.05rem}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .step{border-top:3px solid var(--ink);padding-top:18px}
+  .step .num{font-family:'Space Mono',monospace;font-weight:700;font-size:.82rem;letter-spacing:.1em;color:var(--tomato)}
+  .step h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.35rem;letter-spacing:-.01em;margin:12px 0 8px}
+  .step p{font-size:.98rem;color:var(--ink-soft)}
+
+  /* ---------- STATS ---------- */
+  .stats{background:var(--ink);color:var(--paper);margin-top:44px}
+  .stats-in{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:48px 24px;max-width:1140px;margin:0 auto}
+  .stat{text-align:center}
+  .stat .big{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.2rem,5vw,3.2rem);line-height:1;color:var(--gold)}
+  .stat .cap{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;margin-top:10px;color:rgba(248,239,221,.82)}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:52px 0 40px;border-top:2.5px solid var(--ink);margin-top:0}
+  .foot-in{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+  .foot-brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.3rem;display:flex;align-items:center;gap:9px}
+  .foot-brand .dot{width:14px;height:14px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink)}
+  .foot-note{font-size:.9rem;color:var(--ink-soft);max-width:40ch;margin-top:10px}
+  .foot-charity{font-family:'Space Mono',monospace;font-size:.75rem;letter-spacing:.05em;background:var(--gold);border:2px solid var(--ink);padding:8px 13px;display:inline-block;margin-top:4px}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:860px){
+    .hero-grid{grid-template-columns:1fr;gap:40px}
+    .hero{padding:48px 0 20px}
+    .fork-grid{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr}
+    .stats-in{grid-template-columns:1fr;gap:32px 20px}
+    .ticket{transform:rotate(2deg)}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <div class="brand"><span class="dot"></span>BiteBook</div>
+    <div class="cities-pill">Nashville</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Monthly food event · Nashville</div>
+      <h1 class="hero-title display">A month of burgers.<br><span class="swap">One passport.</span></h1>
+      <p class="hero-sub">BiteBook throws city-wide food events. Locals grab a passport stuffed with free-burger coupons. Restaurants get a room full of brand-new regulars. Everybody eats.</p>
+      <div class="hero-scroll">
+        <span class="arw">↓</span> Two ways in — pick yours below
+      </div>
+    </div>
+    <div class="ticket-stage">
+      <div class="ticket" aria-hidden="true">
+        <div class="ticket-top">
+          <div class="ticket-kicker">Admit one · this month only</div>
+          <div class="ticket-title display">Burger<br>Blastoff</div>
+          <div class="ticket-sub">1 FREE BURGER · with any purchase</div>
+          <div class="stamp">Best<br>Burger<br>Nominee</div>
+        </div>
+        <div class="perf"></div>
+        <div class="ticket-bot">
+          <div class="tk"><div class="lbl">Good thru</div><div class="val">OCT 1–30</div></div>
+          <div class="tk"><div class="lbl">Seat</div><div class="val">YOUR TABLE</div></div>
+          <div class="route mono"><span>NASHVILLE</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- FORK -->
+<section class="fork" id="start">
+  <div class="wrap">
+    <div class="fork-head reveal">
+      <h2 class="display">Which one are you?</h2>
+      <p>Restaurants and hungry locals take different doors.</p>
+    </div>
+    <div class="fork-grid">
+
+      <!-- RESTAURANT -->
+      <div class="path rest reveal">
+        <span class="path-tag">I run a restaurant</span>
+        <h3 class="display">Fill your dining room.</h3>
+        <p class="lede">New paying customers who turn into regulars — for the cost of one burger, not an ad budget.</p>
+        <ul class="plist">
+          <li>~70% have never walked in before</li>
+          <li>~80% bring a friend paying full price</li>
+          <li>Every coupon needs a purchase — never a giveaway</li>
+          <li>We handle the marketing and the work. You cook.</li>
+        </ul>
+        <div class="city-btns">
+          <a class="btn" href="REPLACE_WITH_NASHVILLE_FORM_LINK">Sign up your restaurant <span class="go">→</span></a>
+        </div>
+      </div>
+
+      <!-- LOCAL -->
+      <div class="path local reveal">
+        <span class="path-tag">I'm here to eat</span>
+        <h3 class="display">Eat the whole city.</h3>
+        <p class="lede">One passport. 20+ burgers. A full month to hunt down the best one in town.</p>
+        <ul class="plist">
+          <li>20+ free-burger coupons in one book</li>
+          <li>Redeem all month — then vote for the champ</li>
+          <li>Limited run — passports are capped</li>
+          <li>10% of every sale feeds a local charity</li>
+        </ul>
+        <form class="capture" id="notifyForm" novalidate>
+          <input type="email" id="email" placeholder="you@email.com" aria-label="Your email" required>
+          <button type="submit" class="btn tomato">Notify me at launch <span class="go">→</span></button>
+          <div class="cap-note">No spam. One heads-up when passports drop.</div>
+          <div class="cap-success" id="capSuccess">✓ You're on the list. See you at the table.</div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="wrap">
+    <h2 class="display reveal">How the Blastoff works</h2>
+    <p class="how-sub reveal">Three moves. One delicious month.</p>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="num mono">STEP 01</div>
+        <h4>Restaurants pitch in</h4>
+        <p>Each spot offers one free burger, redeemable with any other purchase. Nominated for being genuinely great.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num mono">STEP 02</div>
+        <h4>We build the passport</h4>
+        <p>20+ coupons go into one book. We sell it to locals and run all the design, marketing, and advertising.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num mono">STEP 03</div>
+        <h4>The city shows up</h4>
+        <p>New customers redeem all month long, most bring a friend, and the best burger takes home the crown.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stats-in">
+    <div class="stat reveal"><div class="big display">20+</div><div class="cap">Restaurants / event</div></div>
+    <div class="stat reveal"><div class="big display">150–200</div><div class="cap">Redemptions / month</div></div>
+    <div class="stat reveal"><div class="big display">10%</div><div class="cap">To local charity</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-in">
+    <div>
+      <div class="foot-brand"><span class="dot"></span>BiteBook</div>
+      <p class="foot-note">Local food events that fill dining rooms and help hungry people find their next favorite spot.</p>
+    </div>
+    <div>
+      <div class="foot-charity">10% of every event → a local charity</div>
+      <p class="foot-note">Nashville</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Email capture — front-end only for now.
+  // TODO: wire this to your Google Form / Formspree / GoHighLevel endpoint (see notes).
+  const form = document.getElementById('notifyForm');
+  const success = document.getElementById('capSuccess');
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    const email = document.getElementById('email');
+    if(!email.value || !email.value.includes('@')){ email.focus(); email.style.outline='3px solid #e0442a'; return; }
+    // Placeholder success state. Replace with a real submit to store the email.
+    form.querySelector('input').style.display='none';
+    form.querySelector('button').style.display='none';
+    form.querySelector('.cap-note').style.display='none';
+    success.style.display='block';
+  });
+</script>
+</body>
+</html>
