@@ -263,12 +263,8 @@
           <li>Limited run — passports are capped</li>
           <li>10% of every sale feeds a local charity</li>
         </ul>
-        <form class="capture" id="notifyForm" novalidate>
-          <input type="email" id="email" placeholder="you@email.com" aria-label="Your email" required>
-          <button type="submit" class="btn tomato">Notify me at launch <span class="go">→</span></button>
-          <div class="cap-note">No spam. One heads-up when passports drop.</div>
-          <div class="cap-success" id="capSuccess">✓ You're on the list. See you at the table.</div>
-        </form>
+       <a class="btn tomato" href="https://square.link/u/OkxZTk8f">Get your passport — $15 <span class="go">→</span></a>
+        <div class="cap-note">Secure checkout via Square. Passport link emailed after purchase.</div>
       </div>
 
     </div>
@@ -324,26 +320,7 @@
 </footer>
 
 <script>
-  // Scroll reveal
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-  },{threshold:.14});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-  // Email capture — front-end only for now.
-  // TODO: wire this to your Google Form / Formspree / GoHighLevel endpoint (see notes).
-  const form = document.getElementById('notifyForm');
-  const success = document.getElementById('capSuccess');
-  form.addEventListener('submit', function(ev){
-    ev.preventDefault();
-    const email = document.getElementById('email');
-    if(!email.value || !email.value.includes('@')){ email.focus(); email.style.outline='3px solid #e0442a'; return; }
-    // Placeholder success state. Replace with a real submit to store the email.
-    form.querySelector('input').style.display='none';
-    form.querySelector('button').style.display='none';
-    form.querySelector('.cap-note').style.display='none';
-    success.style.display='block';
-  });
+  
 </script>
 </body>
 </html>
