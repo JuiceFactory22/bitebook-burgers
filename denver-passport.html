@@ -3,58 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>You're in! — Burger Blastoff Denver</title>
-<meta name="description" content="Thanks for reserving your Denver Burger Blastoff passport.">
+<title>Reserve Your Burger Blastoff Passport — Denver</title>
+<meta name="description" content="Pay for one burger. Get 5-10+ free. One month in Denver, one passport, $15.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#1c140f; --ink-soft:#3a2c22; --paper:#f8efdd; --paper-2:#f1e4c9;
-    --gold:#f2ac1d; --tomato:#e0442a; --teal:#127e73; --line:rgba(28,20,15,.14);
-    --shadow:16px 16px 0 rgba(28,20,15,1);
+    --ink:#1c140f;
+    --ink-soft:#3a2c22;
+    --paper:#f8efdd;
+    --paper-2:#f1e4c9;
+    --gold:#f2ac1d;
+    --tomato:#e0442a;
+    --teal:#127e73;
+    --teal-bright:#18a294;
+    --line:rgba(28,20,15,.14);
+    --shadow:22px 22px 0 rgba(28,20,15,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
   body{
-    font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);
-    line-height:1.55;-webkit-font-smoothing:antialiased;
-    min-height:100vh;display:flex;flex-direction:column;
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    padding-bottom:84px;
   }
-  .wrap{max-width:640px;margin:0 auto;padding:0 24px;width:100%}
-  .display{font-family:'Bricolage Grotesque',sans-serif;line-height:1;letter-spacing:-.02em}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  .display{font-family:'Bricolage Grotesque',sans-serif;line-height:.98;letter-spacing:-.02em}
   .mono{font-family:'Space Mono',monospace}
   a{color:inherit}
 
-  nav{border-bottom:2.5px solid var(--ink)}
-  .nav-in{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:640px;margin:0 auto}
-  .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.03em;display:flex;align-items:center;gap:9px}
-  .brand .dot{width:14px;height:14px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink);flex:none}
-  .cities-pill{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--ink);border-radius:40px;padding:5px 12px;background:var(--gold)}
+  nav{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:2.5px solid var(--ink)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1000px;margin:0 auto}
+  .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.45rem;letter-spacing:-.03em;display:flex;align-items:center;gap:9px}
+  .brand .dot{width:15px;height:15px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink);flex:none}
+  .cities-pill{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--ink);border-radius:40px;padding:6px 14px;background:var(--gold)}
 
-  main{flex:1;display:flex;align-items:center;padding:56px 0}
-  .card{border:2.5px solid var(--ink);background:var(--paper-2);box-shadow:var(--shadow);padding:44px 36px;text-align:center}
-  .check{
-    width:60px;height:60px;border-radius:50%;background:var(--teal);border:2.5px solid var(--ink);
-    display:flex;align-items:center;justify-content:center;margin:0 auto 20px;
-  }
-  .check svg{width:28px;height:28px}
-  h1{font-size:clamp(1.7rem,4vw,2.3rem);font-weight:800;margin-bottom:12px}
-  .sub{color:var(--ink-soft);font-size:1.02rem;max-width:44ch;margin:0 auto 28px}
-  .next{
-    text-align:left;border-top:1.5px dashed var(--ink);padding-top:22px;margin-top:6px;
-  }
-  .next h3{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tomato);margin-bottom:14px}
-  .next ol{list-style:none;display:flex;flex-direction:column;gap:12px}
-  .next li{display:flex;gap:12px;font-size:.96rem}
-  .next li .n{
-    font-family:'Space Mono',monospace;font-weight:700;color:var(--paper);background:var(--ink);
-    width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-size:.72rem;flex:none;margin-top:1px;
-  }
-  .note{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--ink-soft);margin-top:26px}
+  .hero{padding:56px 0 30px}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+  .eyebrow .cap-dot{width:8px;height:8px;background:var(--tomato);border-radius:50%;display:inline-block;animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  h1.hero-title{font-size:clamp(2.5rem,5.8vw,4.2rem);font-weight:800}
+  h1.hero-title .swap{color:var(--tomato)}
+  .hero-sub{font-size:1.1rem;max-width:38ch;margin:20px 0 0;color:var(--ink-soft)}
 
-  footer{padding:28px 0;border-top:2.5px solid var(--ink);text-align:center}
+  .price-row{display:flex;align-items:baseline;gap:12px;margin:26px 0 6px;flex-wrap:wrap}
+  .price{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.6rem;color:var(--ink)}
+  .price-note{font-family:'Space Mono',monospace;font-size:.82rem;color:var(--ink-soft);letter-spacing:.02em}
+  .price-sub{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--teal);letter-spacing:.02em;margin-bottom:20px;font-weight:700}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.08rem;
+    border:2.5px solid var(--ink);padding:16px 26px;text-decoration:none;
+    background:var(--tomato);color:var(--paper);cursor:pointer;
+    transition:transform .14s ease, box-shadow .14s ease;
+    box-shadow:6px 6px 0 rgba(28,20,15,1);
+    width:100%;
+  }
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 rgba(28,20,15,1)}
+  .btn:active{transform:translate(0,0);box-shadow:2px 2px 0 rgba(28,20,15,1)}
+  .btn .go{font-family:'Space Mono',monospace;font-weight:700}
+  .trust-row{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ink-soft);letter-spacing:.02em}
+  .trust-row span{display:flex;align-items:center;gap:6px}
+  .trust-row .ck{color:var(--teal);font-weight:700}
+
+  .ticket-stage{display:flex;justify-content:center}
+  .ticket{width:100%;max-width:340px;background:var(--paper);border:2.5px solid var(--ink);box-shadow:var(--shadow);transform:rotate(3deg);position:relative}
+  .ticket-top{padding:20px 22px 16px;position:relative}
+  .ticket-kicker{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tomato);font-weight:700}
+  .ticket-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.2rem;line-height:.9;margin:8px 0 4px;letter-spacing:-.03em}
+  .ticket-sub{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.06em}
+  .stamp{position:absolute;top:14px;right:14px;font-family:'Space Mono',monospace;font-weight:700;font-size:.58rem;letter-spacing:.05em;color:var(--teal);border:2.5px solid var(--teal);border-radius:6px;padding:6px 7px;text-align:center;line-height:1.15;transform:rotate(11deg);opacity:.9;text-transform:uppercase}
+  .perf{border-top:2.5px dashed var(--ink);position:relative}
+  .perf::before,.perf::after{content:"";position:absolute;top:-12px;width:22px;height:22px;background:var(--paper-2);border:2.5px solid var(--ink);border-radius:50%}
+  .perf::before{left:-13px}
+  .perf::after{right:-13px}
+  .ticket-bot{padding:16px 22px 20px;display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+  .tk{font-family:'Space Mono',monospace}
+  .tk .lbl{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  .tk .val{font-size:.88rem;font-weight:700;margin-top:2px}
+  .route{grid-column:1/-1;font-family:'Space Mono',monospace;font-weight:700;font-size:1rem;letter-spacing:.14em;text-align:center;border-top:1.5px solid var(--line);padding-top:12px}
+
+  section{padding:48px 0}
+  .section-head{text-align:center;margin-bottom:34px}
+  .section-head h2{font-size:clamp(1.6rem,3.6vw,2.3rem);font-weight:800}
+  .section-head p{color:var(--ink-soft);margin-top:8px}
+
+  .whats-in{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .wi-card{border:2.5px solid var(--ink);background:var(--paper-2);padding:20px;box-shadow:6px 6px 0 rgba(28,20,15,1)}
+  .wi-card .num{font-family:'Space Mono',monospace;font-weight:700;color:var(--tomato);font-size:.75rem;letter-spacing:.08em}
+  .wi-card h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.15rem;margin:8px 0 6px}
+  .wi-card p{font-size:.92rem;color:var(--ink-soft)}
+
+  .stats{background:var(--ink);color:var(--paper)}
+  .stats-in{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:44px 24px;max-width:1000px;margin:0 auto}
+  .stat{text-align:center}
+  .stat .big{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.7rem,4.2vw,2.6rem);line-height:1;color:var(--gold)}
+  .stat .cap{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;margin-top:8px;color:rgba(248,239,221,.82)}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .step{border-top:3px solid var(--ink);padding-top:16px}
+  .step .num{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;letter-spacing:.08em;color:var(--tomato)}
+  .step h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.2rem;margin:10px 0 6px}
+  .step p{font-size:.92rem;color:var(--ink-soft)}
+
+  .urgency{background:var(--gold);border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);padding:26px 0;text-align:center}
+  .urgency p{font-family:'Space Mono',monospace;font-weight:700;font-size:.95rem;letter-spacing:.02em}
+
+  .faq{max-width:740px;margin:0 auto}
+  details{border-bottom:1.5px solid var(--line);padding:16px 0}
+  summary{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.02rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:1.3rem;color:var(--tomato)}
+  details[open] summary::after{content:"–"}
+  details p{margin-top:10px;color:var(--ink-soft);font-size:.95rem;max-width:60ch}
+
+  .final-cta{text-align:center;padding:56px 0}
+  .final-cta h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:14px}
+  .final-cta .btn{max-width:360px;margin:0 auto}
+
+  footer{padding:36px 0;border-top:2.5px solid var(--ink);text-align:center}
+  .foot-brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.15rem;display:inline-flex;align-items:center;gap:8px;margin-bottom:8px}
+  .foot-brand .dot{width:13px;height:13px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink)}
   .foot-note{font-size:.85rem;color:var(--ink-soft)}
+
+  .sticky-cta{position:fixed;bottom:0;left:0;right:0;background:var(--paper);border-top:2.5px solid var(--ink);padding:12px 16px;display:none;z-index:60}
+  .sticky-cta .btn{box-shadow:none;padding:13px}
+
+  @media(max-width:820px){
+    .hero-grid{grid-template-columns:1fr;gap:34px}
+    .whats-in{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr}
+    .stats-in{grid-template-columns:1fr;gap:26px}
+    .sticky-cta{display:block}
+    .ticket{transform:rotate(2deg);max-width:300px}
+  }
 </style>
 </head>
 <body>
@@ -66,36 +155,160 @@
   </div>
 </nav>
 
-<main>
-  <div class="wrap">
-    <div class="card">
-      <div class="check" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 12.5L9.5 18L20 6" stroke="#f8efdd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <h1 class="display">You're in!</h1>
-      <p class="sub">Your spot in Denver's Burger Blastoff is reserved. Your digital passport arrives by email on October 1, when the event kicks off.</p>
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="cap-dot"></span>Limited spots · Event runs Oct 1–31</div>
+      <h1 class="hero-title display">Pay for one burger.<br><span class="swap">Get the rest free.</span></h1>
+      <p class="hero-sub">$15 gets you into Denver's Burger Blastoff — about the price of one burger. Every other coupon in your passport, from every participating restaurant, is free.</p>
 
-      <div class="next">
-        <h3 class="mono">What happens next</h3>
-        <ol>
-          <li><span class="n">1</span> Mark your calendar — your digital passport, with the full restaurant lineup, lands in your inbox on October 1.</li>
-          <li><span class="n">2</span> Don't see it that day? Check spam/promotions, or search for "BiteBook."</li>
-          <li><span class="n">3</span> From October 1 through 31, show any coupon at that restaurant with another purchase to redeem.</li>
-        </ol>
+      <div class="price-row">
+        <span class="price display">$15</span>
       </div>
+      <div class="price-sub">≈ the cost of one burger. Everything else in the book is free.</div>
 
-      <p class="note">Questions about your order? Reach out and we'll sort it out.</p>
+      <a class="btn" href="https://square.link/u/OkxZTk8f">Reserve my passport — $15 <span class="go">→</span></a>
+      <div class="trust-row">
+        <span><span class="ck">✓</span> Secure checkout via Square</span>
+        <span><span class="ck">✓</span> Passport emailed Oct 1</span>
+        <span><span class="ck">✓</span> 10% to local charity</span>
+      </div>
+    </div>
+    <div class="ticket-stage">
+      <div class="ticket" aria-hidden="true">
+        <div class="ticket-top">
+          <div class="ticket-kicker">Admit one · this month only</div>
+          <div class="ticket-title display">Burger<br>Blastoff</div>
+          <div class="ticket-sub">1 FREE BURGER · with any purchase</div>
+          <div class="stamp">Best<br>Burger<br>Nominee</div>
+        </div>
+        <div class="perf"></div>
+        <div class="ticket-bot">
+          <div class="tk"><div class="lbl">Good thru</div><div class="val">OCT 1–31</div></div>
+          <div class="tk"><div class="lbl">Seat</div><div class="val">YOUR TABLE</div></div>
+          <div class="route mono"><span>DENVER</span></div>
+        </div>
+      </div>
     </div>
   </div>
-</main>
+</header>
+
+<section id="whats-in">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="display">Here's the math</h2>
+      <p>One purchase covers your first burger. Everything after that is on the house.</p>
+    </div>
+    <div class="whats-in">
+      <div class="wi-card">
+        <div class="num mono">01</div>
+        <h4>$15 = your first burger</h4>
+        <p>Think of the passport price as buying one burger at one Denver restaurant.</p>
+      </div>
+      <div class="wi-card">
+        <div class="num mono">02</div>
+        <h4>Every burger after — free</h4>
+        <p>Denver's Burger Blastoff lineup is filling up now. Every restaurant that joins adds another free coupon to your passport, at no extra cost.</p>
+      </div>
+      <div class="wi-card">
+        <div class="num mono">03</div>
+        <h4>The whole month to use them</h4>
+        <p>Good October 1–31. Work through your list on your own schedule.</p>
+      </div>
+      <div class="wi-card">
+        <div class="num mono">04</div>
+        <h4>10% goes to local charity</h4>
+        <p>Every passport sold puts money back into the Denver community.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stats-in">
+    <div class="stat"><div class="big display">$15</div><div class="cap">≈ price of one burger</div></div>
+    <div class="stat"><div class="big display">5–10+</div><div class="cap">Restaurants joining Denver</div></div>
+    <div class="stat"><div class="big display">10%</div><div class="cap">To local charity</div></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="display">How it works</h2>
+      <p>Three steps between you and your first free burger.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num mono">STEP 01</div>
+        <h4>Reserve your spot</h4>
+        <p>$15 through a secure Square checkout — takes about 30 seconds.</p>
+      </div>
+      <div class="step">
+        <div class="num mono">STEP 02</div>
+        <h4>Save the date: Oct 1</h4>
+        <p>Your digital passport, with every confirmed restaurant, lands in your inbox when Burger Blastoff kicks off on October 1.</p>
+      </div>
+      <div class="step">
+        <div class="num mono">STEP 03</div>
+        <h4>Start eating</h4>
+        <p>Show any coupon at that restaurant with another purchase, anytime through October 31.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="urgency">
+  <p class="mono">⚠ Denver spots are capped — reserve yours now. Your passport unlocks October 1.</p>
+</div>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="display">Questions, answered</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Is this actually free food, or a gimmick?</summary>
+        <p>Your $15 covers roughly what one burger costs. Every other coupon in your passport — from every other participating restaurant — gets you a free burger with any other purchase. It's real, and it's how restaurants can afford to take part.</p>
+      </details>
+      <details>
+        <summary>When do I get my passport?</summary>
+        <p>Your digital passport is emailed on October 1, when Burger Blastoff officially kicks off. That's also when the full restaurant lineup is locked in, so your passport reflects everyone participating.</p>
+      </details>
+      <details>
+        <summary>How do I redeem a coupon?</summary>
+        <p>Show your digital passport (from the email) to your server at any participating restaurant, along with your other purchase. They'll mark that coupon as used — one redemption per restaurant per passport.</p>
+      </details>
+      <details>
+        <summary>How many restaurants will be in the passport?</summary>
+        <p>We're finalizing the Denver lineup now — expect somewhere between 5 and 10+ restaurants. Either way, your $15 covers the first one; the rest are free.</p>
+      </details>
+      <details>
+        <summary>What's your refund policy?</summary>
+        <p>Since spots are limited and your passport is reserved the moment you purchase, all sales are final. You'll receive your digital passport by email on October 1 — reach out if it doesn't arrive.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="wrap">
+    <h2 class="display">Ready to eat your way through Denver?</h2>
+    <a class="btn" href="https://square.link/u/OkxZTk8f">Reserve my passport — $15 <span class="go">→</span></a>
+  </div>
+</section>
 
 <footer>
   <div class="wrap">
-    <p class="foot-note">BiteBook · Denver · Burger Blastoff · Oct 1–31</p>
+    <div class="foot-brand"><span class="dot"></span>BiteBook</div>
+    <p class="foot-note">Denver · Burger Blastoff · Oct 1–31</p>
   </div>
 </footer>
+
+<div class="sticky-cta">
+  <a class="btn" href="https://square.link/u/OkxZTk8f">Reserve my passport — $15 →</a>
+</div>
 
 </body>
 </html>
