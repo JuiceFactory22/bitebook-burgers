@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're in! — Burger Blastoff Phoenix</title>
+<meta name="description" content="Thanks for reserving your Phoenix Burger Blastoff passport.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c140f; --ink-soft:#3a2c22; --paper:#f8efdd; --paper-2:#f1e4c9;
+    --gold:#f2ac1d; --tomato:#e0442a; --teal:#127e73; --line:rgba(28,20,15,.14);
+    --shadow:16px 16px 0 rgba(28,20,15,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);
+    line-height:1.55;-webkit-font-smoothing:antialiased;
+    min-height:100vh;display:flex;flex-direction:column;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 24px;width:100%}
+  .display{font-family:'Bricolage Grotesque',sans-serif;line-height:1;letter-spacing:-.02em}
+  .mono{font-family:'Space Mono',monospace}
+  a{color:inherit}
+
+  nav{border-bottom:2.5px solid var(--ink)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:640px;margin:0 auto}
+  .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.03em;display:flex;align-items:center;gap:9px}
+  .brand .dot{width:14px;height:14px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink);flex:none}
+  .cities-pill{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--ink);border-radius:40px;padding:5px 12px;background:var(--gold)}
+
+  main{flex:1;display:flex;align-items:center;padding:56px 0}
+  .card{border:2.5px solid var(--ink);background:var(--paper-2);box-shadow:var(--shadow);padding:44px 36px;text-align:center}
+  .check{
+    width:60px;height:60px;border-radius:50%;background:var(--teal);border:2.5px solid var(--ink);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 20px;
+  }
+  .check svg{width:28px;height:28px}
+  h1{font-size:clamp(1.7rem,4vw,2.3rem);font-weight:800;margin-bottom:12px}
+  .sub{color:var(--ink-soft);font-size:1.02rem;max-width:44ch;margin:0 auto 28px}
+  .next{
+    text-align:left;border-top:1.5px dashed var(--ink);padding-top:22px;margin-top:6px;
+  }
+  .next h3{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tomato);margin-bottom:14px}
+  .next ol{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .next li{display:flex;gap:12px;font-size:.96rem}
+  .next li .n{
+    font-family:'Space Mono',monospace;font-weight:700;color:var(--paper);background:var(--ink);
+    width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:.72rem;flex:none;margin-top:1px;
+  }
+  .note{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--ink-soft);margin-top:26px}
+
+  footer{padding:28px 0;border-top:2.5px solid var(--ink);text-align:center}
+  .foot-note{font-size:.85rem;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <div class="brand"><span class="dot"></span>BiteBook</div>
+    <div class="cities-pill">Phoenix</div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <div class="card">
+      <div class="check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 12.5L9.5 18L20 6" stroke="#f8efdd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1 class="display">You're in!</h1>
+      <p class="sub">Your spot in Phoenix's Burger Blastoff is reserved. Your digital passport arrives by email on October 1, when the event kicks off.</p>
+
+      <div class="next">
+        <h3 class="mono">What happens next</h3>
+        <ol>
+          <li><span class="n">1</span> Mark your calendar — your digital passport, with the full restaurant lineup, lands in your inbox on October 1.</li>
+          <li><span class="n">2</span> Don't see it that day? Check spam/promotions, or search for "BiteBook."</li>
+          <li><span class="n">3</span> From October 1 through 31, show any coupon at that restaurant with another purchase to redeem.</li>
+        </ol>
+      </div>
+
+      <p class="note">Questions about your order? Reach out and we'll sort it out.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-note">BiteBook · Phoenix · Burger Blastoff · Oct 1–31</p>
+  </div>
+</footer>
+
+</body>
+</html>
