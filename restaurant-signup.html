@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant Sign-Up — BiteBook</title>
+<meta name="description" content="Sign up your restaurant for BiteBook's Burger Blastoff event.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c140f; --ink-soft:#3a2c22; --paper:#f8efdd; --paper-2:#f1e4c9;
+    --gold:#f2ac1d; --tomato:#e0442a; --teal:#127e73; --line:rgba(28,20,15,.14);
+    --shadow:16px 16px 0 rgba(28,20,15,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);
+    line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 24px}
+  .display{font-family:'Bricolage Grotesque',sans-serif;line-height:1;letter-spacing:-.02em}
+  .mono{font-family:'Space Mono',monospace}
+  a{color:inherit}
+
+  nav{border-bottom:2.5px solid var(--ink)}
+  .nav-in{display:flex;align-items:center;padding:16px 24px;max-width:680px;margin:0 auto}
+  .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.03em;display:flex;align-items:center;gap:9px}
+  .brand .dot{width:14px;height:14px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink);flex:none}
+
+  header{padding:44px 0 28px}
+  header h1{font-size:clamp(1.8rem,4.4vw,2.6rem);font-weight:800}
+  header p{color:var(--ink-soft);margin-top:12px;max-width:52ch}
+
+  form{padding-bottom:64px}
+  fieldset{border:none;margin-bottom:30px}
+  legend{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tomato);font-weight:700;margin-bottom:14px;padding:0}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.94rem;margin-bottom:6px}
+  .field .opt{font-family:'Space Mono',monospace;font-weight:400;font-size:.72rem;color:var(--ink-soft);text-transform:none;letter-spacing:0}
+  input, select, textarea{
+    font-family:'Inter',sans-serif;font-size:1rem;padding:12px 14px;
+    border:2.5px solid var(--ink);background:var(--paper);color:var(--ink);width:100%;
+  }
+  input:focus, select:focus, textarea:focus{outline:3px solid var(--gold);outline-offset:1px}
+  textarea{min-height:100px;resize:vertical;font-family:'Inter',sans-serif}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.06rem;
+    border:2.5px solid var(--ink);padding:15px 26px;text-decoration:none;
+    background:var(--tomato);color:var(--paper);cursor:pointer;
+    box-shadow:6px 6px 0 rgba(28,20,15,1);
+    width:100%;
+    transition:transform .14s ease, box-shadow .14s ease;
+  }
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 rgba(28,20,15,1)}
+  .btn:active{transform:translate(0,0);box-shadow:2px 2px 0 rgba(28,20,15,1)}
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+
+  .err{color:var(--tomato);font-family:'Space Mono',monospace;font-size:.78rem;margin-top:20px;display:none}
+  .success{display:none;text-align:center;padding:60px 0}
+  .success .check{width:60px;height:60px;border-radius:50%;background:var(--teal);border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+  .success h2{font-size:1.8rem;font-weight:800;margin-bottom:10px}
+  .success p{color:var(--ink-soft);max-width:44ch;margin:0 auto}
+
+  footer{padding:28px 0;border-top:2.5px solid var(--ink);text-align:center}
+  .foot-note{font-size:.85rem;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <div class="brand"><span class="dot"></span>BiteBook</div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <h1 class="display">Sign up your restaurant</h1>
+    <p>Fill this out once — your confirmation goes straight to your inbox, and it's logged in our system immediately. No forms to chase down later.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <form id="signupForm" novalidate>
+
+    <fieldset>
+      <legend>Event details</legend>
+      <div class="field">
+        <label for="location">Location</label>
+        <select id="location" name="location" required>
+          <option value="" disabled selected>Select a city</option>
+          <option value="Denver">Denver</option>
+          <option value="Nashville">Nashville</option>
+          <option value="Phoenix">Phoenix</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="event">Event</label>
+        <select id="event" name="event" required>
+          <option value="" disabled selected>Select an event</option>
+          <option value="Burger Blastoff — October 2026">Burger Blastoff — October 2026</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Restaurant info</legend>
+      <div class="field">
+        <label for="restaurantName">Restaurant name</label>
+        <input type="text" id="restaurantName" name="restaurantName" required>
+      </div>
+      <div class="field">
+        <label for="instagram">Instagram handle <span class="opt">(optional)</span></label>
+        <input type="text" id="instagram" name="instagram" placeholder="@yourrestaurant">
+      </div>
+      <div class="field">
+        <label for="address">Address</label>
+        <input type="text" id="address" name="address" required>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Primary contact</legend>
+      <div class="field">
+        <label for="p_name">Name</label>
+        <input type="text" id="p_name" name="p_name" required>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="p_phone">Phone <span class="opt">(optional)</span></label>
+          <input type="tel" id="p_phone" name="p_phone">
+        </div>
+        <div class="field">
+          <label for="p_email">Email <span class="opt">(optional)</span></label>
+          <input type="email" id="p_email" name="p_email">
+        </div>
+      </div>
+      <div class="field">
+        <label for="p_method">Preferred method of contact</label>
+        <select id="p_method" name="p_method" required>
+          <option value="" disabled selected>Select one</option>
+          <option value="Phone">Phone</option>
+          <option value="Text">Text</option>
+          <option value="Email">Email</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Secondary contact <span class="opt">(optional)</span></legend>
+      <div class="field">
+        <label for="s_name">Name <span class="opt">(optional)</span></label>
+        <input type="text" id="s_name" name="s_name">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="s_phone">Phone <span class="opt">(optional)</span></label>
+          <input type="tel" id="s_phone" name="s_phone">
+        </div>
+        <div class="field">
+          <label for="s_email">Email <span class="opt">(optional)</span></label>
+          <input type="email" id="s_email" name="s_email">
+        </div>
+      </div>
+      <div class="field">
+        <label for="s_method">Preferred method of contact <span class="opt">(optional)</span></label>
+        <select id="s_method" name="s_method">
+          <option value="" selected>Select one</option>
+          <option value="Phone">Phone</option>
+          <option value="Text">Text</option>
+          <option value="Email">Email</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Coupon details</legend>
+      <div class="field">
+        <label for="couponDetails">Exclusions, additions, or anything else about your offer</label>
+        <textarea id="couponDetails" name="couponDetails" placeholder="e.g. Valid dine-in only, not applicable toward alcohol, one per table..."></textarea>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="btn" id="submitBtn">Submit sign-up <span>→</span></button>
+    <div class="err" id="errMsg">Please fill in all required fields.</div>
+  </form>
+
+  <div class="success" id="successMsg">
+    <div class="check" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+        <path d="M4 12.5L9.5 18L20 6" stroke="#f8efdd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2 class="display">You're signed up!</h2>
+    <p>A copy of your registration is on its way to your email. We'll follow up once your spot is confirmed.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-note">BiteBook · Restaurant Sign-Up</p>
+  </div>
+</footer>
+
+<script>
+  const APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL"; // replace with your deployed Apps Script Web App URL
+
+  // Pre-select location from URL, e.g. restaurant-signup.html?city=Denver
+  const params = new URLSearchParams(window.location.search);
+  const cityParam = params.get('city');
+  if (cityParam) {
+    const locSelect = document.getElementById('location');
+    for (const opt of locSelect.options) {
+      if (opt.value.toLowerCase() === cityParam.toLowerCase()) {
+        opt.selected = true;
+        break;
+      }
+    }
+  }
+
+  const form = document.getElementById('signupForm');
+  const errMsg = document.getElementById('errMsg');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async function(ev){
+    ev.preventDefault();
+    if(!form.checkValidity()){
+      errMsg.style.display = 'block';
+      form.reportValidity();
+      return;
+    }
+    errMsg.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    const payload = {
+      formType: 'restaurant_signup',
+      location: document.getElementById('location').value,
+      event: document.getElementById('event').value,
+      restaurantName: document.getElementById('restaurantName').value,
+      instagram: document.getElementById('instagram').value,
+      address: document.getElementById('address').value,
+      primaryName: document.getElementById('p_name').value,
+      primaryPhone: document.getElementById('p_phone').value,
+      primaryEmail: document.getElementById('p_email').value,
+      primaryMethod: document.getElementById('p_method').value,
+      secondaryName: document.getElementById('s_name').value,
+      secondaryPhone: document.getElementById('s_phone').value,
+      secondaryEmail: document.getElementById('s_email').value,
+      secondaryMethod: document.getElementById('s_method').value,
+      couponDetails: document.getElementById('couponDetails').value
+    };
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      });
+      form.style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } catch (e) {
+      errMsg.textContent = 'Something went wrong submitting this. Please try again or contact us directly.';
+      errMsg.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit sign-up →';
+    }
+  });
+</script>
+</body>
+</html>
