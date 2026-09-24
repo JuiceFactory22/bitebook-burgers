@@ -48,6 +48,22 @@
   .cities-pill{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--ink);border-radius:40px;padding:6px 14px;background:var(--gold)}
   @media(max-width:620px){.cities-pill{display:none}}
 
+    .nav-links{display:flex;align-items:center;gap:24px;margin-left:32px}
+  .nav-link{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.95rem;text-decoration:none;color:var(--ink);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0}
+  .nav-dropdown{position:relative}
+  .caret{font-size:.7rem;transition:transform .15s ease}
+  .nav-dropdown.open .caret{transform:rotate(180deg)}
+  .dropdown-menu{
+    display:none;position:absolute;top:calc(100% + 14px);left:0;
+    background:var(--paper);border:2.5px solid var(--ink);box-shadow:6px 6px 0 rgba(28,20,15,1);
+    min-width:160px;z-index:60;
+  }
+  .nav-dropdown.open .dropdown-menu{display:block}
+  .dropdown-menu a{display:block;padding:12px 16px;font-family:'Space Mono',monospace;font-size:.85rem;text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--line)}
+  .dropdown-menu a:last-child{border-bottom:none}
+  .dropdown-menu a:hover{background:var(--paper-2)}
+  @media(max-width:700px){.nav-links{margin-left:14px;gap:14px}.nav-link{font-size:.85rem}}
+
   /* ---------- HERO ---------- */
   .hero{padding:74px 0 30px;position:relative}
   .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:54px;align-items:center}
@@ -191,8 +207,19 @@
 <body>
 
 <nav>
-  <div class="nav-in">
+    <div class="nav-in">
     <div class="brand"><span class="dot"></span>BiteBook</div>
+    <div class="nav-links">
+      <div class="nav-dropdown" id="locationsDropdown">
+        <button class="nav-link" id="locationsToggle">Locations <span class="caret">▾</span></button>
+        <div class="dropdown-menu">
+          <a href="/denver">Denver</a>
+          <a href="/nashville">Nashville</a>
+          <a href="/phoenix">Phoenix</a>
+        </div>
+      </div>
+      <a class="nav-link" href="/news">News &amp; Updates</a>
+    </div>
     <div class="cities-pill">Denver · Nashville · Phoenix</div>
   </div>
 </nav>
@@ -324,7 +351,15 @@
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
   },{threshold:.14});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
+  <script>
+  const dropdown = document.getElementById('locationsDropdown');
+  const toggle = document.getElementById('locationsToggle');
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+  });
+  document.addEventListener('click', () => dropdown.classList.remove('open'));
 </script>
+
 </body>
 </html>
