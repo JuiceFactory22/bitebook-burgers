@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why the Second Visit Matters More Than the First — BiteBook</title>
+<meta name="description" content="Most restaurant customers never come back after their first visit. Here's why that one repeat visit is worth more than any first-time discount.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c140f; --ink-soft:#3a2c22; --paper:#f8efdd; --paper-2:#f1e4c9;
+    --gold:#f2ac1d; --tomato:#e0442a; --teal:#127e73; --line:rgba(28,20,15,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:0 24px}
+  .display{font-family:'Bricolage Grotesque',sans-serif;line-height:1.05;letter-spacing:-.02em}
+  .mono{font-family:'Space Mono',monospace}
+  a{color:var(--teal)}
+
+  nav{border-bottom:2.5px solid var(--ink)}
+  .nav-in{display:flex;align-items:center;padding:16px 24px;max-width:720px;margin:0 auto}
+  .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.03em;display:flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none}
+  .brand .dot{width:14px;height:14px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink);flex:none}
+  .nav-links{display:flex;align-items:center;gap:24px;margin-left:32px}
+  .nav-link{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.95rem;text-decoration:none;color:var(--ink);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0}
+  .nav-dropdown{position:relative}
+  .caret{font-size:.7rem;transition:transform .15s ease}
+  .nav-dropdown.open .caret{transform:rotate(180deg)}
+  .dropdown-menu{display:none;position:absolute;top:calc(100% + 14px);left:0;background:var(--paper);border:2.5px solid var(--ink);box-shadow:6px 6px 0 rgba(28,20,15,1);min-width:160px;z-index:60}
+  .nav-dropdown.open .dropdown-menu{display:block}
+  .dropdown-menu a{display:block;padding:12px 16px;font-family:'Space Mono',monospace;font-size:.85rem;text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--line)}
+  .dropdown-menu a:last-child{border-bottom:none}
+  .dropdown-menu a:hover{background:var(--paper-2)}
+
+  article{padding:48px 0 64px}
+  .post-meta{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:16px}
+  h1{font-size:clamp(1.9rem,4.4vw,2.7rem);font-weight:800;margin-bottom:24px}
+  .lede{font-size:1.15rem;color:var(--ink-soft);margin-bottom:32px}
+  .stat-block{border:2.5px solid var(--ink);background:var(--paper-2);padding:24px;margin:28px 0;box-shadow:8px 8px 0 rgba(28,20,15,1)}
+  .stat-block .num{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.4rem;color:var(--tomato);line-height:1}
+  .stat-block p{margin-top:8px;color:var(--ink-soft);font-size:.95rem}
+  article p{margin-bottom:20px;font-size:1.02rem}
+  article h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;margin:36px 0 14px}
+  .sources{font-family:'Space Mono',monospace;font-size:.78rem;color:var(--ink-soft);border-top:1.5px solid var(--line);padding-top:20px;margin-top:36px}
+  .sources li{margin-bottom:6px;list-style:none}
+  .cta{border:2.5px solid var(--ink);background:var(--teal);color:var(--paper);padding:28px;margin:36px 0;text-align:center}
+  .cta h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;margin-bottom:10px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;border:2.5px solid var(--ink);padding:12px 22px;text-decoration:none;background:var(--gold);color:var(--ink);margin-top:12px}
+
+  footer{padding:36px 0;border-top:2.5px solid var(--ink);text-align:center}
+  .foot-note{font-size:.85rem;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a href="/" class="brand"><span class="dot"></span>BiteBook</a>
+    <div class="nav-links">
+      <div class="nav-dropdown" id="locationsDropdown">
+        <button class="nav-link" id="locationsToggle">Locations <span class="caret">▾</span></button>
+        <div class="dropdown-menu">
+          <a href="/denver">Denver</a>
+          <a href="/nashville">Nashville</a>
+          <a href="/phoenix">Phoenix</a>
+        </div>
+      </div>
+      <a class="nav-link" href="/news">News &amp; Updates</a>
+    </div>
+  </div>
+</nav>
+
+<article class="wrap">
+  <div class="post-meta">BiteBook · September 24, 2026</div>
+  <h1 class="display">Why the Second Visit Matters More Than the First</h1>
+  <p class="lede">Every restaurant chases first-time customers. But the data says the real payoff — the one that actually changes a restaurant's bottom line — happens on visit number two.</p>
+
+  <div class="stat-block">
+    <div class="num display">~70%</div>
+    <p>of first-time restaurant guests never come back for a second visit, according to industry research. That's the single biggest leak in most restaurants' revenue — not a lack of new customers walking in, but a failure to bring them back.</p>
+  </div>
+
+  <p>It's tempting to think growth means more foot traffic: more ads, more discounts, more first-time diners through the door. But a mountain of restaurant-industry data points somewhere else entirely — the money isn't in getting someone to try you once. It's in getting them to come back.</p>
+
+  <h2>The math behind a returning customer</h2>
+  <p>Once a guest returns for a second visit, the numbers shift dramatically in the restaurant's favor. Repeat guests spend roughly 67% more per order than first-timers, and acquiring a brand-new customer typically costs five to seven times more than keeping an existing one coming back.</p>
+
+  <div class="stat-block">
+    <div class="num display">25–95%</div>
+    <p>is the profit increase Harvard Business Review found restaurants and other businesses can see from just a 5% improvement in customer retention. Small gains in bringing people back compound into outsized returns.</p>
+  </div>
+
+  <p>This is exactly the gap BiteBook is built to close. A free-burger coupon isn't really about the free burger — it's a low-risk way to get someone who's never eaten at your restaurant to finally walk through the door. What happens after that first bite is on the restaurant. But the data is clear: if the experience lands, that customer is now worth dramatically more than the cost of the coupon that brought them in.</p>
+
+  <h2>Why "free" works as a first move</h2>
+  <p>A discount asks someone to take a small risk on a place they've never tried. A free item with purchase does something slightly different — it removes the risk of the item itself being a letdown, while the diner still pays for (and experiences) everything else about the restaurant: the service, the atmosphere, the rest of the menu. That's the whole visit, at a fraction of the usual risk to try somewhere new.</p>
+
+  <p>For restaurants, that's the entire value of taking part in a Burger Blastoff passport: it's not a giveaway, it's a distribution channel for new first visits — with the real win happening on the second one.</p>
+
+  <div class="cta">
+    <h3 class="display">Want your restaurant in front of new customers?</h3>
+    <p>BiteBook brings first-time diners through your door — the rest is up to your kitchen.</p>
+    <a class="btn" href="/restaurant-signup">Sign up your restaurant →</a>
+  </div>
+
+  <div class="sources">
+    <div style="margin-bottom:10px;">Sources</div>
+    <ul>
+      <li>Harvard Business Review — customer retention and profit impact research</li>
+      <li>DoorDash &amp; SevenRooms, 2026 Restaurant Industry Trends Report</li>
+      <li>National Restaurant Association — repeat customer revenue share by segment</li>
+    </ul>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-note">BiteBook · News &amp; Updates</p>
+  </div>
+</footer>
+
+<script>
+  const dropdown = document.getElementById('locationsDropdown');
+  const toggle = document.getElementById('locationsToggle');
+  toggle.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('open'); });
+  document.addEventListener('click', () => dropdown.classList.remove('open'));
+</script>
+</body>
+</html>
