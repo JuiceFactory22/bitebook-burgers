@@ -350,7 +350,9 @@
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
   },{threshold:.14});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Locations dropdown
   const dropdown = document.getElementById('locationsDropdown');
   const toggle = document.getElementById('locationsToggle');
   toggle.addEventListener('click', (e) => {
