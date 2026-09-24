@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News & Updates — BiteBook</title>
+<meta name="description" content="Restaurant spotlights, local news, and insights from BiteBook's Denver, Nashville, and Phoenix food events.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c140f; --ink-soft:#3a2c22; --paper:#f8efdd; --paper-2:#f1e4c9;
+    --gold:#f2ac1d; --tomato:#e0442a; --teal:#127e73; --line:rgba(28,20,15,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px}
+  .display{font-family:'Bricolage Grotesque',sans-serif;line-height:1;letter-spacing:-.02em}
+  .mono{font-family:'Space Mono',monospace}
+  a{color:inherit}
+
+  nav{border-bottom:2.5px solid var(--ink)}
+  .nav-in{display:flex;align-items:center;padding:16px 24px;max-width:900px;margin:0 auto}
+  .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.03em;display:flex;align-items:center;gap:9px}
+  .brand .dot{width:14px;height:14px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink);flex:none}
+  .nav-links{display:flex;align-items:center;gap:24px;margin-left:32px}
+  .nav-link{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.95rem;text-decoration:none;color:var(--ink);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0}
+  .nav-dropdown{position:relative}
+  .caret{font-size:.7rem;transition:transform .15s ease}
+  .nav-dropdown.open .caret{transform:rotate(180deg)}
+  .dropdown-menu{display:none;position:absolute;top:calc(100% + 14px);left:0;background:var(--paper);border:2.5px solid var(--ink);box-shadow:6px 6px 0 rgba(28,20,15,1);min-width:160px;z-index:60}
+  .nav-dropdown.open .dropdown-menu{display:block}
+  .dropdown-menu a{display:block;padding:12px 16px;font-family:'Space Mono',monospace;font-size:.85rem;text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--line)}
+  .dropdown-menu a:last-child{border-bottom:none}
+  .dropdown-menu a:hover{background:var(--paper-2)}
+
+  header{padding:48px 0 30px}
+  header h1{font-size:clamp(2.2rem,5vw,3.2rem);font-weight:800}
+  header p{color:var(--ink-soft);margin-top:12px;max-width:56ch}
+
+  .filters{display:flex;gap:10px;flex-wrap:wrap;padding-bottom:36px}
+  .filter-btn{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.04em;border:2px solid var(--ink);border-radius:30px;padding:8px 16px;background:var(--paper);cursor:pointer}
+  .filter-btn.active{background:var(--gold)}
+
+  .posts{display:flex;flex-direction:column;gap:20px;padding-bottom:64px}
+  .post-card{border:2.5px solid var(--ink);background:var(--paper-2);padding:24px;box-shadow:8px 8px 0 rgba(28,20,15,1);text-decoration:none;color:var(--ink);display:block}
+  .post-meta{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:10px}
+  .post-card h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;margin-bottom:8px}
+  .post-card p{color:var(--ink-soft);font-size:.98rem}
+  .empty{color:var(--ink-soft);font-family:'Space Mono',monospace;font-size:.9rem;padding:20px 0}
+
+  footer{padding:36px 0;border-top:2.5px solid var(--ink);text-align:center}
+  .foot-note{font-size:.85rem;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <div class="brand"><span class="dot"></span>BiteBook</div>
+    <div class="nav-links">
+      <div class="nav-dropdown" id="locationsDropdown">
+        <button class="nav-link" id="locationsToggle">Locations <span class="caret">▾</span></button>
+        <div class="dropdown-menu">
+          <a href="/denver">Denver</a>
+          <a href="/nashville">Nashville</a>
+          <a href="/phoenix">Phoenix</a>
+        </div>
+      </div>
+      <a class="nav-link" href="/news">News &amp; Updates</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <h1 class="display">News &amp; Updates</h1>
+    <p>Restaurant spotlights, local happenings, and what makes a BiteBook event tick — across Denver, Nashville, and Phoenix.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-city="All">All</button>
+    <button class="filter-btn" data-city="Denver">Denver</button>
+    <button class="filter-btn" data-city="Nashville">Nashville</button>
+    <button class="filter-btn" data-city="Phoenix">Phoenix</button>
+  </div>
+  <div class="posts" id="posts">
+    <div class="empty">Loading...</div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-note">BiteBook · News &amp; Updates</p>
+  </div>
+</footer>
+
+<script>
+  const dropdown = document.getElementById('locationsDropdown');
+  const toggle = document.getElementById('locationsToggle');
+  toggle.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('open'); });
+  document.addEventListener('click', () => dropdown.classList.remove('open'));
+
+  let allPosts = [];
+  let currentFilter = 'All';
+
+  function render() {
+    const container = document.getElementById('posts');
+    const filtered = allPosts.filter(p => currentFilter === 'All' || p.city === 'All' || p.city === currentFilter);
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty">No posts yet for this city — check back soon.</div>';
+      return;
+    }
+    container.innerHTML = filtered
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .map(p => `
+        <a class="post-card" href="${p.url}">
+          <div class="post-meta">${p.city === 'All' ? 'BiteBook' : p.city} · ${new Date(p.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+          <h3 class="display">${p.title}</h3>
+          <p>${p.excerpt}</p>
+        </a>
+      `).join('');
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.city;
+      render();
+    });
+  });
+
+  fetch('/posts.json')
+    .then(r => r.json())
+    .then(data => { allPosts = data; render(); })
+    .catch(() => { document.getElementById('posts').innerHTML = '<div class="empty">Couldn\'t load posts right now.</div>'; });
+</script>
+</body>
+</html>
