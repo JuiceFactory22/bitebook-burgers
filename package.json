@@ -1,0 +1,11 @@
+{
+  "name": "bitebook-burgers",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "pdf-lib": "1.17.1"
+  }
+}

@@ -1,4 +1,13 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/r/:token", "destination": "/api/r?t=:token" },
+    { "source": "/book/:id", "destination": "/api/book?id=:id" }
+  ],
+  "functions": {
+    "api/admin.js": { "maxDuration": 60 },
+    "api/book.js": { "maxDuration": 30 },
+    "api/square-webhook.js": { "maxDuration": 30 }
+  }
 }
