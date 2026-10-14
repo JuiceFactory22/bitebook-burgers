@@ -13,10 +13,12 @@ export default async function handler(req, res) {
   if (!type.startsWith('payment.') || !paymentId) return res.status(200).json({ ignored: true });
   try {
     const result = await processPaymentId(paymentId);
+    // Passports are created here but NOT emailed. Emails only go out when Will
+    // gives the go-ahead (admin "send" action), unless AUTO_SEND is turned on later.
     let email = null;
-    if (result.status === 'ok') email = await emailOrder(result.orderId);
-    await logEvent('webhook', { type, paymentId, status: result.status, orderId: result.orderId, email: email?.status });
-    return res.status(200).json({ ok: true, status: result.status, email: email?.status });
+    if (result.status === 'ok' && process.env.AUTO_SEND === 'on') email = await emailOrder(result.orderId);
+    await logEvent('webhook', { type, paymentId, status: result.status, orderId: result.orderId, email: email?.status || 'held' });
+    return res.status(200).json({ ok: true, status: result.status });
   } catch (e) {
     console.error(e);
     await logEvent('webhook_error', { type, paymentId, error: String(e.message || e) });
