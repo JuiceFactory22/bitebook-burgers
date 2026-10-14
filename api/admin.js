@@ -105,6 +105,10 @@ export default async function handler(req, res) {
         }
         return res.json({ ok: Boolean(row) });
       }
+      case 'events': {
+        const rows = await query('SELECT id, at, kind, detail FROM events ORDER BY id DESC LIMIT 30');
+        return res.json(rows);
+      }
       case 'resend': {
         return res.json(await emailOrder(String(req.query.order || ''), { force: true }));
       }
