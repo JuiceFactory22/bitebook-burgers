@@ -15,6 +15,8 @@ import { processOrder, emailOrder } from '../lib/delivery.js';
 import { RESTAURANTS, restaurantById } from '../lib/restaurants.js';
 import { CITIES, SITE_URL, formatLocal } from '../lib/config.js';
 import { page, esc } from '../lib/html.js';
+import { buildStaffSheet } from '../lib/staffsheet.js';
+import { sendRestaurantPacket } from '../lib/email.js';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -104,6 +106,27 @@ export default async function handler(req, res) {
           return res.status(302).end();
         }
         return res.json({ ok: Boolean(row) });
+      }
+      case 'staffguide': {
+        // Preview a restaurant's printable guide: ?action=staffguide&r=<id>&contact=...
+        const r = restaurantById(String(req.query.r || ''));
+        if (!r) return res.status(404).json({ error: 'Unknown restaurant' });
+        const pdf = await buildStaffSheet(r, { contact: String(req.query.contact || '') });
+        res.setHeader('Content-Type', 'application/pdf');
+        return res.status(200).send(Buffer.from(pdf));
+      }
+      case 'packet': {
+        // Email a restaurant its kickoff packet: ?action=packet&r=<id>&to=a@x.com,b@y.com&name=Dane&contact=...&send=1
+        const r = restaurantById(String(req.query.r || ''));
+        if (!r || !r.active) return res.status(404).json({ error: 'Unknown or inactive restaurant' });
+        const to = String(req.query.to || '').split(',').map((s) => s.trim()).filter((s) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s));
+        if (!to.length) return res.status(400).json({ error: 'No valid recipient emails' });
+        const contact = String(req.query.contact || '');
+        if (req.query.send !== '1') return res.json({ dryRun: true, restaurant: r.name, to, deal: r.deal });
+        const pdf = await buildStaffSheet(r, { contact });
+        const out = await sendRestaurantPacket({ to, contactName: String(req.query.name || ''), restaurant: r, pdf, contact });
+        await logEvent('packet_sent', { restaurant: r.id, to, resendId: out.id });
+        return res.json({ sent: true, restaurant: r.name, to, id: out.id });
       }
       case 'events': {
         const rows = await query('SELECT id, at, kind, detail FROM events ORDER BY id DESC LIMIT 30');

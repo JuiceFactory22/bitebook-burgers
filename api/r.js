@@ -99,6 +99,14 @@ export default async function handler(req, res) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
   const token = String(req.query.t || '').trim();
+  // Practice coupons for staff training: /r/demo-<restaurantId>. Never touches the database.
+  if (token.startsWith('demo-')) {
+    const r = restaurantById(token.slice(5));
+    if (!r || !r.active) return res.status(404).send(notFound());
+    const fake = { city: r.city, name: 'Practice Guest', passport_id: 'bbPRACTICE00000000' };
+    if (req.method === 'POST') return res.status(200).send(donePage(fake, r, new Date()));
+    return res.status(200).send(readyPage(fake, r, token, 'PRACTICE COUPON — nothing gets used up. Scan & tap as much as you like.'));
+  }
   try {
     const c = token ? await getCoupon(token) : null;
     const r = c && restaurantById(c.restaurant_id);
