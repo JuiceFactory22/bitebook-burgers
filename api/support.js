@@ -7,6 +7,7 @@ import { query, logEvent } from '../lib/db.js';
 import { createPassportsForOrder, voidOrder, ensureVoidColumns, passportLabel } from '../lib/passports.js';
 import { emailOrder } from '../lib/delivery.js';
 import { SUPPORT_TOKEN_SHA256 } from '../lib/support-auth.js';
+import { tokenStatus } from '../lib/square.js';
 
 function ok(t) {
   const a = createHash('sha256').update(String(t || '')).digest();
@@ -24,6 +25,11 @@ export default async function handler(req, res) {
   try {
     await ensureVoidColumns();
     const a = String(req.query.a || '');
+    if (a === 'sqcheck') {
+      const t = await tokenStatus();
+      const b = t.body || {};
+      return res.send(`http=${t.status} type=${b.client_id ? 'oauth' : 'personal'} scopes=${(b.scopes || []).join(',') || 'none-listed'} refunds_allowed=${!b.scopes || b.scopes.includes('PAYMENTS_WRITE') ? 'yes' : 'NO'} errors=${JSON.stringify(b.errors || [])}`);
+    }
     if (a === 'find') {
       const q = String(req.query.q || '').trim();
       if (q.length < 3) return res.send('query too short');
