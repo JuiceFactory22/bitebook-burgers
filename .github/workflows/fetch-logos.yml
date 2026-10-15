@@ -1,0 +1,17 @@
+name: fetch-logos
+on:
+  push:
+    branches: [logo-fetch]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: node scripts/fetch-logos.mjs
+      - run: |
+          git config user.name "logo-bot"; git config user.email "logo-bot@users.noreply.github.com"
+          git add -f logos-raw && git commit -m "Fetched logos" && git push origin HEAD:logo-fetch-out --force
