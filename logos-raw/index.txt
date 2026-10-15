@@ -1,0 +1,77 @@
+nash-caney-fork: 0 website did not load
+nash-caddy-briley: 0 no website
+nash-caddy-downtown: 0 no website
+nash-fozzys-franklin: 0 
+nash-fozzys-spring-hill: 0 
+nash-little-bite: 4 
+  logos-raw/nash-little-bite-1.png https://static.spotapps.co/website_images/ab_websites/502551_website_v1/logo.png
+  logos-raw/nash-little-bite-2.png https://static.spotapps.co/website_images/ab_websites/502551_website_v1/best_little_kitchen_logo.png
+  logos-raw/nash-little-bite-3.png https://static.spotapps.co/website_images/default_template_images/spothopper_logo.png
+  logos-raw/nash-little-bite-4.jpg https://static.spotapps.co/website_images/ab_websites/502551_website_v1/social_share.jpg
+nash-twisted-fork: 3 
+  logos-raw/nash-twisted-fork-1.png https://static.wixstatic.com/media/6e37ac_1b0f01537aeb47bb90d274e8b778000a%7Emv2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/6e37ac_1b0f01537aeb47bb90d274e8b778000a%7Emv2.png
+  logos-raw/nash-twisted-fork-2.png https://static.wixstatic.com/media/6e37ac_1b0f01537aeb47bb90d274e8b778000a%7Emv2.png/v1/fill/w_32%2Ch_32%2Clg_1%2Cusm_0.66_1.00_0.01/6e37ac_1b0f01537aeb47bb90d274e8b778000a%7Emv2.png
+  logos-raw/nash-twisted-fork-3.png https://static.wixstatic.com/media/6e37ac_1b0f01537aeb47bb90d274e8b778000a%7Emv2.png/v1/fill/w_180%2Ch_180%2Clg_1%2Cusm_0.66_1.00_0.01/6e37ac_1b0f01537aeb47bb90d274e8b778000a%7Emv2.png
+nash-edessa: 1 
+  logos-raw/nash-edessa-1.svg https://edessaburgerpizza.com/wp-content/uploads/2023/06/edessa.svg
+nash-chefs-market: 0 website returned 403
+nash-sticky-rice: 3 
+  logos-raw/nash-sticky-rice-1.png https://www.stickyriceexpresscafe.com/airo-assets/images/logo/horizontal
+  logos-raw/nash-sticky-rice-2.jpg https://stickyriceexpresscafe.com/og-image.jpg
+  logos-raw/nash-sticky-rice-3.bin https://www.stickyriceexpresscafe.com/favicon.ico
+nash-makeshift: 1 website returned 403
+  logos-raw/nash-makeshift-1.png https://popmenucloud.com/uopikwhv/4c02d339-7af5-4695-8697-79ae86daba07.png
+nash-uncle-lennys: 1 website returned 403
+  logos-raw/nash-uncle-lennys-1.png https://unclelennyscountrycafe.com/pluto-images/funnel/images/a8768045-0953-4e72-8fa1-32e23bd3e49e
+nash-fat-mos-east: 0 website did not load
+phx-happys: 6 
+  logos-raw/phx-happys-1.png https://happyshamburgers.com/wp-content/uploads/2022/09/Happys-Hamburgers-Logo-2022.png
+  logos-raw/phx-happys-2.png https://happyshamburgers.com/wp-content/uploads/2019/01/logo_happys-1.png
+  logos-raw/phx-happys-3.png https://happyshamburgers.com/wp-content/uploads/2019/01/happys_logo_mobile_small.png
+  logos-raw/phx-happys-4.png https://happyshamburgers.com/wp-content/uploads/2020/07/cropped-happy-site-icon-32x32.png
+  logos-raw/phx-happys-5.png https://happyshamburgers.com/wp-content/uploads/2020/07/cropped-happy-site-icon-192x192.png
+  logos-raw/phx-happys-6.png https://happyshamburgers.com/wp-content/uploads/2020/07/cropped-happy-site-icon-180x180.png
+phx-jims: 1 website returned 403
+  logos-raw/phx-jims-1.png https://jimsburgersaz.com/pluto-images/funnel/images/92217096-8da4-4c2a-89a2-1382861dda78
+phx-frashers: 4 
+  logos-raw/phx-frashers-1.png https://static.wixstatic.com/media/37ef22_6b6f96e996fb494abfb44a5981d55dcb~mv2.png
+  logos-raw/phx-frashers-2.png https://static.wixstatic.com/media/37ef22_6b6f96e996fb494abfb44a5981d55dcb~mv2.png/v1/crop/x_0,y_54,w_1080,h_194/fill/w_49,h_9,al_c,q_85,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/Frashers%20Tavern%20Logo.png
+  logos-raw/phx-frashers-3.png https://static.wixstatic.com/media/37ef22_6b6f96e996fb494abfb44a5981d55dcb~mv2.png/v1/fill/w_49,h_14,al_c,q_85,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/Frashers%20Tavern%20Logo.png
+  logos-raw/phx-frashers-4.jpg https://static.wixstatic.com/media/37ef22_218c4f12ba094563b7e3e590bf48d17c%7Emv2.jpg/v1/fit/w_2500,h_1330,al_c/37ef22_218c4f12ba094563b7e3e590bf48d17c%7Emv2.jpg
+phx-culinary-gangster: 1 website returned 403
+  logos-raw/phx-culinary-gangster-1.png https://culinarygangsterusa.com/pluto-images/63eed2c2-ca18-49ca-8533-e10f6e79d784.png
+phx-blu: 0 website returned 403
+phx-roadrunner: 5 
+  logos-raw/phx-roadrunner-1.png https://static.wixstatic.com/media/326e1b_bf800536db7045a48d3e53fa411d6678~mv2.png
+  logos-raw/phx-roadrunner-2.png https://static.wixstatic.com/media/326e1b_bf800536db7045a48d3e53fa411d6678~mv2.png/v1/fill/w_61,h_46,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/326e1b_bf800536db7045a48d3e53fa411d6678~mv2.png
+  logos-raw/phx-roadrunner-3.png https://static.wixstatic.com/media/326e1b_bf800536db7045a48d3e53fa411d6678%7Emv2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/326e1b_bf800536db7045a48d3e53fa411d6678%7Emv2.png
+  logos-raw/phx-roadrunner-4.png https://static.wixstatic.com/media/326e1b_bf800536db7045a48d3e53fa411d6678%7Emv2.png/v1/fill/w_32%2Ch_32%2Clg_1%2Cusm_0.66_1.00_0.01/326e1b_bf800536db7045a48d3e53fa411d6678%7Emv2.png
+  logos-raw/phx-roadrunner-5.png https://static.wixstatic.com/media/326e1b_bf800536db7045a48d3e53fa411d6678%7Emv2.png/v1/fill/w_180%2Ch_180%2Clg_1%2Cusm_0.66_1.00_0.01/326e1b_bf800536db7045a48d3e53fa411d6678%7Emv2.png
+phx-stumblinas: 6 
+  logos-raw/phx-stumblinas-1.png https://static.spotapps.co/web/stumblinascantinaaz--com/custom/logo.png
+  logos-raw/phx-stumblinas-2.png https://static.spotapps.co/web/stumblinascantinaaz--com/custom/logos/comm_partners.png
+  logos-raw/phx-stumblinas-3.png https://static.spotapps.co/web/stumblinascantinaaz--com/custom/logos/dflibrary_logo_transp.png
+  logos-raw/phx-stumblinas-4.jpg https://static.spotapps.co/web/stumblinascantinaaz--com/custom/logos/the_holland_center_logo.jpg
+  logos-raw/phx-stumblinas-5.png https://static.spotapps.co/web/stumblinascantinaaz--com/custom/logos/kiwanis_marketplace_thrift_store_logo.png
+  logos-raw/phx-stumblinas-6.png https://static.spotapps.co/web/stumblinascantinaaz--com/custom/logos/museum_transparent_logo.png
+phx-copper-bull: 4 
+  logos-raw/phx-copper-bull-1.png https://static.spotapps.co/website_images/ab_websites/206219_website_v1/bull_logo.png
+  logos-raw/phx-copper-bull-2.png https://static.spotapps.co/website_images/default_template_images/spothopper_logo.png
+  logos-raw/phx-copper-bull-3.jpg https://static.spotapps.co/website_images/ab_websites/206219_website_v1/social.jpg
+  logos-raw/phx-copper-bull-4.png https://static.spotapps.co/website_images/ab_websites/206219_website_v1/favicons/favicon-96x96.png
+phx-coyote-den: 3 
+  logos-raw/phx-coyote-den-1.jpg https://cdn01.s4shops.com/skytabweb/uploads/ea0ddb90-d90d-f111-a69a-000d3ae51c49/d477d110-6168-f111-8fcb-000d3a7b73be.jpg
+  logos-raw/phx-coyote-den-2.jpg https://cdn01.s4shops.com/skytabweb/uploads/ea0ddb90-d90d-f111-a69a-000d3ae51c49/1d2ec1f7-cc5a-f111-8fcb-000d3a7b73be.jpg
+  logos-raw/phx-coyote-den-3.png https://cdn01.s4shops.com/skytabweb/uploads/94a339f2-9438-ee11-b8f0-6045bd7ff6de/83e31c4a-ee00-ef11-aaf0-000d3ae3f879.png
+phx-patties: 4 
+  logos-raw/phx-patties-1.png https://static.spotapps.co/web/pattiespintsandpizzas--com/custom/logo_new.png
+  logos-raw/phx-patties-2.png https://static.spotapps.co/web/pattiespintsandpizzas--com/images/spothopper-logo-new.png
+  logos-raw/phx-patties-3.png https://static.spotapps.co/web/pattiespintsandpizzas--com/apple-touch-icon.png
+  logos-raw/phx-patties-4.png https://static.spotapps.co/web/pattiespintsandpizzas--com/favicon-32x32.png
+phx-detroit-coney: 6 
+  logos-raw/phx-detroit-coney-1.png https://detroitconeygrill.com/wp-content/uploads/2025/01/detroitconeygrill__1_-removebg-preview.png
+  logos-raw/phx-detroit-coney-2.png https://detroitconeygrill.com/wp-content/uploads/2025/01/Heading-1.png
+  logos-raw/phx-detroit-coney-3.png http://detroitconeygrill.com/wp-content/uploads/2025/02/Special.png
+  logos-raw/phx-detroit-coney-4.png https://detroitconeygrill.com/wp-content/uploads/2025/01/cropped-Heading-1-32x32.png
+  logos-raw/phx-detroit-coney-5.png https://detroitconeygrill.com/wp-content/uploads/2025/01/cropped-Heading-1-192x192.png
+  logos-raw/phx-detroit-coney-6.png https://detroitconeygrill.com/wp-content/uploads/2025/01/cropped-Heading-1-180x180.png
