@@ -7,6 +7,10 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   let list;
   try { list = unlockKickoff(String(req.query.code || '').trim().toLowerCase()); } catch { return res.status(401).send('bad code'); }
+  if (req.query.last === '1') {
+    const ev = await query(`SELECT at, kind, detail FROM events WHERE at > now() - interval '30 minutes' ORDER BY id DESC LIMIT 8`);
+    return res.send(ev.map((r) => `${r.at} ${r.kind} ${String(r.detail).replace(/[\w.+-]+@[\w.-]+/g, '***').slice(0, 700)}`).join('\n') || 'no recent events');
+  }
   if (req.query.status === '1') {
     const ev = await query(`SELECT at, detail FROM events WHERE kind = 'packet_sent' AND at > now() - interval '3 days'`);
     if (req.query.detail === '1') {
