@@ -15,8 +15,12 @@ export default async function handler(req, res) {
     const result = await processPaymentId(paymentId);
     // Passports are created here but NOT emailed. Emails only go out when Will
     // gives the go-ahead (admin "send" action), unless AUTO_SEND is turned on later.
+    // Automatic delivery starts at each city's 8am kickoff send (Oct 15)
+    const AUTO_FROM = { nashville: '2026-10-15T13:00:00Z', phoenix: '2026-10-15T15:00:00Z' };
     let email = null;
-    if (result.status === 'ok' && process.env.AUTO_SEND === 'on') email = await emailOrder(result.orderId);
+    const city = result.passports?.[0]?.city;
+    const autoOn = process.env.AUTO_SEND === 'on' || (city && AUTO_FROM[city] && Date.now() >= Date.parse(AUTO_FROM[city]));
+    if (result.status === 'ok' && autoOn) email = await emailOrder(result.orderId);
     await logEvent('webhook', { type, paymentId, status: result.status, orderId: result.orderId, email: email?.status || 'held' });
     return res.status(200).json({ ok: true, status: result.status });
   } catch (e) {
