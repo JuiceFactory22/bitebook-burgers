@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex');
-  if (!ok(req.query.t)) return res.status(401).send('not authorized');
+  if (!ok(req.query.t)) return res.send('not authorized');
   try {
     await ensureVoidColumns();
     const a = String(req.query.a || '');
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
     if (a === 'reissue') {
       const order = String(req.query.order || '');
       const email = String(req.query.email || '').trim();
-      if (!EMAIL.test(email)) return res.status(400).send('bad email');
+      if (!EMAIL.test(email)) return res.send('bad email');
       const old = await query('SELECT * FROM passports WHERE order_id = $1 AND voided_at IS NULL ORDER BY book_index', [order]);
       if (!old.length) return res.send('no active passports on that order');
       // new order id so the replacement is a separate, fresh set of coupons
@@ -64,9 +64,9 @@ export default async function handler(req, res) {
       await logEvent('reissue', { from: order, to: newOrder, email, sent: sent.status });
       return res.send(`old: ${old.map((p) => passportLabel(p.id)).join(', ')} cancelled\nnew: ${fresh.map((p) => passportLabel(p.id)).join(', ')} order=${newOrder}\nemail to ${email}: ${sent.status}`);
     }
-    return res.status(400).send('unknown action');
+    return res.send('unknown action');
   } catch (e) {
     console.error(e);
-    return res.status(500).send('error: ' + String(e.message || e).slice(0, 200));
+    return res.send('error: ' + String(e.message || e).slice(0, 200));
   }
 }
