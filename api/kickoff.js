@@ -7,6 +7,10 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   let list;
   try { list = unlockKickoff(String(req.query.code || '').trim().toLowerCase()); } catch { return res.status(401).send('bad code'); }
+  if (req.query.counts === '1') {
+    const c = await query(`SELECT kind, count(*) AS n FROM events WHERE at > now() - interval '45 minutes' GROUP BY kind ORDER BY kind`);
+    return res.send('last45min ' + (c.map((r) => `${r.kind}=${r.n}`).join(' ') || 'none') + ` passports_left=${await phoenixLeft()}`);
+  }
   if (req.query.last === '1') {
     const ev = await query(`SELECT at, kind, detail FROM events WHERE at > now() - interval '30 minutes' ORDER BY id DESC LIMIT 8`);
     return res.send(ev.map((r) => `${r.at} ${r.kind} ${String(r.detail).replace(/[\w.+-]+@[\w.-]+/g, '***').slice(0, 700)}`).join('\n') || 'no recent events');
