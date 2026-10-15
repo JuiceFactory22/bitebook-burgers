@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex');
-  if (!ok(req.query.t)) return res.send('not authorized');
+  if (!ok(req.query.t)) return res.send(`not authorized (got ${String(req.query.t || '').length} chars, starts ${String(req.query.t || '').slice(0, 3)})`);
   try {
     await ensureVoidColumns();
     const a = String(req.query.a || '');
