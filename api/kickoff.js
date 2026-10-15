@@ -1,0 +1,18 @@
+// Code-only trigger for the Phoenix kickoff (the code is a one-time secret; anything already sent is skipped).
+import { unlockKickoff, runKickoff, phoenixLeft } from '../lib/kickoff.js';
+import { query } from '../lib/db.js';
+
+export default async function handler(req, res) {
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store');
+  let list;
+  try { list = unlockKickoff(String(req.query.code || '').trim().toLowerCase()); } catch { return res.status(401).send('bad code'); }
+  if (req.query.status === '1') {
+    const ev = await query(`SELECT detail FROM events WHERE kind = 'packet_sent' AND at > now() - interval '1 day'`);
+    const done = new Set(ev.map((r) => { try { return JSON.parse(r.detail).restaurant; } catch { return null; } }));
+    const phx = Object.keys(list).filter((id) => done.has(id));
+    return res.send(`packets_sent=${phx.length}/11 [${phx.join(',')}] passports_left=${await phoenixLeft()}`);
+  }
+  const { rows, sent, left, problems } = await runKickoff(list);
+  return res.send(rows.map(([n, s]) => `${n}: ${s}`).join('\n') + `\npassports_sent=${sent} passports_left=${left}${problems.length ? ' problems=' + problems.join(',') : ''}`);
+}
