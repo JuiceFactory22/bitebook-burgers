@@ -152,7 +152,7 @@ const PLAYBOOK = `
   <div class="lbl">Do</div>
   <ol><li>Apologize first. Ask which restaurant, the date, and what happened.</li>
   <li>Search their email. If that restaurant shows as already used and they say they didn't get the deal, tap <b>Undo</b> next to it so they can use it again.</li>
-  <li>Our promise to restaurants and buyers: we refund the BiteBook and cover the cost of the meal. Offer that. For the meal, ask for a photo of the receipt and how they'd like to be paid back, and send both to Will. Refunds you can do right here.</li>
+  <li>Our promise to restaurants and buyers: we refund the BiteBook and cover the cost of the meal. Offer both. Refund the BiteBook right here with the Refund button. For the meal, you can't pay it back from this page: ask for a photo of the receipt and how they'd like to be paid, and send both to Will.</li>
   <li>Email info@getbitebook.com with the restaurant name and what happened, so Will can talk to them. Don't argue with the restaurant.</li></ol>
   <div class="lbl">Say</div>
   <div class="say">I'm really sorry, that's not the experience we want for you. Which restaurant was it, and what happened? We'll make it right.</div>
