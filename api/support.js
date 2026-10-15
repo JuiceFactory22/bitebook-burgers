@@ -1,4 +1,4 @@
-// Customer-support tools (plain text). Every call needs ?t=<support token>.
+// Customer-support tools (plain text). Every call needs ?code=<support token>.
 //   ?a=find&q=<email, name or order id>         list matching passports
 //   ?a=void&order=<orderId>&reason=refund         cancel an order's passports
 //   ?a=reissue&order=<orderId>&email=<new email>  cancel them and send fresh passports to a new email
@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex');
-  if (!ok(req.query.t)) return res.send(`not authorized (got ${String(req.query.t || '').length} chars, starts ${String(req.query.t || '').slice(0, 3)})`);
+  if (!ok(req.query.code)) return res.send(`not authorized (got ${String(req.query.code || '').length} chars, starts ${String(req.query.code || '').slice(0, 3)})`);
   try {
     await ensureVoidColumns();
     const a = String(req.query.a || '');
