@@ -45,6 +45,19 @@ export default async function handler(req, res) {
         } catch { tables = 'not created yet'; }
         return res.json({ env, db, tables });
       }
+      case 'summary': {
+        // Short plain-text status line
+        const r = (await query(`SELECT
+          (SELECT count(*) FROM passports WHERE is_test=0) AS books,
+          (SELECT count(*) FROM passports WHERE is_test=0 AND city='nashville') AS nash,
+          (SELECT count(*) FROM passports WHERE is_test=0 AND city='phoenix') AS phx,
+          (SELECT count(DISTINCT order_id) FROM passports WHERE is_test=0) AS orders,
+          (SELECT count(DISTINCT order_id) FROM passports WHERE is_test=0 AND emailed_at IS NULL) AS pending,
+          (SELECT count(*) FROM passports WHERE is_test=0 AND (email IS NULL OR email='')) AS noemail,
+          (SELECT count(*) FROM coupons c JOIN passports p ON p.id=c.passport_id WHERE p.is_test=0 AND c.redeemed_at IS NOT NULL) AS redeemed`))[0];
+        res.setHeader('Content-Type', 'text/plain');
+        return res.send(`books=${r.books} nash=${r.nash} phx=${r.phx} orders=${r.orders} unsent_orders=${r.pending} no_email=${r.noemail} redeemed=${r.redeemed}`);
+      }
       case 'init': {
         await initSchema();
         return res.json({ ok: true });
