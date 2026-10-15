@@ -55,19 +55,8 @@ function citySection(city, showHeader) {
 </section>`;
 }
 
-export default function handler(req, res) {
-  const cityId = String(req.query.city || '').toLowerCase();
-  const city = CITIES[cityId] || null;
-  const cities = city ? [city] : Object.values(CITIES);
-  const total = cities.reduce((s, c) => s + RESTAURANTS.filter((r) => r.city === c.id && r.active).length, 0);
-  const title = city ? `${EVENT.name} ${YEAR} — ${city.name} lineup` : `${EVENT.name} ${YEAR} — the lineup`;
-  const topButtons = cities.map((c) => `<a class="btn" href="${esc(CHECKOUT[c.id])}">Get your ${esc(c.name)} BiteBook →</a>`).join('');
-  const cityTabs = city ? '' : `<nav class="tabs">${cities.map((c) => `<a href="#${c.id}">${esc(c.name)}</a>`).join('')}</nav>`;
-  const desc = `Every ${city ? city.name + ' ' : ''}restaurant in ${EVENT.name} ${YEAR} and exactly what you get. ${EVENT.datesLabel}.`;
-
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=60');
-  res.status(200).send(`<!doctype html>
+function shell({ title, desc, eyebrow, hero, main }) {
+  return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -80,7 +69,22 @@ export default function handler(req, res) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
+<style>${CSS}</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="top"><a class="brand" href="/">BiteBook</a><span class="eyebrow">${esc(eyebrow)}</span></div>
+    ${hero}
+  </div>
+</header>
+<main class="wrap">${main}</main>
+<footer>getbitebook.com</footer>
+</body>
+</html>`;
+}
+
+const CSS = `
   :root { --ink:#1F1A15; --paper:#FBF4E4; --stub:#FFFDF7; --mustard:#F2B33D; --red:#C8371D; --muted:#5E5246; }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--paper); color:var(--ink); font-family:Inter, system-ui, sans-serif; }
@@ -92,14 +96,13 @@ export default function handler(req, res) {
   .brand { font-family:'Bricolage Grotesque', sans-serif; font-weight:800; font-size:24px; text-decoration:none; }
   .eyebrow { font-family:'Space Mono', monospace; font-size:13px; letter-spacing:3px; color:var(--mustard); }
   h1 { font-family:'Bricolage Grotesque', sans-serif; font-weight:800; font-size:clamp(48px, 13vw, 112px); line-height:.88; letter-spacing:-2px; margin:26px 0 14px; }
+  .cityname { font-family:'Bricolage Grotesque', sans-serif; font-weight:800; font-size:clamp(30px, 8vw, 56px); line-height:1; color:var(--paper); margin-bottom:10px; }
   .dates { font-family:'Bricolage Grotesque', sans-serif; font-weight:800; font-size:clamp(22px, 5.5vw, 36px); color:var(--mustard); }
   .lede { font-size:18px; line-height:1.5; max-width:600px; margin:14px 0 22px; }
   .btns { display:flex; gap:12px; flex-wrap:wrap; }
   .btn { display:inline-flex; align-items:center; justify-content:center; min-height:56px; padding:14px 22px; background:var(--red); color:#fff; border:2px solid var(--ink); border-radius:12px; font-family:'Bricolage Grotesque', sans-serif; font-weight:800; font-size:20px; text-decoration:none; box-shadow:0 4px 0 var(--mustard); }
   .hero .btn { border-color:var(--mustard); }
   .btn:hover { filter:brightness(1.08); }
-  .tabs { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
-  .tabs a { font-family:'Space Mono', monospace; font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase; color:var(--mustard); border:1.5px solid var(--mustard); border-radius:999px; padding:8px 14px; text-decoration:none; }
   .city { padding:34px 0 10px; }
   .cityhead { display:flex; align-items:baseline; justify-content:space-between; gap:12px; border-bottom:3px solid var(--ink); padding-bottom:8px; margin-bottom:18px; flex-wrap:wrap; }
   h2 { font-family:'Bricolage Grotesque', sans-serif; font-weight:800; font-size:40px; margin:0; }
@@ -115,30 +118,50 @@ export default function handler(req, res) {
   .deal .cond { font-size:14.5px; line-height:1.4; margin-top:3px; }
   .terms { font-size:13px; color:var(--muted); }
   .cta { display:flex; justify-content:center; padding:24px 0 6px; }
+  .pick { display:flex; flex-direction:column; gap:14px; padding:34px 0 50px; max-width:520px; }
+  .pick a { display:flex; justify-content:space-between; align-items:center; background:var(--stub); border:2px solid var(--ink); border-radius:14px; padding:20px; text-decoration:none; font-family:'Bricolage Grotesque', sans-serif; font-weight:800; font-size:28px; }
+  .pick a span { font-family:'Space Mono', monospace; font-size:13px; font-weight:700; letter-spacing:1.5px; color:var(--muted); }
   .fine { border-top:2px dashed var(--ink); margin-top:26px; padding:18px 0 40px; font-size:14px; line-height:1.6; color:var(--muted); }
   footer { background:var(--ink); color:var(--paper); font-family:'Space Mono', monospace; font-size:12px; padding:14px 16px; text-align:center; }
-</style>
-</head>
-<body>
-<header class="hero">
-  <div class="wrap">
-    <div class="top"><a class="brand" href="/">BiteBook</a><span class="eyebrow">${city ? esc(city.name.toUpperCase()) + ' · ' : ''}THE LINEUP</span></div>
-    <h1>${esc(EVENT.name.toUpperCase())}<br>${YEAR}</h1>
+`;
+
+const activeIn = (id) => RESTAURANTS.filter((r) => r.city === id && r.active).length;
+
+export default function handler(req, res) {
+  const cityId = String((req.query && req.query.city) || '').toLowerCase();
+  const city = CITIES[cityId] || null;
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=60');
+
+  if (!city) {
+    // /lineup with no city: just a picker. Each city is its own event, so no combined list.
+    const links = Object.values(CITIES).map((c) =>
+      `<a href="/lineup/${c.id}">${esc(c.name)} <span>${activeIn(c.id)} SPOTS →</span></a>`).join('');
+    return res.status(200).send(shell({
+      title: `${EVENT.name} ${YEAR} lineups`,
+      desc: `Pick your city to see every restaurant in ${EVENT.name} ${YEAR}.`,
+      eyebrow: 'THE LINEUP',
+      hero: `<h1>${esc(EVENT.name.toUpperCase())}<br>${YEAR}</h1><div class="dates">OCTOBER 15 – NOVEMBER 15</div>`,
+      main: `<div class="pick"><h2>Pick your city</h2>${links}</div>`,
+    }));
+  }
+
+  const n = activeIn(city.id);
+  const btn = `<a class="btn" href="${esc(CHECKOUT[city.id])}">Get your ${esc(city.name)} BiteBook →</a>`;
+  res.status(200).send(shell({
+    title: `${EVENT.name} ${YEAR} ${city.name} — the lineup`,
+    desc: `Every restaurant in ${city.name}'s ${EVENT.name} ${YEAR} and exactly what you get. ${EVENT.datesLabel}.`,
+    eyebrow: `${city.name.toUpperCase()} · THE LINEUP`,
+    hero: `<h1>${esc(EVENT.name.toUpperCase())}<br>${YEAR}</h1>
+    <div class="cityname">${esc(city.name)}</div>
     <div class="dates">OCTOBER 15 – NOVEMBER 15</div>
-    <p class="lede">${total} local restaurants. One digital passport. Here's every spot and exactly what you get at each one.</p>
-    <div class="btns">${topButtons}</div>
-    ${cityTabs}
-  </div>
-</header>
-<main class="wrap">
-  ${cities.map((c) => citySection(c, true)).join('\n')}
+    <p class="lede">${n} local ${esc(city.name)} restaurants. One digital passport. Here's every spot and exactly what you get at each one.</p>
+    <div class="btns">${btn}</div>`,
+    main: `${citySection(city, true)}
   <div class="fine">
     Each deal is good once per passport, ${esc(EVENT.datesLabel)}. Add-ons, toppings and tax are extra, and please tip on the full value.
     Your passport is delivered to your inbox and used from your phone. More restaurants are joining all month.
     Questions? info@getbitebook.com
-  </div>
-</main>
-<footer>getbitebook.com</footer>
-</body>
-</html>`);
+  </div>`,
+  }));
 }
