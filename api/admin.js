@@ -81,18 +81,25 @@ export default async function handler(req, res) {
       case 'send': {
         const limit = Math.min(25, Math.max(1, parseInt(req.query.limit || '10', 10)));
         const dry = req.query.dry === '1';
+        const city = CITIES[String(req.query.city || '')] ? String(req.query.city) : null;
         const pending = await query(
           `SELECT order_id, min(email) AS email, count(*) AS books, min(created_at) AS first
-           FROM passports WHERE emailed_at IS NULL AND is_test = 0
-           GROUP BY order_id ORDER BY first LIMIT $1::int`, [String(limit)]);
-        const remaining = await query(`SELECT count(DISTINCT order_id) AS n FROM passports WHERE emailed_at IS NULL AND is_test = 0`);
+           FROM passports WHERE emailed_at IS NULL AND is_test = 0 AND ($2::text IS NULL OR city = $2::text)
+           GROUP BY order_id ORDER BY first LIMIT $1::int`, [String(limit), city]);
+        const remaining = await query(`SELECT count(DISTINCT order_id) AS n FROM passports WHERE emailed_at IS NULL AND is_test = 0 AND ($1::text IS NULL OR city = $1::text)`, [city]);
         if (dry) return res.json({ dryRun: true, wouldSend: pending, totalPendingOrders: Number(remaining[0].n) });
         const results = [];
         for (const row of pending) {
           results.push(await emailOrder(row.order_id));
           await sleep(650); // stay under Resend's rate limit
         }
-        const left = await query(`SELECT count(DISTINCT order_id) AS n FROM passports WHERE emailed_at IS NULL AND is_test = 0`);
+        const left = await query(`SELECT count(DISTINCT order_id) AS n FROM passports WHERE emailed_at IS NULL AND is_test = 0 AND ($1::text IS NULL OR city = $1::text)`, [city]);
+        if (req.query.fmt === 'text') {
+          const ok = results.filter((r) => r.status === 'sent').length;
+          const bad = results.filter((r) => r.status !== 'sent' && r.status !== 'already_sent');
+          res.setHeader('Content-Type', 'text/plain');
+          return res.send(`sent=${ok} problems=${bad.length} left=${Number(left[0].n)}${bad.length ? ' ' + bad.map((b) => b.status).join(',') : ''}`);
+        }
         return res.json({ results, pendingOrdersLeft: Number(left[0].n) });
       }
       case 'test': {

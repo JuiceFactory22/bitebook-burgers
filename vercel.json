@@ -8,6 +8,10 @@
   "functions": {
     "api/admin.js": { "maxDuration": 60 },
     "api/book.js": { "maxDuration": 30 },
-    "api/square-webhook.js": { "maxDuration": 30 }
-  }
+    "api/square-webhook.js": { "maxDuration": 30 },
+    "api/nightly.js": { "maxDuration": 30 }
+  },
+  "crons": [
+    { "path": "/api/nightly", "schedule": "0 2 * * *" }
+  ]
 }
