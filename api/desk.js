@@ -93,6 +93,17 @@ function orderCard(k, q, o, pay, used) {
     acts.push(`<form method="post" action="/desk" class="inline">${hidden(k, { action: 'reissue', order: o.orderId, q, step: 'review' })}<input type="email" name="email" placeholder="Correct email" required aria-label="Correct email"><button class="b">Change email</button></form>`);
     acts.push(`<form method="post" action="/desk">${hidden(k, { action: 'cancel', order: o.orderId, q, step: 'review' })}<button class="b danger">Cancel passport</button></form>`);
   }
+  const moved = !active.length && o.passports.some((p) => String(p.void_reason || '').startsWith('reissued to'));
+  if (moved) {
+    const newOrder = String(o.passports[0].void_reason).replace('reissued to ', '');
+    return `<section class="order">
+  <h2>${esc(first.name || 'No name')} <span class="note">· ${esc(cityName(first.city))}</span></h2>
+  <div class="meta"><span>Email <b>${esc(first.email || '—')}</b></span><span>Bought <b>${esc(day(first.created_at))}</b></span></div>
+  <div class="pp">${chips}</div>
+  <div class="pay">This passport was moved to a new email. <a href="/desk?k=${encodeURIComponent(k)}&q=${encodeURIComponent(newOrder)}">Open the new passport</a> to refund or make changes.</div>
+  <div class="note">Order ${esc(o.orderId)}</div>
+</section>`;
+  }
   if (pay.refundable > 0) {
     acts.push(`<form method="post" action="/desk">${hidden(k, { action: 'refund', order: o.orderId, q, step: 'review' })}<button class="b danger">Refund ${money(pay.refundable)}</button></form>`);
   }
