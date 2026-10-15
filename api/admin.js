@@ -230,6 +230,7 @@ async function dashboard(req, res) {
     title: 'Dashboard', label: 'ADMIN DASHBOARD', wide: true,
     body: `<main>
   <h1>Burger Blastoff dashboard</h1>
+  <p style="margin:0 0 8px"><a href="/api/admin?action=logos&key=${key}">Restaurant logos →</a></p>
   <div style="display:flex;gap:12px;flex-wrap:wrap">${cityCards || '<div class="muted">No passports yet.</div>'}</div>
   <h2 style="margin:12px 0 0;font-family:'Bricolage Grotesque'">Redemptions by restaurant</h2>
   <div style="overflow-x:auto"><table><tr><th>CITY</th><th>RESTAURANT</th><th>REDEEMED</th><th></th></tr>${restRows}</table></div>
