@@ -16,6 +16,13 @@ export default async function handler(req, res) {
         body: `<main><h1>Passport not found</h1><p class="muted">Double-check the link in your email, or write to ${esc(SUPPORT_EMAIL)} and we'll sort it out.</p></main>`,
       }));
     }
+    if (passport.voided_at) {
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      return res.status(410).send(page({
+        title: 'Passport cancelled', label: 'BURGER BLASTOFF',
+        body: `<main><h1>This passport was cancelled</h1><p class="muted">If you were sent a replacement, use the link in that newer email. Questions? Write to ${esc(SUPPORT_EMAIL)}.</p></main>`,
+      }));
+    }
     const coupons = await ensureCoupons(passport);
     const bytes = await buildPassportPdf({ passport, coupons });
     res.setHeader('Content-Type', 'application/pdf');

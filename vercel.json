@@ -37,6 +37,9 @@
     },
     "api/kickoff.js": {
       "maxDuration": 60
+    },
+    "api/support.js": {
+      "maxDuration": 30
     }
   },
   "crons": [

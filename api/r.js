@@ -90,7 +90,7 @@ function windowPage(r, msg) {
   <div class="mono">THIS COUPON IS FOR</div>
   <h1>${esc(r.name)}</h1>
   ${dealBlock(r)}
-  <p class="muted" style="font-size:14px">${esc(EVENT.name)} coupons work ${esc(EVENT.datesLabel)}. Please don't honor this coupon today.</p>
+  <p class="muted" style="font-size:14px">${esc(EVENT.name)} coupons work ${esc(EVENT.datesLabel)}. ${msg.includes('cancelled') ? 'This coupon is no longer valid. Please don’t honor it.' : 'Please don’t honor this coupon today.'}</p>
 </main>`,
   });
 }
@@ -112,6 +112,7 @@ export default async function handler(req, res) {
     const r = c && restaurantById(c.restaurant_id);
     if (!c || !r) return res.status(404).send(notFound());
 
+    if (c.voided_at) return res.status(200).send(windowPage(r, 'This passport was cancelled'));
     const isTest = Number(c.is_test) === 1;
     const now = new Date();
     const { start, end } = eventWindow(c.city);
