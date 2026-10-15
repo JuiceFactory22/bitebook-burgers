@@ -2,16 +2,44 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/r/:token", "destination": "/api/r?t=:token" },
-    { "source": "/book/:id", "destination": "/api/book?id=:id" }
+    {
+      "source": "/lineup",
+      "destination": "/api/lineup"
+    },
+    {
+      "source": "/lineup/:city",
+      "destination": "/api/lineup?city=:city"
+    },
+    {
+      "source": "/r/:token",
+      "destination": "/api/r?t=:token"
+    },
+    {
+      "source": "/book/:id",
+      "destination": "/api/book?id=:id"
+    }
   ],
   "functions": {
-    "api/admin.js": { "maxDuration": 60 },
-    "api/book.js": { "maxDuration": 30 },
-    "api/square-webhook.js": { "maxDuration": 30 },
-    "api/nightly.js": { "maxDuration": 30 }
+    "api/admin.js": {
+      "maxDuration": 60
+    },
+    "api/book.js": {
+      "maxDuration": 30
+    },
+    "api/square-webhook.js": {
+      "maxDuration": 30
+    },
+    "api/nightly.js": {
+      "maxDuration": 30
+    },
+    "api/lineup.js": {
+      "maxDuration": 10
+    }
   },
   "crons": [
-    { "path": "/api/nightly", "schedule": "0 2 * * *" }
+    {
+      "path": "/api/nightly",
+      "schedule": "0 2 * * *"
+    }
   ]
 }
