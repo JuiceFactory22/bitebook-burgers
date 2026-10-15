@@ -8,6 +8,7 @@ import { createPassportsForOrder, voidOrder, ensureVoidColumns, passportLabel } 
 import { emailOrder } from '../lib/delivery.js';
 import { SUPPORT_TOKEN_SHA256 } from '../lib/support-auth.js';
 import { tokenStatus } from '../lib/square.js';
+import { reissueOrder } from '../lib/support-ops.js';
 
 function ok(t) {
   const a = createHash('sha256').update(String(t || '')).digest();
@@ -54,21 +55,8 @@ export default async function handler(req, res) {
       return res.send(done.length ? `cancelled ${done.length} passport(s) on order ${order}: ${done.map((p) => passportLabel(p.id)).join(', ')}` : 'nothing to cancel (wrong order id, or already cancelled)');
     }
     if (a === 'reissue') {
-      const order = String(req.query.order || '');
-      const email = String(req.query.email || '').trim();
-      if (!EMAIL.test(email)) return res.send('bad email');
-      const old = await query('SELECT * FROM passports WHERE order_id = $1 AND voided_at IS NULL ORDER BY book_index', [order]);
-      if (!old.length) return res.send('no active passports on that order');
-      // new order id so the replacement is a separate, fresh set of coupons
-      const prior = await query('SELECT count(DISTINCT order_id) AS n FROM passports WHERE order_id LIKE $1', [`${order}~r%`]);
-      const newOrder = `${order}~r${Number(prior[0].n) + 1}`;
-      const fresh = await createPassportsForOrder({
-        orderId: newOrder, books: old.map((p) => p.city), name: old[0].name, email, phone: old[0].phone, isTest: Number(old[0].is_test) === 1,
-      });
-      await voidOrder(order, `reissued to ${newOrder}`);
-      const sent = await emailOrder(newOrder);
-      await logEvent('reissue', { from: order, to: newOrder, email, sent: sent.status });
-      return res.send(`old: ${old.map((p) => passportLabel(p.id)).join(', ')} cancelled\nnew: ${fresh.map((p) => passportLabel(p.id)).join(', ')} order=${newOrder}\nemail to ${email}: ${sent.status}`);
+      const r = await reissueOrder(String(req.query.order || ''), String(req.query.email || '').trim(), { by: 'support-tool' });
+      return res.send(`old: ${r.oldLabels.join(', ')} cancelled\nnew: ${r.newLabels.join(', ')} order=${r.newOrder}\nemail: ${r.sent}`);
     }
     return res.send('unknown action');
   } catch (e) {

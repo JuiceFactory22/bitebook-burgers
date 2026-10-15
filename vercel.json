@@ -3,6 +3,10 @@
   "trailingSlash": false,
   "rewrites": [
     {
+      "source": "/desk",
+      "destination": "/api/desk"
+    },
+    {
       "source": "/lineup",
       "destination": "/api/lineup"
     },
@@ -40,6 +44,9 @@
     },
     "api/support.js": {
       "maxDuration": 30
+    },
+    "api/desk.js": {
+      "maxDuration": 60
     }
   },
   "crons": [
