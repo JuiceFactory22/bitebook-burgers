@@ -18,6 +18,8 @@ import { page, esc } from '../lib/html.js';
 import { buildStaffSheet } from '../lib/staffsheet.js';
 import { sendRestaurantPacket } from '../lib/email.js';
 import { findLogos, proxyImage } from '../lib/logos.js';
+import { createDecipheriv } from 'node:crypto';
+import { PHOENIX_KICKOFF } from '../lib/kickoff-data.js';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -156,6 +158,9 @@ export default async function handler(req, res) {
       case 'resend': {
         return res.json(await emailOrder(String(req.query.order || ''), { force: true }));
       }
+      case 'kickoff': {
+        return kickoffPage(req, res);
+      }
       case 'logos': {
         return logosPage(req, res);
       }
@@ -174,6 +179,57 @@ export default async function handler(req, res) {
     console.error(e);
     return res.status(500).json({ error: String(e.message || e) });
   }
+}
+
+function unlockKickoff(code) {
+  const raw = Buffer.from(PHOENIX_KICKOFF, 'base64');
+  const d = createDecipheriv('aes-128-gcm', Buffer.from(code, 'hex'), raw.subarray(0, 12));
+  d.setAuthTag(raw.subarray(12, 28));
+  return JSON.parse(Buffer.concat([d.update(raw.subarray(28)), d.final()]).toString('utf8'));
+}
+
+async function kickoffPage(req, res) {
+  const key = encodeURIComponent(String(req.query.key));
+  const code = String(req.query.code || '').trim().toLowerCase();
+  const shell = (inner) => page({ title: 'Phoenix kickoff', label: 'ADMIN', wide: true, body: `<main><h1>Phoenix kickoff</h1>${inner}<p><a href="/api/admin?action=dashboard&key=${key}">← Dashboard</a></p></main>` });
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  if (!code) {
+    return res.send(shell(`<p>Sends the 11 Phoenix restaurant packets, then the Phoenix buyer passports. Safe to tap twice — anything already sent is skipped.</p>
+      <form method="get" action="/api/admin"><input type="hidden" name="key" value="${esc(String(req.query.key))}"><input type="hidden" name="action" value="kickoff">
+      <p><label>Code from Claude<br><input name="code" style="font-size:18px;padding:10px;width:100%;max-width:420px" autocomplete="off"></label></p>
+      <p><button style="font-size:20px;padding:14px 22px;background:#C8371D;color:#fff;border:0;border-radius:10px">Send Phoenix kickoff</button></p></form>`));
+  }
+  let list;
+  try { list = unlockKickoff(code); } catch { return res.send(shell('<p style="color:#C8371D"><b>That code didn’t work.</b> Copy it again from the chat.</p>')); }
+  const started = Date.now();
+  const already = new Set((await query(`SELECT detail FROM events WHERE kind = 'packet_sent' AND at > now() - interval '3 days'`))
+    .map((r) => { try { return (typeof r.detail === 'string' ? JSON.parse(r.detail) : r.detail).restaurant; } catch { return null; } }));
+  const rows = [];
+  for (const [rid, [to, name]] of Object.entries(list)) {
+    const r = restaurantById(rid);
+    if (!r || !r.active) { rows.push([rid, 'skipped (not active)']); continue; }
+    if (already.has(rid)) { rows.push([r.name, 'already sent earlier']); continue; }
+    try {
+      const pdf = await buildStaffSheet(r, { contact: '' });
+      const out = await sendRestaurantPacket({ to, contactName: name, restaurant: r, pdf, contact: '' });
+      await logEvent('packet_sent', { restaurant: rid, to, resendId: out.id, via: 'kickoff' });
+      rows.push([r.name, 'sent']);
+    } catch (e) { rows.push([r.name, 'FAILED: ' + String(e.message || e).slice(0, 120)]); }
+    await sleep(650);
+  }
+  let sent = 0, problems = [];
+  while (Date.now() - started < 45000) {
+    const pending = await query(`SELECT order_id FROM passports WHERE emailed_at IS NULL AND is_test = 0 AND city = 'phoenix' GROUP BY order_id ORDER BY min(created_at) LIMIT 1`);
+    if (!pending.length) break;
+    const out = await emailOrder(pending[0].order_id);
+    if (out.status === 'sent') sent++; else { problems.push(out.status); if (problems.length > 3) break; }
+    await sleep(650);
+  }
+  const left = Number((await query(`SELECT count(DISTINCT order_id) AS n FROM passports WHERE emailed_at IS NULL AND is_test = 0 AND city = 'phoenix'`))[0].n);
+  await logEvent('kickoff_phoenix', { packets: rows, buyersSent: sent, left, problems });
+  return res.send(shell(`<h2>Restaurant packets</h2><table>${rows.map(([n, s]) => `<tr><td>${esc(n)}</td><td>${esc(s)}</td></tr>`).join('')}</table>
+    <h2>Buyer passports</h2><p>Sent just now: <b>${sent}</b> · Still waiting: <b>${left}</b>${problems.length ? ` · Problems: ${esc(problems.join(', '))}` : ''}</p>
+    ${left ? `<p><a style="font-size:18px" href="/api/admin?action=kickoff&key=${key}&code=${esc(code)}">Send the rest →</a></p>` : '<p><b>All Phoenix passports are out.</b></p>'}`));
 }
 
 async function logosPage(req, res) {
@@ -230,6 +286,7 @@ async function dashboard(req, res) {
     title: 'Dashboard', label: 'ADMIN DASHBOARD', wide: true,
     body: `<main>
   <h1>Burger Blastoff dashboard</h1>
+  <p style="margin:0 0 8px"><a href="/api/admin?action=kickoff&key=${key}" style="font-weight:700">Phoenix kickoff (send packets + passports) →</a></p>
   <p style="margin:0 0 8px"><a href="/api/admin?action=logos&key=${key}">Restaurant logos →</a></p>
   <div style="display:flex;gap:12px;flex-wrap:wrap">${cityCards || '<div class="muted">No passports yet.</div>'}</div>
   <h2 style="margin:12px 0 0;font-family:'Bricolage Grotesque'">Redemptions by restaurant</h2>
