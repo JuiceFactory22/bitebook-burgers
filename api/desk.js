@@ -7,6 +7,7 @@ import { DESK_TOKEN_SHA256 } from '../lib/desk-auth.js';
 import { restaurantById } from '../lib/restaurants.js';
 import { CITIES, SUPPORT_EMAIL } from '../lib/config.js';
 import { passportLabel } from '../lib/passports.js';
+import { query, logEvent } from '../lib/db.js';
 import {
   findOrders, usedCoupons, paymentForOrder, refundOrder, cancelOrder, reissueOrder, resendOrder,
   undoCoupon, catchUpMissing, recentDeskActions,
@@ -60,6 +61,7 @@ const CSS = `<style>
   details ol { margin:4px 0; padding-left:20px; display:flex; flex-direction:column; gap:3px; font-size:15px; }
   .log { font-size:13px; }
   .log td { white-space:normal; }
+  .tabin { min-width:0; flex:1 1 150px; font-size:15px; padding:10px 12px; border:2px solid var(--ink); border-radius:10px; background:#fff; }
 </style>`;
 
 const shell = (title, inner) => page({ title, label: 'SUPPORT DESK', wide: true, body: `${CSS}<main>${inner}</main>` });
@@ -152,10 +154,20 @@ const PLAYBOOK = `
   <div class="lbl">Do</div>
   <ol><li>Apologize first. Ask which restaurant, the date, and what happened.</li>
   <li>Search their email. If that restaurant shows as already used and they say they didn't get the deal, tap <b>Undo</b> next to it so they can use it again.</li>
-  <li>Our promise to restaurants and buyers: we refund the BiteBook and cover the cost of the meal. Offer both. Refund the BiteBook right here with the Refund button. For the meal, you can't pay it back from this page: ask for a photo of the receipt and how they'd like to be paid, and send both to Will.</li>
-  <li>Email info@getbitebook.com with the restaurant name and what happened, so Will can talk to them. Don't argue with the restaurant.</li></ol>
+  <li>If they'd rather not go back, offer a full refund with the Refund button.</li>
+  <li>Email info@getbitebook.com with the restaurant name and what happened, so Will can follow up. Don't argue with the restaurant.</li></ol>
   <div class="lbl">Say</div>
   <div class="say">I'm really sorry, that's not the experience we want for you. Which restaurant was it, and what happened? We'll make it right.</div>
+</details>
+
+<details><summary>A restaurant says we owe them for a guest's meal (rare)</summary>
+  <p class="note" style="margin:0">This is a just-in-case. Restaurants usually handle unhappy guests on their own. Our promise is that we've got their back.</p>
+  <div class="lbl">Do</div>
+  <ol><li>You can't pay the restaurant from here. Will settles these when he's back.</li>
+  <li>Reply with the message below so they know it's handled.</li>
+  <li>Add it to the <b>Restaurant tab</b> at the top of this page: restaurant, guest, amount, and date.</li></ol>
+  <div class="lbl">Say</div>
+  <div class="say">We understand, and we'll take care of this for you. We'll run a tab and settle up with you shortly. Thanks for looking after our guest!</div>
 </details>
 
 <details><summary>Staff scanned it but didn't give the deal / tapped Redeem by mistake</summary>
@@ -175,6 +187,15 @@ const PLAYBOOK = `
   <ol><li>Reply kindly and say you're looking into it.</li><li>Write it down in the team chat with the buyer's email, and leave it for Will. Don't guess on money or promises.</li></ol>
 </details>`;
 
+async function tabTable() {
+  const rows = await query(`SELECT at, detail FROM events WHERE kind = 'desk_tab' ORDER BY id DESC LIMIT 50`);
+  if (!rows.length) return '<p class="note" style="margin:0">Nothing on the tab.</p>';
+  let total = 0;
+  const trs = rows.map((r) => { let d = {}; try { d = JSON.parse(r.detail); } catch {} total += Number(d.amount) || 0;
+    return `<tr><td>${esc(d.when || '')}</td><td>${esc(d.restaurant || '')}</td><td>${esc(d.guest || '')}</td><td>$${(Number(d.amount) || 0).toFixed(2)}</td></tr>`; }).join('');
+  return `<table class="log"><tr><th>DATE</th><th>RESTAURANT</th><th>GUEST</th><th>AMOUNT</th></tr>${trs}<tr><td colspan="3"><b>Total owed</b></td><td><b>$${total.toFixed(2)}</b></td></tr></table>`;
+}
+
 async function home(k, q, msg = '') {
   let results = '';
   if (q) {
@@ -190,7 +211,7 @@ async function home(k, q, msg = '') {
   }
   const log = q ? '' : await recentDeskActions(12).then((rows) => rows.length ? `<h3>Recent desk activity</h3><table class="log"><tr><th>WHEN</th><th>WHAT</th></tr>${rows.map((r) => {
     let d = {}; try { d = JSON.parse(r.detail); } catch {}
-    const what = { desk_refund: `Refund ${money(d.amount)} on ${d.order}`, desk_cancel: `Cancelled ${d.order} (${d.reason || ''})`, desk_reissue: `Moved ${d.from} to ${d.email}`, desk_resend: `Resent ${d.order}`, desk_undo: 'Undid a redemption', desk_catchup: `Missing-purchase check: ${d.created} found` }[r.kind] || r.kind;
+    const what = { desk_refund: `Refund ${money(d.amount)} on ${d.order}`, desk_cancel: `Cancelled ${d.order} (${d.reason || ''})`, desk_reissue: `Moved ${d.from} to ${d.email}`, desk_resend: `Resent ${d.order}`, desk_undo: 'Undid a redemption', desk_catchup: `Missing-purchase check: ${d.created} found`, desk_tab: `Tab: $${d.amount} for ${d.restaurant}` }[r.kind] || r.kind;
     return `<tr><td>${esc(day(r.at))}</td><td>${esc(what)}</td></tr>`;
   }).join('')}</table>` : '');
   return shell('Support desk', `
@@ -200,6 +221,15 @@ async function home(k, q, msg = '') {
   ${results}
   ${q ? `<p><a href="/desk?k=${encodeURIComponent(k)}">← Back to the playbook</a></p>` : `
   <form method="post" action="/desk">${hidden(k, { action: 'catchup', step: 'review', q: '' })}<button class="b">Check for missing purchases</button> <span class="note">Use if someone paid but their passport isn't showing up.</span></form>
+  <h3>Restaurant tab</h3>
+  <p class="note" style="margin:0">Meals we owe restaurants for. Will pays these when he's back.</p>
+  <form method="post" action="/desk" class="actions">${hidden(k, { action: 'tab', step: 'go', q: '' })}
+    <input class="tabin" name="restaurant" placeholder="Restaurant" required aria-label="Restaurant">
+    <input class="tabin" name="guest" placeholder="Guest name or email" required aria-label="Guest">
+    <input class="tabin" name="amount" placeholder="Amount, e.g. 24.50" required inputmode="decimal" aria-label="Amount">
+    <input class="tabin" name="when" type="date" required aria-label="Date">
+    <button class="b">Add to tab</button></form>
+  ${await tabTable()}
   ${PLAYBOOK}
   ${log}`}`);
 }
@@ -243,6 +273,12 @@ async function execute(k, b) {
     }
     case 'undo': { const r = await undoCoupon(String(b.token || ''), { by }); return r ? 'Done. That coupon can be used again.' : 'Couldn’t find that coupon.'; }
     case 'catchup': { const r = await catchUpMissing({ by }); return r.created ? `Found ${r.created} missing purchase(s) and emailed ${r.sent}.` : 'No missing purchases. Everyone who paid has a passport.'; }
+    case 'tab': {
+      const amount = Number(String(b.amount || '').replace(/[$,\s]/g, ''));
+      if (!b.restaurant || !b.guest || !(amount > 0) || amount > 500) throw new Error('Fill in the restaurant, guest, date, and an amount like 24.50.');
+      await logEvent('desk_tab', { by, restaurant: String(b.restaurant).slice(0, 80), guest: String(b.guest).slice(0, 80), amount: amount.toFixed(2), when: String(b.when || '').slice(0, 10) });
+      return `Added $${amount.toFixed(2)} for ${b.restaurant} to the restaurant tab.`;
+    }
     default: throw new Error('Unknown action');
   }
 }
@@ -256,7 +292,7 @@ export default async function handler(req, res) {
   if (!authorized(k)) return res.status(401).send(shell('Support desk', '<h1>Support desk</h1><div class="err-box">This link isn’t valid. Use the full link Will sent you.</div>'));
   try {
     if (req.method === 'POST') {
-      const fields = { action: String(b.action || ''), order: String(b.order || ''), email: String(b.email || ''), token: String(b.token || ''), q: String(b.q || ''), what: String(b.what || ''), reason: String(b.reason || ''), alsoCancel: String(b.alsoCancel || '') };
+      const fields = { action: String(b.action || ''), order: String(b.order || ''), email: String(b.email || ''), token: String(b.token || ''), q: String(b.q || ''), what: String(b.what || ''), reason: String(b.reason || ''), alsoCancel: String(b.alsoCancel || ''), restaurant: String(b.restaurant || ''), guest: String(b.guest || ''), amount: String(b.amount || ''), when: String(b.when || '') };
       if (b.step !== 'go') return res.send(await review(k, fields));
       try {
         const done = await execute(k, fields);
