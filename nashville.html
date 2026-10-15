@@ -155,6 +155,19 @@
   .step p{font-size:.98rem;color:var(--ink-soft)}
 
   /* ---------- STATS ---------- */
+  .partners{background:var(--ink);color:var(--paper);margin-top:44px;padding:44px 0 40px;overflow:hidden}
+  .partners-head{text-align:center;padding:0 24px 22px}
+  .partners-head .k{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+  .partners-head h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.6rem,4vw,2.3rem);margin:6px 0 0}
+  .marquee{display:flex;width:max-content;animation:bb-scroll 40s linear infinite}
+  .partners:hover .marquee{animation-play-state:paused}
+  .logo-tile{flex:0 0 auto;width:200px;height:120px;margin:0 9px;background:var(--paper);border:2px solid var(--gold);border-radius:14px;display:flex;align-items:center;justify-content:center;padding:14px}
+  .logo-tile.dark{background:#2b2119}
+  .logo-tile img{max-width:100%;max-height:100%;object-fit:contain}
+  .partners-more{text-align:center;margin-top:24px;font-family:'Space Mono',monospace;font-size:.8rem}
+  .partners-more a{color:var(--gold)}
+  @keyframes bb-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.marquee{animation:none;flex-wrap:wrap;justify-content:center;width:auto;row-gap:14px}.marquee .dup{display:none}}
   .stats{background:var(--ink);color:var(--paper);margin-top:44px}
   .stats-in{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:48px 24px;max-width:1140px;margin:0 auto}
   .stat{text-align:center}
@@ -211,9 +224,9 @@
     <div class="ticket-stage">
       <div class="ticket" aria-hidden="true">
         <div class="ticket-top">
-          <div class="ticket-kicker">Admit one · this month only</div>
+          <div class="ticket-kicker">Admit one · limited time offer</div>
           <div class="ticket-title display">Burger<br>Blastoff</div>
-          <div class="ticket-sub">1 FREE BURGER · with any purchase</div>
+          <div class="ticket-sub">1 FREE BURGER · See details</div>
           <div class="stamp">Best<br>Burger<br>Nominee</div>
         </div>
         <div class="perf"></div>
@@ -295,13 +308,11 @@
   </div>
 </section>
 
-<!-- STATS -->
-<section class="stats">
-  <div class="stats-in">
-    <div class="stat reveal"><div class="big display">13</div><div class="cap">Restaurants this month</div></div>
-    <div class="stat reveal"><div class="big display">150–200</div><div class="cap">Redemptions / month</div></div>
-    <div class="stat reveal"><div class="big display">10%</div><div class="cap">To local charity</div></div>
-  </div>
+<!-- PARTNERS -->
+<section class="partners">
+  <div class="partners-head"><div class="k">Burger Blastoff · Nashville</div><h2>Restaurants we're partnering with</h2></div>
+  <div class="marquee"><div class="logo-tile"><img src="/logos/nash-edessa.svg" alt="Edessa Burger &amp; Pizza" loading="lazy"></div><div class="logo-tile"><img src="/logos/nash-sticky-rice.png" alt="Sticky Rice Express" loading="lazy"></div><div class="logo-tile"><img src="/logos/nash-twisted-fork.png" alt="Twisted Fork" loading="lazy"></div><div class="logo-tile dark"><img src="/logos/nash-little-bite.png" alt="Little Bite of Everything" loading="lazy"></div><div class="logo-tile dark"><img src="/logos/nash-makeshift.png" alt="Makeshift" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-edessa.svg" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-sticky-rice.png" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-twisted-fork.png" alt="" loading="lazy"></div><div class="logo-tile dark dup" aria-hidden="true"><img src="/logos/nash-little-bite.png" alt="" loading="lazy"></div><div class="logo-tile dark dup" aria-hidden="true"><img src="/logos/nash-makeshift.png" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-edessa.svg" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-sticky-rice.png" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-twisted-fork.png" alt="" loading="lazy"></div><div class="logo-tile dark dup" aria-hidden="true"><img src="/logos/nash-little-bite.png" alt="" loading="lazy"></div><div class="logo-tile dark dup" aria-hidden="true"><img src="/logos/nash-makeshift.png" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-edessa.svg" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-sticky-rice.png" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-twisted-fork.png" alt="" loading="lazy"></div><div class="logo-tile dark dup" aria-hidden="true"><img src="/logos/nash-little-bite.png" alt="" loading="lazy"></div><div class="logo-tile dark dup" aria-hidden="true"><img src="/logos/nash-makeshift.png" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-edessa.svg" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-sticky-rice.png" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-twisted-fork.png" alt="" loading="lazy"></div><div class="logo-tile dark dup" aria-hidden="true"><img src="/logos/nash-little-bite.png" alt="" loading="lazy"></div><div class="logo-tile dark dup" aria-hidden="true"><img src="/logos/nash-makeshift.png" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-edessa.svg" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-sticky-rice.png" alt="" loading="lazy"></div><div class="logo-tile dup" aria-hidden="true"><img src="/logos/nash-twisted-fork.png" alt="" loading="lazy"></div><div class="logo-tile dark dup" aria-hidden="true"><img src="/logos/nash-little-bite.png" alt="" loading="lazy"></div><div class="logo-tile dark dup" aria-hidden="true"><img src="/logos/nash-makeshift.png" alt="" loading="lazy"></div></div>
+  <div class="partners-more"><a href="/lineup/nashville">See every restaurant &amp; deal →</a></div>
 </section>
 
 <!-- FOOTER -->
