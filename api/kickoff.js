@@ -8,7 +8,11 @@ export default async function handler(req, res) {
   let list;
   try { list = unlockKickoff(String(req.query.code || '').trim().toLowerCase()); } catch { return res.status(401).send('bad code'); }
   if (req.query.status === '1') {
-    const ev = await query(`SELECT detail FROM events WHERE kind = 'packet_sent' AND at > now() - interval '1 day'`);
+    const ev = await query(`SELECT at, detail FROM events WHERE kind = 'packet_sent' AND at > now() - interval '3 days'`);
+    if (req.query.detail === '1') {
+      const mine = ev.filter((r) => { try { return JSON.parse(r.detail).restaurant in list; } catch { return false; } });
+      return res.send(mine.map((r) => { const d = JSON.parse(r.detail); return `${r.at} ${d.restaurant} to=${(d.to || []).map((e) => e.replace(/^(.).*@/, '$1***@')).join(',')}`; }).join('\n') || 'none');
+    }
     const done = new Set(ev.map((r) => { try { return JSON.parse(r.detail).restaurant; } catch { return null; } }));
     const phx = Object.keys(list).filter((id) => done.has(id));
     return res.send(`packets_sent=${phx.length}/11 [${phx.join(',')}] passports_left=${await phoenixLeft()}`);
