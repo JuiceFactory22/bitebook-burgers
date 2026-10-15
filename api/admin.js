@@ -17,6 +17,7 @@ import { CITIES, SITE_URL, formatLocal } from '../lib/config.js';
 import { page, esc } from '../lib/html.js';
 import { buildStaffSheet } from '../lib/staffsheet.js';
 import { sendRestaurantPacket } from '../lib/email.js';
+import { findLogos, proxyImage } from '../lib/logos.js';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -155,6 +156,16 @@ export default async function handler(req, res) {
       case 'resend': {
         return res.json(await emailOrder(String(req.query.order || ''), { force: true }));
       }
+      case 'logos': {
+        return logosPage(req, res);
+      }
+      case 'logoimg': {
+        const img = await proxyImage(String(req.query.u || ''));
+        if (!img) return res.status(404).send('not found');
+        res.setHeader('Content-Type', img.type);
+        if (req.query.dl) res.setHeader('Content-Disposition', `attachment; filename="${String(req.query.name || 'logo').replace(/[^\w.-]/g, '')}"`);
+        return res.send(img.body);
+      }
       case 'dashboard':
       default:
         return dashboard(req, res);
@@ -163,6 +174,36 @@ export default async function handler(req, res) {
     console.error(e);
     return res.status(500).json({ error: String(e.message || e) });
   }
+}
+
+async function logosPage(req, res) {
+  const key = encodeURIComponent(String(req.query.key));
+  const list = RESTAURANTS.filter((r) => r.active && (!req.query.city || r.city === req.query.city));
+  const results = await Promise.all(list.map(async (r) => ({ r, ...(await findLogos(r.id)) })));
+  if (req.query.fmt === 'text') {
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    return res.send(results.map(({ r, note, logos }) =>
+      `${r.id}: ${logos.length} found${note ? ' (' + note + ')' : ''}\n` +
+      logos.map((l) => `   ${l.type} ${Math.round(l.bytes / 1024)}KB ${l.url}`).join('\n')).join('\n'));
+  }
+  const ext = (t) => ({ 'image/png': 'png', 'image/jpeg': 'jpg', 'image/svg+xml': 'svg', 'image/webp': 'webp', 'image/avif': 'avif', 'image/gif': 'gif', 'image/x-icon': 'ico', 'image/vnd.microsoft.icon': 'ico' }[t] || 'img');
+  const cards = results.map(({ r, note, logos }) => {
+    const imgs = logos.map((l, i) => {
+      const src = `/api/admin?key=${key}&action=logoimg&u=${encodeURIComponent(l.url)}`;
+      const name = `${r.id}-${i + 1}.${ext(l.type)}`;
+      return `<figure><div class="ph"><img src="${src}" alt="" loading="lazy"></div>
+        <figcaption>${esc(l.type.replace('image/', ''))} · ${Math.max(1, Math.round(l.bytes / 1024))}KB · <a href="${src}&dl=1&name=${encodeURIComponent(name)}">Download</a></figcaption></figure>`;
+    }).join('');
+    return `<section><h3>${esc(r.name)} <small>${esc(r.city)}</small></h3>
+      ${logos.length ? `<div class="row">${imgs}</div>` : `<p class="miss">Nothing found${note ? ' — ' + esc(note) : ''}. Ask them to send their logo.</p>`}</section>`;
+  }).join('');
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  return res.send(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Restaurant logos</title>
+<style>body{margin:0;background:#FBF4E4;color:#1F1A15;font-family:Inter,system-ui,sans-serif;padding:20px 16px 60px}h1{margin:0 0 4px}p.sub{color:#5E5246;margin:0 0 20px}
+section{background:#fff;border:2px solid #1F1A15;border-radius:12px;padding:14px;margin:0 auto 14px;max-width:980px}h3{margin:0 0 10px}small{font-weight:400;color:#5E5246;text-transform:capitalize}
+.row{display:flex;gap:12px;flex-wrap:wrap}figure{margin:0;width:200px}.ph{height:130px;border:1px solid #ddd;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:8px;background:repeating-conic-gradient(#eee 0 25%,#fff 0 50%) 0 0/16px 16px}
+.ph img{max-width:100%;max-height:100%}figcaption{font-size:12px;color:#5E5246;margin-top:4px}a{color:#C8371D}.miss{color:#C8371D;margin:0}</style></head>
+<body><h1>Restaurant logos</h1><p class="sub">Pulled from each restaurant's own website. Checkered background = transparent. Some are small icons — the bigger file is usually the one to use.</p>${cards}</body></html>`);
 }
 
 async function dashboard(req, res) {
