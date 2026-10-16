@@ -236,6 +236,13 @@
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload)
       });
+      // Email the team about the new submission (doesn't hold up the form)
+      fetch('/api/signup-notify', {
+        method: 'POST',
+        keepalive: true,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(function(){});
       form.style.display = 'none';
       document.getElementById('successMsg').style.display = 'block';
     } catch (e) {

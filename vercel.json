@@ -47,6 +47,9 @@
     },
     "api/desk.js": {
       "maxDuration": 60
+    },
+    "api/signup-notify.js": {
+      "maxDuration": 10
     }
   },
   "crons": [
