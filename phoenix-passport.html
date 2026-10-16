@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reserve Your Burger Blastoff Passport — Phoenix</title>
-<meta name="description" content="A book full of free burger coupons for about the price of one burger. One month in Phoenix, one passport, $20.">
+<meta name="description" content="Burger deals from 11 Phoenix restaurants in one passport. $20, or $10 with code AZBURGER50. Good Oct 15 – Nov 15.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -144,10 +144,27 @@
     .sticky-cta{display:block}
     .ticket{transform:rotate(2deg);max-width:300px}
   }
+
+  .price-old{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.6rem;color:var(--ink-soft);text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:var(--tomato)}
+  .code-box{display:flex;align-items:center;justify-content:space-between;gap:12px;border:2.5px dashed var(--ink);background:var(--gold);padding:12px 16px;margin:4px 0 18px}
+  .code-box .lbl{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
+  .code-box .code{font-family:'Space Mono',monospace;font-weight:700;font-size:1.35rem;letter-spacing:.08em}
+  .copy-btn{font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;border:2px solid var(--ink);background:var(--paper);padding:8px 12px;cursor:pointer;flex:none}
+  .code-hint{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ink-soft);margin-top:10px;text-align:center}
+  .lineup-link{display:inline-block;margin-top:14px;font-weight:600;color:var(--tomato)}
+  .toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-family:'Space Mono',monospace;font-size:.85rem;padding:10px 16px;z-index:99;display:none}
+
+  .price-old{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.6rem;color:var(--ink-soft);text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:var(--tomato)}
+  .code-box{display:flex;align-items:center;justify-content:space-between;gap:12px;border:2.5px dashed var(--ink);background:var(--gold);padding:12px 16px;margin:4px 0 18px}
+  .code-box .lbl{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
+  .code-box .code{font-family:'Space Mono',monospace;font-weight:700;font-size:1.35rem;letter-spacing:.08em}
+  .copy-btn{font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;border:2px solid var(--ink);background:var(--paper);padding:8px 12px;cursor:pointer;flex:none}
+  .code-hint{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ink-soft);margin-top:10px;text-align:center}
+  .lineup-link{display:inline-block;margin-top:14px;font-weight:600;color:var(--tomato)}
+  .toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-family:'Space Mono',monospace;font-size:.85rem;padding:10px 16px;z-index:99;display:none}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-in">
     <div class="brand"><span class="dot"></span>BiteBook</div>
@@ -158,21 +175,31 @@
 <header class="hero">
   <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow"><span class="cap-dot"></span>Limited spots · Event runs Oct 15–Nov 15</div>
-      <h1 class="hero-title display">A book full of <span class="swap">free burger coupons</span> — all for about the same price as a single burger.</h1>
-      <p class="hero-sub">Restaurants around the Phoenix area have agreed to add a coupon for "one free burger" (valid 10/15/26–11/15/26). Get access to the entire lineup for only $20. Get your BiteBook, then get out and sample some of the best burgers in the area — who knows, you might find your new favorite spot.</p>
+      <div class="eyebrow"><span class="cap-dot"></span>On now · Oct 15 – Nov 15</div>
+      <h1 class="hero-title display">11 Phoenix burger spots. <span class="swap">One passport.</span> Just $10.</h1>
+      <p class="hero-sub">Every restaurant put a burger deal in your BiteBook. Use them any time, Oct 15 – Nov 15, and find your new favorite spot.</p>
 
       <div class="price-row">
-        <span class="price display">$20</span>
+        <span class="price-old">$20</span>
+        <span class="price display">$10</span>
+        <span class="price-note">with code</span>
       </div>
-      <div class="price-sub">≈ the cost of one burger. Everything else in the book is free.</div>
+      <div class="code-box">
+        <div>
+          <div class="lbl">Your code · 50% off</div>
+          <div class="code">AZBURGER50</div>
+        </div>
+        <button type="button" class="copy-btn" data-copy>Copy</button>
+      </div>
 
-      <a class="btn" href="https://square.link/u/ZwVeKSYK">Reserve my passport — $20 <span class="go">→</span></a>
+      <a class="btn" data-checkout href="https://square.link/u/ZwVeKSYK">Get my passport — $10 <span class="go">→</span></a>
+      <div class="code-hint">We copy the code for you. Paste it in the code box at checkout.</div>
       <div class="trust-row">
         <span><span class="ck">✓</span> Secure checkout via Square</span>
         <span><span class="ck">✓</span> Passport emailed right away</span>
-        <span><span class="ck">✓</span> 10% to local charity</span>
+        <span><span class="ck">✓</span> Full refund if you're not happy</span>
       </div>
+      <a class="lineup-link" href="/lineup/phoenix">See all 11 restaurants &amp; deals →</a>
     </div>
     <div class="ticket-stage">
       <div class="ticket" aria-hidden="true">
@@ -193,42 +220,42 @@
   </div>
 </header>
 
+<section class="stats">
+  <div class="stats-in">
+    <div class="stat"><div class="big display">11</div><div class="cap">Phoenix restaurants</div></div>
+    <div class="stat"><div class="big display">$10</div><div class="cap">With code AZBURGER50</div></div>
+    <div class="stat"><div class="big display">Nov 15</div><div class="cap">Use them any time until</div></div>
+  </div>
+</section>
+
 <section id="whats-in">
   <div class="wrap">
     <div class="section-head">
-      <h2 class="display">A book full of free burger coupons</h2>
-      <p>All for about the same price as a single burger.</p>
+      <h2 class="display">What's in the book</h2>
+      <p>One passport, the whole Phoenix lineup.</p>
     </div>
     <div class="whats-in">
       <div class="wi-card">
         <div class="num mono">01</div>
-        <h4>One coupon, per restaurant</h4>
-        <p>Restaurants around the Phoenix area have each agreed to add a coupon for one free burger, valid 10/15/26–11/15/26.</p>
+        <h4>A deal at every restaurant</h4>
+        <p>All 11 Phoenix-area restaurants put one burger deal in your passport. <a href="/lineup/phoenix">See each deal</a>.</p>
       </div>
       <div class="wi-card">
         <div class="num mono">02</div>
-        <h4>Access to the whole lineup — $20</h4>
-        <p>Your BiteBook gets you every restaurant's coupon in one place, for about the price of a single burger.</p>
+        <h4>The whole lineup for $10</h4>
+        <p>Use code AZBURGER50 at checkout and the passport is half price.</p>
       </div>
       <div class="wi-card">
         <div class="num mono">03</div>
         <h4>A full month to use them</h4>
-        <p>Good October 15– Nov 15. Work through the list at your own pace.</p>
+        <p>Good October 15 – November 15. Work through the list at your own pace.</p>
       </div>
       <div class="wi-card">
         <div class="num mono">04</div>
         <h4>Find your new favorite spot</h4>
-        <p>Get out and sample some of the best burgers in the area — 10% of every BiteBook sold also goes to local charity.</p>
+        <p>Get out and try some of the best burgers in the area, close to home.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="stats">
-  <div class="stats-in">
-    <div class="stat"><div class="big display">$20</div><div class="cap">≈ price of one burger</div></div>
-    <div class="stat"><div class="big display">5–10+</div><div class="cap">Restaurants joining Phoenix</div></div>
-    <div class="stat"><div class="big display">10%</div><div class="cap">To local charity</div></div>
   </div>
 </section>
 
@@ -236,30 +263,30 @@
   <div class="wrap">
     <div class="section-head">
       <h2 class="display">How it works</h2>
-      <p>Three steps between you and your first free burger.</p>
+      <p>About a minute from here to your first burger deal.</p>
     </div>
     <div class="steps">
       <div class="step">
         <div class="num mono">STEP 01</div>
-        <h4>Reserve your spot</h4>
-        <p>$20 through a secure Square checkout — takes about 30 seconds.</p>
+        <h4>Check out with your code</h4>
+        <p>Tap the button and paste <b>AZBURGER50</b> in the code box. Your passport drops from $20 to $10.</p>
       </div>
       <div class="step">
         <div class="num mono">STEP 02</div>
-        <h4>It’s on now</h4>
-        <p>Your digital passport, with every confirmed restaurant, lands in your inbox right after checkout.</p>
+        <h4>Check your inbox</h4>
+        <p>Your digital passport, with every restaurant, is emailed right after checkout.</p>
       </div>
       <div class="step">
         <div class="num mono">STEP 03</div>
         <h4>Start eating</h4>
-        <p>Show any coupon at that restaurant with another purchase, anytime through November 15.</p>
+        <p>Show the coupon at that restaurant, any time through November 15.</p>
       </div>
     </div>
   </div>
 </section>
 
 <div class="urgency">
-  <p class="mono">⚠ Phoenix spots are capped — reserve yours now. Burger Blastoff runs through November 15.</p>
+  <p class="mono">Burger Blastoff ends November 15. Start now and you'll have time to hit every spot.</p>
 </div>
 
 <section id="faq">
@@ -269,20 +296,20 @@
     </div>
     <div class="faq">
       <details open>
-        <summary>Is this actually free food, or a gimmick?</summary>
-        <p>Your $20 covers roughly what one burger costs. Every other coupon in your passport — from every other participating restaurant — gets you a free burger with any other purchase. It's real, and it's how restaurants can afford to take part.</p>
+        <summary>Where do I put the code?</summary>
+        <p>Tap the button above and we copy AZBURGER50 for you. On the Square checkout, look for the code box and paste it in. The total should change from $20 to $10 before you pay.</p>
+      </details>
+      <details>
+        <summary>What are the deals?</summary>
+        <p>Each restaurant picked its own burger deal. You can <a href="/lineup/phoenix">see all 11 restaurants and their deals here</a> before you buy.</p>
       </details>
       <details>
         <summary>When do I get my passport?</summary>
-        <p>Your digital passport is emailed right after you check out. If a restaurant joins later in the event, it's added to your passport automatically.</p>
+        <p>It's emailed right after you check out. If a restaurant joins later in the event, it's added to your passport automatically.</p>
       </details>
       <details>
         <summary>How do I redeem a coupon?</summary>
-        <p>Show your digital passport (from the email) to your server at any participating restaurant, along with your other purchase. They'll mark that coupon as used — one redemption per restaurant per passport.</p>
-      </details>
-      <details>
-        <summary>How many restaurants will be in the passport?</summary>
-        <p>We're finalizing the Phoenix lineup now — expect somewhere between 5 and 10+ restaurants. Either way, your $20 covers the first one; the rest are free.</p>
+        <p>Open your passport from the email and show that restaurant's coupon to your server. They'll mark it as used. One redemption per restaurant per passport.</p>
       </details>
       <details>
         <summary>What's your refund policy?</summary>
@@ -295,20 +322,50 @@
 <section class="final-cta">
   <div class="wrap">
     <h2 class="display">Ready to eat your way through Phoenix?</h2>
-    <a class="btn" href="https://square.link/u/ZwVeKSYK">Reserve my passport — $20 <span class="go">→</span></a>
+    <a class="btn" data-checkout href="https://square.link/u/ZwVeKSYK">Get my passport — $10 <span class="go">→</span></a>
+    <div class="code-hint">Use code <b>AZBURGER50</b> at checkout</div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
     <div class="foot-brand"><span class="dot"></span>BiteBook</div>
-    <p class="foot-note">Phoenix · Burger Blastoff · Oct 15–Nov 15</p>
+    <p class="foot-note">Phoenix · Burger Blastoff · Oct 15 – Nov 15</p>
   </div>
 </footer>
 
 <div class="sticky-cta">
-  <a class="btn" href="https://square.link/u/ZwVeKSYK">Reserve my passport — $20 →</a>
+  <a class="btn" data-checkout href="https://square.link/u/ZwVeKSYK">$10 with code AZBURGER50 →</a>
 </div>
+
+<div class="toast" id="toast">Code AZBURGER50 copied. Paste it at checkout.</div>
+
+<script>
+(function () {
+  var CODE = 'AZBURGER50';
+  function copy() {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(CODE).catch(function () {});
+    } catch (e) {}
+    try {
+      var t = document.createElement('textarea'); t.value = CODE; t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t);
+    } catch (e) {}
+    return Promise.resolve();
+  }
+  function toast() { var el = document.getElementById('toast'); el.style.display = 'block'; setTimeout(function () { el.style.display = 'none'; }, 2500); }
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () { copy(); toast(); b.textContent = 'Copied ✓'; });
+  });
+  document.querySelectorAll('[data-checkout]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault(); toast();
+      var go = function () { window.location.href = a.href; };
+      Promise.race([copy(), new Promise(function (r) { setTimeout(r, 600); })]).then(function () { setTimeout(go, 500); });
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
