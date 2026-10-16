@@ -159,12 +159,21 @@ const PLAYBOOK = `
 
 <details><summary>“A restaurant wouldn't take my coupon”</summary>
   <div class="lbl">Do</div>
-  <ol><li>Apologize first. Ask which restaurant, the date, and what happened.</li>
-  <li>Search their email. If that restaurant shows as already used and they say they didn't get the deal, tap <b>Undo</b> next to it so they can use it again.</li>
-  <li>If they'd rather not go back, offer a full refund with the Refund button.</li>
-  <li>Email info@getbitebook.com with the restaurant name and what happened, so Will can follow up. Don't argue with the restaurant.</li></ol>
-  <div class="lbl">Say</div>
-  <div class="say">I'm really sorry, that's not the experience we want for you. Which restaurant was it, and what happened? We'll make it right.</div>
+  <ol><li>Apologize, then <b>ask for details</b>: which restaurant, which location, the date and time, what they ordered, and what the staff said. Don't undo or refund anything yet.</li>
+  <li>Search their email and open their passport. Check the coupon's terms against what they told you:
+    <ul><li>Was it the <b>right location</b> (the address on the coupon)?</li>
+    <li>Was it <b>within the valid dates</b>?</li>
+    <li>Did they make the <b>required purchase</b> ("with the purchase of ...")? Is it dine-in only?</li>
+    <li>Do they understand add-ons, toppings and tax are extra?</li></ul></li>
+  <li><b>They followed all the terms:</b> it's on us. Offer them a choice: tap <b>Undo</b> next to that restaurant so the coupon works again, or a full refund with the Refund button (leave the passport live).</li>
+  <li><b>They didn't follow the terms:</b> kindly explain which term applies (reply below). No undo, no refund for this.</li>
+  <li>Either way, email info@getbitebook.com with the restaurant, location, date and what happened, so Will can follow up. Don't argue with the restaurant.</li></ol>
+  <div class="lbl">Say first</div>
+  <div class="say">I'm really sorry about that, that's not the experience we want for you. So I can look into it, could you tell me which restaurant and location you went to, the date, what you ordered, and what the staff said?</div>
+  <div class="lbl">Then say (they followed the terms)</div>
+  <div class="say">Thanks for the details, you did everything right and we're sorry for the hassle. Would you like me to reset that coupon so you can use it again, or would you prefer a full refund? Either is no problem.</div>
+  <div class="lbl">Then say (they didn't)</div>
+  <div class="say">Thanks for the details! It looks like this deal is [valid at the (address) location only / valid with the purchase of ... / valid Oct 15 – Nov 15]. That's why it couldn't be applied this time. You're welcome to use it on your next visit as long as it matches those terms. Let me know if you have any questions!</div>
 </details>
 
 <details><summary>A restaurant says we owe them for a guest's meal (rare)</summary>
