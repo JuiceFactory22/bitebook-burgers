@@ -144,10 +144,17 @@ const PLAYBOOK = `
 
 <details><summary>“I want a refund”</summary>
   <div class="lbl">Do</div>
-  <ol><li>Search their email.</li><li>Tap <b>Refund</b>. The money goes back to their card, and the passport is cancelled automatically so the coupons stop working.</li>
-  <li>If they want to keep using the passport anyway (Will sometimes allows this), uncheck "Also cancel the passport" on the confirm screen.</li></ol>
-  <div class="lbl">Say</div>
-  <div class="say">No problem at all. I've refunded you in full. It usually shows up in 5–10 business days. Thanks for giving BiteBook a try!</div>
+  <ol><li><b>First, ask why</b> (reply below). Always refund, whatever the answer. We just want the feedback.</li>
+  <li>Search their email and tap <b>Refund</b>.</li>
+  <li><b>Polite or respectful:</b> leave "Also cancel the passport" <b>unchecked</b>. They get their money back and keep their book.</li>
+  <li><b>Rude:</b> <b>check</b> "Also cancel the passport". Their money goes back and their coupons stop working.</li>
+  <li>Type their reason in the "Why do they want a refund?" box. Will reads these.</li></ol>
+  <div class="lbl">Say first</div>
+  <div class="say">Absolutely, we can take care of that for you! Before I do, would you mind sharing what made you want a refund? We're a small local team and we're always trying to make BiteBook better, so your feedback really helps.</div>
+  <div class="lbl">Then say (polite)</div>
+  <div class="say">Thank you so much for the feedback! I've refunded you in full. It usually shows up in 5–10 business days. And feel free to keep using your passport. It's still yours to enjoy. Thanks for giving BiteBook a try!</div>
+  <div class="lbl">Then say (rude)</div>
+  <div class="say">Thanks for letting us know. I've refunded you in full. It usually shows up in 5–10 business days.</div>
 </details>
 
 <details><summary>“A restaurant wouldn't take my coupon”</summary>
@@ -211,7 +218,7 @@ async function home(k, q, msg = '') {
   }
   const log = q ? '' : await recentDeskActions(12).then((rows) => rows.length ? `<h3>Recent desk activity</h3><table class="log"><tr><th>WHEN</th><th>WHAT</th></tr>${rows.map((r) => {
     let d = {}; try { d = JSON.parse(r.detail); } catch {}
-    const what = { desk_refund: `Refund ${money(d.amount)} on ${d.order}`, desk_cancel: `Cancelled ${d.order} (${d.reason || ''})`, desk_reissue: `Moved ${d.from} to ${d.email}`, desk_resend: `Resent ${d.order}`, desk_undo: 'Undid a redemption', desk_catchup: `Missing-purchase check: ${d.created} found`, desk_tab: `Tab: $${d.amount} for ${d.restaurant}` }[r.kind] || r.kind;
+    const what = { desk_refund: `Refund ${money(d.amount)} on ${d.order}${d.feedback ? ` (why: ${d.feedback})` : ''}`, desk_cancel: `Cancelled ${d.order} (${d.reason || ''})`, desk_reissue: `Moved ${d.from} to ${d.email}`, desk_resend: `Resent ${d.order}`, desk_undo: 'Undid a redemption', desk_catchup: `Missing-purchase check: ${d.created} found`, desk_tab: `Tab: $${d.amount} for ${d.restaurant}` }[r.kind] || r.kind;
     return `<tr><td>${esc(day(r.at))}</td><td>${esc(what)}</td></tr>`;
   }).join('')}</table>` : '');
   return shell('Support desk', `
@@ -250,7 +257,7 @@ async function review(k, b) {
     cancel: ['Cancel this passport?', ['All of its coupons stop working right away.', 'This does NOT refund their money. Use Refund for that.'],
       go('Yes, cancel it', `<label class="inline">Reason <select name="reason"><option>Customer request</option><option>Refunded</option><option>Duplicate purchase</option><option>Other</option></select></label>`, 'danger')],
     refund: ['Refund this purchase?', [refundLine, 'Only BiteBook payments can be refunded here.'],
-      go('Yes, refund it', `<label class="inline"><input type="checkbox" name="alsoCancel" value="1" checked> Also cancel the passport</label>`, 'danger')],
+      go('Yes, refund it', `<label class="inline" style="display:block;width:100%">Why do they want a refund? <input name="reason" maxlength="300" placeholder="Their reason, in a few words" style="display:block;width:100%;margin-top:6px;font-size:16px;padding:10px;border:2px solid var(--ink);border-radius:10px"></label><label class="inline"><input type="checkbox" name="alsoCancel" value="1"> Also cancel the passport (only if they were rude)</label>`, 'danger')],
     undo: [`Undo the ${b.what || ''} redemption?`, ['That coupon becomes usable again.', 'Only do this if they did not actually get the deal.'], go('Yes, undo it')],
     catchup: ['Check for missing purchases?', ['Looks at the last 5 days of BiteBook sales in Square.', 'Anyone who paid but has no passport gets one created and emailed.', 'Takes up to a minute.'], go('Yes, check now')],
   }[b.action];
@@ -266,7 +273,7 @@ async function execute(k, b) {
     case 'reissue': { const r = await reissueOrder(b.order, String(b.email || '').trim(), { by }); return `Done. ${r.oldLabels.join(', ')} is cancelled, and new passport ${r.newLabels.join(', ')} was ${r.sent === 'sent' ? 'emailed' : `created (email: ${r.sent})`} to ${b.email}.`; }
     case 'cancel': { const r = await cancelOrder(b.order, String(b.reason || 'Customer request').slice(0, 60), { by }); return r.length ? `Cancelled ${r.map((p) => passportLabel(p.id)).join(', ')}. Its coupons no longer work.` : 'That passport was already cancelled.'; }
     case 'refund': {
-      const r = await refundOrder(b.order, { by });
+      const r = await refundOrder(b.order, { by, feedback: String(b.reason || '').trim().slice(0, 300) });
       let extra = '';
       if (b.alsoCancel === '1') { const c = await cancelOrder(b.order, 'Refunded', { by }); extra = c.length ? ' The passport is cancelled.' : ''; }
       return `Refunded ${money(r.amount)} (Square status: ${r.status || 'pending'}).${extra}`;
