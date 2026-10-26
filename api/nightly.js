@@ -1,4 +1,4 @@
-// Nightly redemption summary emailed to info@. Triggered by Vercel Cron (see vercel.json),
+// Nightly redemption summary emailed to info@ and will@. Triggered by Vercel Cron (see vercel.json),
 // or manually with ?key=<ADMIN_KEY>&force=1. Sends at most once every 20 hours unless forced.
 import { timingSafeEqual } from 'node:crypto';
 import { query, logEvent } from '../lib/db.js';
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   const admin = isAdmin(req);
   if (!fromCron && !admin) return res.status(401).json({ error: 'Not authorized' });
   const force = admin && req.query.force === '1';
-  const to = admin && req.query.to ? String(req.query.to) : SUPPORT_EMAIL;
+  const to = admin && req.query.to ? [String(req.query.to)] : [SUPPORT_EMAIL, 'will@getbitebook.com'];
   try {
     if (!force) {
       const recent = await query(`SELECT 1 FROM events WHERE kind = 'nightly_sent' AND at > now() - interval '20 hours' LIMIT 1`);
@@ -69,7 +69,7 @@ ${cityBlocks}
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html }),
+      body: JSON.stringify({ from: FROM_EMAIL, to, subject, html }),
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(`Resend failed (${r.status}): ${JSON.stringify(json).slice(0, 200)}`);
