@@ -1,7 +1,7 @@
 // A buyer's passport PDF, always up to date: getbitebook.com/book/<passportId>
 import { getPassport, ensureCoupons } from '../lib/passports.js';
 import { buildPassportPdf } from '../lib/pdf.js';
-import { CITIES } from '../lib/config.js';
+import { CITIES, eventOf } from '../lib/config.js';
 import { page, esc } from '../lib/html.js';
 import { SUPPORT_EMAIL } from '../lib/config.js';
 
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     const coupons = await ensureCoupons(passport);
     const bytes = await buildPassportPdf({ passport, coupons });
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `inline; filename="BiteBook-Burger-Blastoff-${CITIES[passport.city].name}.pdf"`);
+    res.setHeader('Content-Disposition', `inline; filename="BiteBook-${eventOf(passport).fileName}-${CITIES[passport.city].name}.pdf"`);
     res.setHeader('Cache-Control', 'no-store');
     res.setHeader('X-Robots-Tag', 'noindex');
     return res.status(200).send(Buffer.from(bytes));

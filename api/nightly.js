@@ -38,8 +38,8 @@ export default async function handler(req, res) {
     const todayTotal = today.reduce((s, r) => s + Number(r.n), 0);
     const allTotal = total.reduce((s, r) => s + Number(r.n), 0);
 
-    const cityBlocks = Object.values(CITIES).map((city) => {
-      const list = RESTAURANTS.filter((r) => r.city === city.id && r.active)
+    const cityBlocks = EVENT.cities.map((id) => CITIES[id]).map((city) => {
+      const list = RESTAURANTS.filter((r) => r.city === city.id && r.active && r.event === 'burger')
         .map((r) => ({ name: r.name, t: tMap[r.id] || 0, a: aMap[r.id] || 0 }))
         .sort((x, y) => y.t - x.t || y.a - x.a || x.name.localeCompare(y.name));
       const cityToday = list.reduce((s, r) => s + r.t, 0);

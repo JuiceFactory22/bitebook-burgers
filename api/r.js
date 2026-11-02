@@ -2,7 +2,7 @@
 // GET shows the coupon; POST (the big Redeem button) redeems it once.
 import { getCoupon, redeemCoupon } from '../lib/passports.js';
 import { restaurantById } from '../lib/restaurants.js';
-import { CITIES, EVENT, eventWindow, formatLocal, SUPPORT_EMAIL } from '../lib/config.js';
+import { CITIES, eventOf, eventWindow, formatLocal, SUPPORT_EMAIL } from '../lib/config.js';
 import { page, esc, CHECK_SVG, X_SVG } from '../lib/html.js';
 import { passportLabel } from '../lib/passports.js';
 import { logEvent } from '../lib/db.js';
@@ -41,7 +41,7 @@ function readyPage(c, r, token, note) {
   </div>
   ${dealBlock(r)}
   <div class="row" style="border-top:1.5px dashed var(--ink);padding-top:14px"><span class="muted">Guest</span><b>${esc(firstName(c.name))} · ${esc(passportLabel(c.passport_id))}</b></div>
-  <div class="row"><span class="muted">Valid through</span><b>Nov 15, 2026</b></div>
+  <div class="row"><span class="muted">Valid through</span><b>${esc(eventOf(c).endLabel)}</b></div>
   <form method="post" style="margin-top:12px" onsubmit="this.querySelector('button').disabled=true;this.querySelector('button').textContent='Redeeming…'">
     <button class="btn" type="submit">REDEEM</button>
   </form>
@@ -82,7 +82,7 @@ function usedPage(c, r) {
   });
 }
 
-function windowPage(r, msg) {
+function windowPage(r, msg, ev) {
   return page({
     title: msg,
     body: `<div class="banner" style="background:var(--ink)"><h1 style="color:var(--paper)">${esc(msg)}</h1></div>
@@ -90,7 +90,7 @@ function windowPage(r, msg) {
   <div class="mono">THIS COUPON IS FOR</div>
   <h1>${esc(r.name)}</h1>
   ${dealBlock(r)}
-  <p class="muted" style="font-size:14px">${esc(EVENT.name)} coupons work ${esc(EVENT.datesLabel)}. ${msg.includes('cancelled') ? 'This coupon is no longer valid. Please don’t honor it.' : 'Please don’t honor this coupon today.'}</p>
+  <p class="muted" style="font-size:14px">${esc(ev.name)} coupons work ${esc(ev.datesLabel)}. ${msg.includes('cancelled') ? 'This coupon is no longer valid. Please don’t honor it.' : 'Please don’t honor this coupon today.'}</p>
 </main>`,
   });
 }
@@ -103,7 +103,7 @@ export default async function handler(req, res) {
   if (token.startsWith('demo-')) {
     const r = restaurantById(token.slice(5));
     if (!r || !r.active) return res.status(404).send(notFound());
-    const fake = { city: r.city, name: 'Practice Guest', passport_id: 'bbPRACTICE00000000' };
+    const fake = { city: r.city, event: r.event, name: 'Practice Guest', passport_id: 'bbPRACTICE00000000' };
     if (req.method === 'POST') return res.status(200).send(donePage(fake, r, new Date()));
     return res.status(200).send(readyPage(fake, r, token, 'PRACTICE COUPON — nothing gets used up. Scan & tap as much as you like.'));
   }
@@ -112,12 +112,13 @@ export default async function handler(req, res) {
     const r = c && restaurantById(c.restaurant_id);
     if (!c || !r) return res.status(404).send(notFound());
 
-    if (c.voided_at) return res.status(200).send(windowPage(r, 'This passport was cancelled'));
+    const ev = eventOf(c);
+    if (c.voided_at) return res.status(200).send(windowPage(r, 'This passport was cancelled', ev));
     const isTest = Number(c.is_test) === 1;
     const now = new Date();
-    const { start, end } = eventWindow(c.city);
-    if (!isTest && now < start) return res.status(200).send(windowPage(r, 'Not valid yet — starts Oct 15'));
-    if (!isTest && now >= end) return res.status(200).send(windowPage(r, 'This event has ended'));
+    const { start, end } = eventWindow(c.city, ev.id);
+    if (!isTest && now < start) return res.status(200).send(windowPage(r, `Not valid yet — starts ${ev.startShort}`, ev));
+    if (!isTest && now >= end) return res.status(200).send(windowPage(r, 'This event has ended', ev));
 
     if (req.method === 'POST') {
       const done = await redeemCoupon(token);

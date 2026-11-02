@@ -21,6 +21,14 @@
     {
       "source": "/book/:id",
       "destination": "/api/book?id=:id"
+    },
+    {
+      "source": "/wings",
+      "destination": "/api/buy?event=wings"
+    },
+    {
+      "source": "/wings/:city",
+      "destination": "/api/buy?event=wings&city=:city"
     }
   ],
   "functions": {
@@ -50,6 +58,15 @@
     },
     "api/signup-notify.js": {
       "maxDuration": 10
+    },
+    "api/buy.js": {
+      "maxDuration": 15
+    },
+    "api/checkout.js": {
+      "maxDuration": 15
+    },
+    "api/stripe-webhook.js": {
+      "maxDuration": 30
     }
   },
   "crons": [
