@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BiteBook — A month of burgers. One passport.</title>
-<meta name="description" content="BiteBook runs city-wide food events. Locals grab a passport full of free-burger coupons. Restaurants get a room full of new regulars.">
+<meta name="description" content="BiteBook runs city-wide food events. Locals grab a passport full of deals at local restaurants. Restaurants get a room full of new regulars.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -126,7 +126,8 @@
   .path:hover{transform:translate(-2px,-2px);box-shadow:14px 14px 0 rgba(28,20,15,1)}
   .path.rest{background:var(--paper)}
   .path.local{background:var(--teal);color:var(--paper)}
-  .path-tag{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;display:inline-block;padding:5px 11px;border:2px solid var(--ink);border-radius:30px;margin-bottom:18px}
+  .path-tag{font-family:'Space Mono',monospace;font-size:1.05rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;display:inline-block;padding:10px 20px;border:2.5px solid var(--ink);border-radius:40px;margin-bottom:20px;box-shadow:4px 4px 0 rgba(28,20,15,1)}
+  @media(max-width:620px){.path-tag{font-size:.92rem;padding:9px 16px}}
   .path.rest .path-tag{background:var(--gold)}
   .path.local .path-tag{background:var(--gold);color:var(--ink);border-color:var(--ink)}
   .path h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.9rem;line-height:1;letter-spacing:-.02em;margin-bottom:12px}
@@ -233,7 +234,7 @@
     <div>
       <div class="eyebrow">Monthly food events</div>
       <h1 class="hero-title display" aria-label="A month of burgers, wings, pizza, coffee, tacos, ice cream, sandwiches or international eats. One passport."><span aria-hidden="true">A month of <span class="food" id="foodWord">burgers</span>.<br><span class="swap">One passport.</span></span></h1>
-      <p class="hero-sub">BiteBook throws city-wide food events. Locals grab a passport stuffed with free-burger coupons. Restaurants get a room full of brand-new regulars. Everybody eats.</p>
+      <p class="hero-sub">BiteBook throws city-wide food events. Locals grab a passport stuffed with deals at local restaurants. Restaurants get a room full of brand-new regulars. Everybody eats.</p>
       <div class="hero-scroll">
         <span class="arw">↓</span> Two ways in — pick yours below
       </div>
@@ -270,9 +271,9 @@
       <div class="path local reveal">
         <span class="path-tag">I'm here to eat</span>
         <h3 class="display">Find your new favorite spot.</h3>
-        <p class="lede">One passport. A full month to hunt down the best burger in town.</p>
+        <p class="lede">One passport. A full month to discover the best local spots in town.</p>
         <ul class="plist">
-          <li>A book full of free-burger coupons</li>
+          <li>A passport full of deals at local restaurants</li>
           <li>Redeem all month — then vote for the champ</li>
           <li>Limited run — passports are capped</li>
           <li>10% of every sale feeds a local charity</li>
@@ -290,7 +291,7 @@
       <div class="path rest reveal">
         <span class="path-tag">I run a restaurant</span>
         <h3 class="display">Fill your dining room.</h3>
-        <p class="lede">New paying customers who turn into regulars — for the cost of one burger, not an ad budget.</p>
+        <p class="lede">New paying customers who turn into regulars — for the cost of one deal, not an ad budget.</p>
         <ul class="plist">
           <li>~70% have never walked in before</li>
           <li>~80% bring a friend paying full price</li>
