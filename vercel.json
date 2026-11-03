@@ -24,11 +24,19 @@
     },
     {
       "source": "/wings",
-      "destination": "/api/buy?event=wings"
+      "destination": "/api/shop?op=page&event=wings"
     },
     {
       "source": "/wings/:city",
-      "destination": "/api/buy?event=wings&city=:city"
+      "destination": "/api/shop?op=page&event=wings&city=:city"
+    },
+    {
+      "source": "/api/checkout",
+      "destination": "/api/shop?op=checkout"
+    },
+    {
+      "source": "/api/stripe-webhook",
+      "destination": "/api/shop?op=webhook"
     }
   ],
   "functions": {
@@ -59,13 +67,7 @@
     "api/signup-notify.js": {
       "maxDuration": 10
     },
-    "api/buy.js": {
-      "maxDuration": 15
-    },
-    "api/checkout.js": {
-      "maxDuration": 15
-    },
-    "api/stripe-webhook.js": {
+    "api/shop.js": {
       "maxDuration": 30
     }
   },
