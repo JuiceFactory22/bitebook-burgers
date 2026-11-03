@@ -32,7 +32,7 @@ function sentence(s) {
 }
 
 function citySection(city, showHeader) {
-  const list = RESTAURANTS.filter((r) => r.city === city.id && r.active)
+  const list = RESTAURANTS.filter((r) => r.city === city.id && r.active && r.event === 'burger')
     .sort((a, b) => a.name.localeCompare(b.name));
   const cards = list.map((r, i) => {
     const deal = r.deal.toUpperCase();
@@ -125,17 +125,17 @@ const CSS = `
   footer { background:var(--ink); color:var(--paper); font-family:'Space Mono', monospace; font-size:12px; padding:14px 16px; text-align:center; }
 `;
 
-const activeIn = (id) => RESTAURANTS.filter((r) => r.city === id && r.active).length;
+const activeIn = (id) => RESTAURANTS.filter((r) => r.city === id && r.active && r.event === 'burger').length;
 
 export default function handler(req, res) {
   const cityId = String((req.query && req.query.city) || '').toLowerCase();
-  const city = CITIES[cityId] || null;
+  const city = EVENT.cities.includes(cityId) ? CITIES[cityId] : null;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=60');
 
   if (!city) {
     // /lineup with no city: just a picker. Each city is its own event, so no combined list.
-    const links = Object.values(CITIES).map((c) =>
+    const links = EVENT.cities.map((id) => CITIES[id]).map((c) =>
       `<a href="/lineup/${c.id}">${esc(c.name)} <span>${activeIn(c.id)} SPOTS →</span></a>`).join('');
     return res.status(200).send(shell({
       title: `${EVENT.name} ${YEAR} lineups`,

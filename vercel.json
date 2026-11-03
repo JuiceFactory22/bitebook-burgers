@@ -21,6 +21,22 @@
     {
       "source": "/book/:id",
       "destination": "/api/book?id=:id"
+    },
+    {
+      "source": "/wings",
+      "destination": "/api/shop?op=page&event=wings"
+    },
+    {
+      "source": "/wings/:city",
+      "destination": "/api/shop?op=page&event=wings&city=:city"
+    },
+    {
+      "source": "/api/checkout",
+      "destination": "/api/shop?op=checkout"
+    },
+    {
+      "source": "/api/stripe-webhook",
+      "destination": "/api/shop?op=webhook"
     }
   ],
   "functions": {
@@ -50,6 +66,9 @@
     },
     "api/signup-notify.js": {
       "maxDuration": 10
+    },
+    "api/shop.js": {
+      "maxDuration": 30
     }
   },
   "crons": [
