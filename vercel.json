@@ -37,6 +37,14 @@
     {
       "source": "/api/stripe-webhook",
       "destination": "/api/shop?op=webhook"
+    },
+    {
+      "source": "/api/notify",
+      "destination": "/api/shop?op=notify"
+    },
+    {
+      "source": "/terms",
+      "destination": "/api/shop?op=page&page=terms"
     }
   ],
   "functions": {
