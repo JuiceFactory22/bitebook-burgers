@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Save Your Spot · Wing Month · BiteBook</title>
-<meta name="description" content="Save your restaurant's spot in BiteBook's Wing Month, all of December 2026.">
+<meta name="description" content="Save your restaurant's spot in BiteBook's Wing Month, December 15, 2026 – January 15, 2027.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -62,6 +62,24 @@
   .btn:disabled{opacity:.6;cursor:not-allowed}
 
   .err{color:var(--tomato);font-family:'Space Mono',monospace;font-size:.78rem;margin-top:20px;display:none}
+
+  /* Inline field checks */
+  .field-msg{font-family:'Space Mono',monospace;font-size:.76rem;margin-top:6px;min-height:0}
+  .field-msg.bad{color:var(--tomato)}
+  .field-msg button{font:inherit;color:var(--teal);background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
+  input.invalid{border-color:var(--tomato);background:#fdeee9}
+  input.valid{border-color:var(--teal)}
+
+  /* Address / restaurant lookup */
+  .ac{position:relative}
+  .ac-list{position:absolute;left:0;right:0;top:100%;z-index:20;background:var(--paper);border:2.5px solid var(--ink);border-top:0;
+    margin:0;padding:0;list-style:none;max-height:260px;overflow-y:auto;box-shadow:6px 6px 0 rgba(28,20,15,1);display:none}
+  .ac-list li{padding:10px 14px;cursor:pointer;border-top:1px solid var(--line);font-size:.95rem;line-height:1.35}
+  .ac-list li:first-child{border-top:0}
+  .ac-list li small{display:block;color:var(--ink-soft);font-size:.82rem}
+  .ac-list li.active, .ac-list li:hover{background:var(--paper-2)}
+  .ac-list li.manual{font-family:'Space Mono',monospace;font-size:.76rem;color:var(--ink-soft)}
+  .hint{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ink-soft);margin-top:6px}
   .success{display:none;text-align:center;padding:60px 0}
   .success .check{width:60px;height:60px;border-radius:50%;background:var(--teal);border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
   .success h2{font-size:1.8rem;font-weight:800;margin-bottom:10px}
@@ -82,7 +100,7 @@
 <header>
   <div class="wrap">
     <h1 class="display">Save your spot for Wing Month</h1>
-    <p>All of December. Locals buy a passport and head out to try new spots near them. You offer one wing deal, and we handle all the promotion. Saving your spot takes 30 seconds, and there's no commitment. Someone from our team will reach out to walk you through the details.</p>
+    <p>December 15 through January 15. Locals buy a passport and head out to try new spots near them. You offer one wing deal, and we handle all the promotion. Saving your spot takes 30 seconds, and there's no commitment. Someone from our team will reach out to walk you through the details.</p>
   </div>
 </header>
 
@@ -104,17 +122,20 @@
 
     <fieldset>
       <legend>Restaurant info</legend>
-      <div class="field">
+      <div class="field ac">
         <label for="restaurantName">Restaurant name</label>
-        <input type="text" id="restaurantName" name="restaurantName" required>
+        <input type="text" id="restaurantName" name="restaurantName" required autocomplete="organization" aria-autocomplete="list" aria-controls="nameList">
+        <ul class="ac-list" id="nameList" role="listbox"></ul>
+        <div class="hint">Start typing and pick your restaurant. We'll fill in the address for you.</div>
       </div>
       <div class="field">
         <label for="instagram">Instagram handle <span class="opt">(optional)</span></label>
         <input type="text" id="instagram" name="instagram" placeholder="@yourrestaurant">
       </div>
-      <div class="field">
+      <div class="field ac">
         <label for="address">Address</label>
-        <input type="text" id="address" name="address" required>
+        <input type="text" id="address" name="address" required autocomplete="street-address" aria-autocomplete="list" aria-controls="addrList" placeholder="Start typing your street address">
+        <ul class="ac-list" id="addrList" role="listbox"></ul>
       </div>
     </fieldset>
 
@@ -127,11 +148,13 @@
       <div class="row2">
         <div class="field">
           <label for="p_phone">Phone</label>
-          <input type="tel" id="p_phone" name="p_phone" required>
+          <input type="tel" id="p_phone" name="p_phone" required inputmode="numeric" autocomplete="tel-national" placeholder="(555) 555-5555" maxlength="14">
+          <div class="field-msg" id="phoneMsg" aria-live="polite"></div>
         </div>
         <div class="field">
-          <label for="p_email">Email <span class="opt">(optional)</span></label>
-          <input type="email" id="p_email" name="p_email">
+          <label for="p_email">Email</label>
+          <input type="email" id="p_email" name="p_email" required autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com">
+          <div class="field-msg" id="emailMsg" aria-live="polite"></div>
         </div>
       </div>
       <div class="field">
@@ -160,6 +183,7 @@
 
     <button type="submit" class="btn" id="submitBtn">Save my spot <span>→</span></button>
     <div class="err" id="errMsg">Please fill in all required fields.</div>
+    <p class="hint" style="margin-top:14px">Our team may follow up using the info you enter here, even if you don't finish the form.</p>
   </form>
 
     <div class="success" id="successMsg">
@@ -176,57 +200,295 @@
 
 <footer>
   <div class="wrap">
-    <p class="foot-note">BiteBook · Wing Month · December 2026</p>
+    <p class="foot-note">BiteBook · Wing Month · Dec 15 – Jan 15</p>
   </div>
 </footer>
 
 <script>
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvo3Idbrq_vr1tjs5chqLcLfYAEvN3rWoOiVyhxHijQ-11SThBWsVzqGZrGkOudhXf/exec"; // replace with your deployed Apps Script Web App URL
+  const TRACK_URL = '/api/signup-notify?op=track';
+
+  // Rough center of each city, used to show nearby restaurants/addresses first
+  const CITY_CENTERS = {
+    Denver:    { lat: 39.7392, lon: -104.9903, state: 'CO' },
+    Nashville: { lat: 36.1627, lon: -86.7816,  state: 'TN' },
+    Phoenix:   { lat: 33.4484, lon: -112.0740, state: 'AZ' }
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const form = $('signupForm');
+  const errMsg = $('errMsg');
+  const submitBtn = $('submitBtn');
+  const locSelect = $('location');
 
   // Pre-select city from the link, e.g. /reserve?city=Nashville
   const params = new URLSearchParams(window.location.search);
   const cityParam = params.get('city');
   if (cityParam) {
-    const locSelect = document.getElementById('location');
     for (const opt of locSelect.options) {
-      if (opt.value.toLowerCase() === cityParam.toLowerCase()) {
-        opt.selected = true;
-        break;
-      }
+      if (opt.value.toLowerCase() === cityParam.toLowerCase()) { opt.selected = true; break; }
     }
   }
 
-  const form = document.getElementById('signupForm');
-  const errMsg = document.getElementById('errMsg');
-  const submitBtn = document.getElementById('submitBtn');
+  /* ---------------- Visit tracking (who opened the page but didn't finish) ---------------- */
+  let sid = '';
+  try { sid = sessionStorage.getItem('bb_sid') || ''; } catch (e) {}
+  if (!sid) {
+    sid = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    try { sessionStorage.setItem('bb_sid', sid); } catch (e) {}
+  }
+  let submitted = false, started = false, leftSent = false;
 
+  function partial() {
+    return {
+      location: locSelect.value,
+      restaurantName: $('restaurantName').value.trim(),
+      address: $('address').value.trim(),
+      primaryName: $('p_name').value.trim(),
+      primaryPhone: $('p_phone').value.trim(),
+      primaryEmail: $('p_email').value.trim(),
+      primaryMethod: $('p_method').value
+    };
+  }
+  function track(stage, extra) {
+    const body = JSON.stringify(Object.assign({ sid, stage, city: locSelect.value || cityParam || '', ref: document.referrer || '' }, extra || {}));
+    try {
+      if (navigator.sendBeacon) { navigator.sendBeacon(TRACK_URL, new Blob([body], { type: 'text/plain' })); return; }
+    } catch (e) {}
+    fetch(TRACK_URL, { method: 'POST', keepalive: true, headers: { 'Content-Type': 'text/plain' }, body }).catch(function(){});
+  }
+  track('visit');
+  form.addEventListener('input', function(){ if (!started) { started = true; track('started'); } });
+  // When they leave without submitting, send whatever they typed so the team can follow up
+  function onLeave() {
+    if (submitted || leftSent) return;
+    const p = partial();
+    if (!p.restaurantName && !p.primaryPhone && !p.primaryEmail && !p.primaryName) return;
+    leftSent = true;
+    track('left', { fields: p });
+  }
+  window.addEventListener('pagehide', onLeave);
+  document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'hidden') onLeave(); else leftSent = false; });
+
+  /* ---------------- Phone: auto-format, must be a real 10-digit US number ---------------- */
+  const phoneEl = $('p_phone'), phoneMsg = $('phoneMsg');
+  function phoneDigits(v) {
+    let d = String(v).replace(/\D/g, '');
+    if (d[0] === '1') d = d.slice(1); // drop the US country code (no area code starts with 1)
+    return d.slice(0, 10);
+  }
+  function formatPhone(d) {
+    if (d.length < 4) return d.length ? '(' + d : '';
+    if (d.length < 7) return '(' + d.slice(0,3) + ') ' + d.slice(3);
+    return '(' + d.slice(0,3) + ') ' + d.slice(3,6) + '-' + d.slice(6);
+  }
+  function phoneProblem(d) {
+    if (d.length === 0) return 'Please enter a phone number.';
+    if (d.length < 10) return 'That number looks short. Please enter all 10 digits, including area code.';
+    if (/^[01]/.test(d) || /^[01]/.test(d.slice(3))) return "That doesn't look like a valid US number. Please double-check it.";
+    if (/^(\d)\1{9}$/.test(d) || d === '1234567890' || d.slice(3,6) === '555' && d.slice(6,8) === '01') return 'Please enter a real phone number.';
+    return '';
+  }
+  function checkPhone(show) {
+    const d = phoneDigits(phoneEl.value);
+    const problem = phoneProblem(d);
+    phoneEl.setCustomValidity(problem);
+    if (show) {
+      phoneMsg.textContent = problem;
+      phoneMsg.className = 'field-msg' + (problem ? ' bad' : '');
+      phoneEl.classList.toggle('invalid', !!problem);
+      phoneEl.classList.toggle('valid', !problem);
+    }
+    return !problem;
+  }
+  phoneEl.addEventListener('input', function(){
+    phoneEl.value = formatPhone(phoneDigits(phoneEl.value));
+    if (phoneEl.classList.contains('invalid')) checkPhone(true); else checkPhone(false);
+  });
+  phoneEl.addEventListener('blur', function(){ if (phoneEl.value) checkPhone(true); });
+
+  /* ---------------- Email: real format, typo catching, and a real domain ---------------- */
+  const emailEl = $('p_email'), emailMsg = $('emailMsg');
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
+  const COMMON = ['gmail.com','yahoo.com','hotmail.com','outlook.com','icloud.com','aol.com','comcast.net','live.com','msn.com','me.com','att.net','cox.net','sbcglobal.net','verizon.net','bellsouth.net','proton.me'];
+  const TLD_FIX = { con:'com', cmo:'com', ocm:'com', cm:'com', om:'com', comm:'com', coom:'com', nett:'net', nte:'net', ent:'net', ogr:'org', orgg:'org' };
+  function editDistance(a, b) {
+    const m = a.length, n = b.length, dp = Array.from({length: m + 1}, (_, i) => [i]);
+    for (let j = 1; j <= n; j++) dp[0][j] = j;
+    for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++)
+      dp[i][j] = Math.min(dp[i-1][j] + 1, dp[i][j-1] + 1, dp[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+    return dp[m][n];
+  }
+  function suggestEmail(v) {
+    const at = v.lastIndexOf('@'); if (at < 1) return '';
+    const user = v.slice(0, at), dom = v.slice(at + 1).toLowerCase();
+    if (COMMON.includes(dom)) return '';
+    let best = '', bestD = 3;
+    for (const c of COMMON) { const dd = editDistance(dom, c); if (dd > 0 && dd < bestD) { best = c; bestD = dd; } }
+    if (best) return user + '@' + best;
+    const parts = dom.split('.'), tld = parts.pop();
+    if (TLD_FIX[tld]) return user + '@' + parts.concat(TLD_FIX[tld]).join('.');
+    return '';
+  }
+  const domainCache = {};
+  async function domainIsReal(email) {
+    const dom = email.split('@').pop().toLowerCase();
+    if (COMMON.includes(dom)) return true;
+    if (dom in domainCache) return domainCache[dom];
+    try {
+      const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 4000);
+      const r = await fetch('/api/signup-notify?op=check-email&email=' + encodeURIComponent(email), { signal: ctrl.signal });
+      clearTimeout(t);
+      const j = await r.json();
+      domainCache[dom] = j.ok !== false;
+    } catch (e) { domainCache[dom] = true; } // if the check can't run, don't block the restaurant
+    return domainCache[dom];
+  }
+  function setEmailMsg(text, bad, fix) {
+    emailMsg.innerHTML = '';
+    emailMsg.className = 'field-msg' + (bad ? ' bad' : '');
+    if (fix) {
+      emailMsg.append('Did you mean ');
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = fix;
+      b.addEventListener('click', function(){ emailEl.value = fix; checkEmail(true); emailEl.focus(); });
+      emailMsg.append(b, '?');
+    } else emailMsg.textContent = text;
+  }
+  let emailCheckId = 0;
+  async function checkEmail(show) {
+    const v = emailEl.value.trim();
+    emailEl.value = v;
+    let problem = '';
+    if (!v) problem = 'Please enter an email address.';
+    else if (!EMAIL_RE.test(v)) problem = "That email doesn't look complete. It should look like name@restaurant.com.";
+    const fix = !problem ? suggestEmail(v) : '';
+    if (!problem && !fix) {
+      const myId = ++emailCheckId;
+      const ok = await domainIsReal(v);
+      if (myId !== emailCheckId) return emailEl.validity.valid;
+      if (!ok) problem = "We can't find that email domain. Please double-check the part after the @.";
+    }
+    emailEl.setCustomValidity(problem);
+    if (show) {
+      if (fix) setEmailMsg('', false, fix); else setEmailMsg(problem, !!problem);
+      emailEl.classList.toggle('invalid', !!problem);
+      emailEl.classList.toggle('valid', !problem && !fix);
+    }
+    return !problem;
+  }
+  emailEl.addEventListener('blur', function(){ if (emailEl.value) checkEmail(true); });
+  emailEl.addEventListener('input', function(){ if (emailEl.classList.contains('invalid')) { emailEl.classList.remove('invalid'); setEmailMsg('', false); } emailEl.setCustomValidity(''); });
+
+  /* ---------------- Restaurant + address lookup (free OpenStreetMap search) ---------------- */
+  function formatAddress(p) {
+    const street = [p.housenumber, p.street].filter(Boolean).join(' ');
+    const city = p.city || p.town || p.village || p.district || p.county || '';
+    const state = p.state ? (STATE_ABBR[p.state] || p.state) : '';
+    const tail = [state, p.postcode].filter(Boolean).join(' ');
+    return [street, city, tail].filter(Boolean).join(', ');
+  }
+  const STATE_ABBR = { Colorado: 'CO', Tennessee: 'TN', Arizona: 'AZ' };
+  async function lookup(q, kind) {
+    const c = CITY_CENTERS[locSelect.value] || CITY_CENTERS[cityParam] || null;
+    let url = 'https://photon.komoot.io/api/?limit=8&lang=en&q=' + encodeURIComponent(q);
+    if (c) url += '&lat=' + c.lat + '&lon=' + c.lon;
+    if (kind === 'address') url += '&layer=house&layer=street';
+    const r = await fetch(url);
+    const j = await r.json();
+    return (j.features || [])
+      .map(f => f.properties || {})
+      .filter(p => p.countrycode === 'US')
+      .filter(p => kind !== 'name' || (p.name && p.housenumber && p.street))
+      .map(p => ({ name: p.name || '', address: formatAddress(p) }))
+      .filter((x, i, arr) => x.address && arr.findIndex(y => y.address === x.address && y.name === x.name) === i)
+      .slice(0, 5);
+  }
+  function attachLookup(inputEl, listEl, kind) {
+    let timer = null, items = [], active = -1, lastQ = '';
+    function close() { listEl.style.display = 'none'; listEl.innerHTML = ''; active = -1; inputEl.setAttribute('aria-expanded', 'false'); }
+    function pick(i) {
+      const it = items[i]; if (!it) return;
+      if (kind === 'name') { inputEl.value = it.name; $('address').value = it.address; $('address').classList.add('valid'); }
+      else { inputEl.value = it.address; inputEl.classList.add('valid'); }
+      close();
+    }
+    function render() {
+      listEl.innerHTML = '';
+      items.forEach((it, i) => {
+        const li = document.createElement('li'); li.setAttribute('role', 'option');
+        if (kind === 'name') { li.textContent = it.name; const s = document.createElement('small'); s.textContent = it.address; li.append(s); }
+        else li.textContent = it.address;
+        if (i === active) li.classList.add('active');
+        li.addEventListener('mousedown', function(e){ e.preventDefault(); pick(i); });
+        listEl.append(li);
+      });
+      const li = document.createElement('li'); li.className = 'manual';
+      li.textContent = kind === 'name' ? "Don't see it? Just keep typing your restaurant's name." : "Don't see it? Type the full address.";
+      li.addEventListener('mousedown', function(e){ e.preventDefault(); close(); });
+      listEl.append(li);
+      listEl.style.display = items.length ? 'block' : 'none';
+      inputEl.setAttribute('aria-expanded', items.length ? 'true' : 'false');
+    }
+    inputEl.addEventListener('input', function(){
+      inputEl.classList.remove('valid');
+      const q = inputEl.value.trim();
+      clearTimeout(timer);
+      if (q.length < 3) { close(); return; }
+      timer = setTimeout(async function(){
+        lastQ = q;
+        try {
+          const res = await lookup(q, kind);
+          if (lastQ !== q) return;
+          items = res; active = -1; render();
+        } catch (e) { close(); }
+      }, 300);
+    });
+    inputEl.addEventListener('keydown', function(e){
+      if (listEl.style.display !== 'block') return;
+      if (e.key === 'ArrowDown') { active = Math.min(active + 1, items.length - 1); render(); e.preventDefault(); }
+      else if (e.key === 'ArrowUp') { active = Math.max(active - 1, 0); render(); e.preventDefault(); }
+      else if (e.key === 'Enter' && active >= 0) { pick(active); e.preventDefault(); }
+      else if (e.key === 'Escape') close();
+    });
+    inputEl.addEventListener('blur', function(){ setTimeout(close, 150); });
+  }
+  attachLookup($('restaurantName'), $('nameList'), 'name');
+  attachLookup($('address'), $('addrList'), 'address');
+
+  /* ---------------- Submit ---------------- */
   form.addEventListener('submit', async function(ev){
     ev.preventDefault();
-    if(!form.checkValidity()){
-      errMsg.style.display = 'block';
-      form.reportValidity();
-      return;
-    }
     errMsg.style.display = 'none';
     submitBtn.disabled = true;
+    submitBtn.textContent = 'Checking...';
+    const phoneOk = checkPhone(true);
+    const emailOk = await checkEmail(true);
+    if (!form.checkValidity() || !phoneOk || !emailOk) {
+      errMsg.textContent = !phoneOk || !emailOk ? 'Please fix the phone number or email above.' : 'Please fill in all required fields.';
+      errMsg.style.display = 'block';
+      form.reportValidity();
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Save my spot →';
+      return;
+    }
     submitBtn.textContent = 'Submitting...';
 
     const payload = {
       formType: 'restaurant_signup',
-      location: document.getElementById('location').value,
+      location: locSelect.value,
       event: 'Wing Month — December 2026 (spot reserved)',
-      restaurantName: document.getElementById('restaurantName').value,
-      instagram: document.getElementById('instagram').value,
-      address: document.getElementById('address').value,
-      primaryName: document.getElementById('p_name').value,
-      primaryPhone: document.getElementById('p_phone').value,
-      primaryEmail: document.getElementById('p_email').value,
-      primaryMethod: document.getElementById('p_method').value,
+      restaurantName: $('restaurantName').value.trim(),
+      instagram: $('instagram').value.trim(),
+      address: $('address').value.trim(),
+      primaryName: $('p_name').value.trim(),
+      primaryPhone: formatPhone(phoneDigits(phoneEl.value)),
+      primaryEmail: emailEl.value.trim(),
+      primaryMethod: $('p_method').value,
       secondaryName: '',
       secondaryPhone: '',
       secondaryEmail: '',
       secondaryMethod: '',
-      couponDetails: [document.getElementById('couponDetails').value, document.getElementById('bestTime').value ? 'Best time to reach: ' + document.getElementById('bestTime').value : ''].filter(Boolean).join(' | ')
+      couponDetails: [$('couponDetails').value, $('bestTime').value ? 'Best time to reach: ' + $('bestTime').value : ''].filter(Boolean).join(' | ')
     };
 
     try {
@@ -236,15 +498,16 @@
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload)
       });
+      submitted = true;
       // Email the team about the new submission (doesn't hold up the form)
       fetch('/api/signup-notify', {
         method: 'POST',
         keepalive: true,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(Object.assign({ sid }, payload))
       }).catch(function(){});
       form.style.display = 'none';
-      document.getElementById('successMsg').style.display = 'block';
+      $('successMsg').style.display = 'block';
     } catch (e) {
       errMsg.textContent = 'Something went wrong submitting this. Please try again or contact us directly.';
       errMsg.style.display = 'block';

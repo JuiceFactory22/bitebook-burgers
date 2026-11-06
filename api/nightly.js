@@ -33,6 +33,11 @@ export default async function handler(req, res) {
       (SELECT count(*) FROM passports WHERE is_test = 0) AS total,
       (SELECT count(*) FROM passports WHERE is_test = 0 AND created_at > now() - interval '24 hours') AS new24,
       (SELECT count(DISTINCT order_id) FROM passports WHERE is_test = 0 AND emailed_at IS NULL) AS unsent`))[0];
+    // Restaurant sign-up page (/reserve) activity in the last 24 hours
+    const funnel = (await query(`SELECT
+      (SELECT count(*) FROM events WHERE kind = 'reserve_visit' AND at > now() - interval '24 hours') AS visits,
+      (SELECT count(*) FROM events WHERE kind = 'reserve_started' AND at > now() - interval '24 hours') AS started,
+      (SELECT count(*) FROM events WHERE kind = 'signup_notify' AND at > now() - interval '24 hours') AS submitted`))[0] || {};
     const tMap = Object.fromEntries(today.map((r) => [r.restaurant_id, Number(r.n)]));
     const aMap = Object.fromEntries(total.map((r) => [r.restaurant_id, Number(r.n)]));
     const todayTotal = today.reduce((s, r) => s + Number(r.n), 0);
@@ -63,6 +68,7 @@ export default async function handler(req, res) {
 <b>${books.new24}</b> new books sold in the last 24 hours · <b>${books.total}</b> total${Number(books.unsent) ? ` · <span style="color:#C8371D"><b>${books.unsent}</b> orders not yet emailed</span>` : ''}
 </div>
 ${cityBlocks}
+<div style="margin:18px 0 0;font-size:14px;line-height:1.6;border-top:1px solid #e6dcc6;padding-top:12px"><b>Restaurant sign-up page (last 24h):</b> ${Number(funnel.visits || 0)} visits · ${Number(funnel.started || 0)} started typing · ${Number(funnel.submitted || 0)} submitted</div>
 <p style="font-size:13px;color:#5E5246;margin:16px 0 0">Live numbers anytime in your dashboard. Undo accidental redemptions there too.</p>
 </div></td></tr></table></td></tr></table></body></html>`;
 
