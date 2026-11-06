@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/restaurant-signup",
+      "destination": "/reserve",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/desk",
