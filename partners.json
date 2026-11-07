@@ -1,0 +1,28 @@
+{
+  "_howTo": "Restaurant partners shown on the website. To add one: put its logo in the logos folder, then copy a line below and change the name, city, events and logo. city is denver, nashville or phoenix. events lists every BiteBook event they've done: burger, wings. tile is optional: dark (light logo on a dark tile) or fill (photo-style logo that fills the tile). A restaurant with several locations only needs one line.",
+  "partners": [
+    { "name": "Fozzy's Bar & Grill", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-fozzys.png" },
+    { "name": "Caney Fork", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-caney-fork.jpg", "tile": "fill" },
+    { "name": "Tha Caddy Shack", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-caddy-shack.png" },
+    { "name": "Edessa Burger & Pizza", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-edessa.svg" },
+    { "name": "Chef's Market", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-chefs-market.png" },
+    { "name": "Uncle Lenny's Country Cafe", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-uncle-lennys.png" },
+    { "name": "Sticky Rice Express", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-sticky-rice.png" },
+    { "name": "Fat Mo's", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-fat-mos.png" },
+    { "name": "Twisted Fork", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-twisted-fork.png" },
+    { "name": "Little Bite of Everything", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-little-bite.png", "tile": "dark" },
+    { "name": "Makeshift", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-makeshift.png", "tile": "dark" },
+
+    { "name": "Happy's Hamburgers", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-happys.png" },
+    { "name": "Jim's Burgers & Eggs", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-jims.png" },
+    { "name": "Stumblina's", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-stumblinas.png" },
+    { "name": "Blu Burger Grille", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-blu.png" },
+    { "name": "Copper Bull", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-copper-bull.png" },
+    { "name": "Culinary Gangster", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-culinary-gangster.png" },
+    { "name": "Detroit Coney Grill", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-detroit-coney.png" },
+    { "name": "Roadrunner Restaurant & Saloon", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-roadrunner.png" },
+    { "name": "Patties Pints & Pizzas", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-patties.png" },
+    { "name": "Frasher's Tavern", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-frashers.png" },
+    { "name": "Coyote Den Saloon", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-coyote-den.jpg" }
+  ]
+}
