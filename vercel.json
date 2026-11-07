@@ -6,6 +6,21 @@
       "source": "/restaurant-signup",
       "destination": "/reserve",
       "permanent": false
+    },
+    {
+      "source": "/denver",
+      "destination": "/wings/denver",
+      "permanent": false
+    },
+    {
+      "source": "/denver-passport",
+      "destination": "/wings/denver",
+      "permanent": false
+    },
+    {
+      "source": "/denver-confirmation",
+      "destination": "/wings/denver",
+      "permanent": false
     }
   ],
   "rewrites": [
