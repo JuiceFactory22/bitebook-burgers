@@ -6,6 +6,7 @@
 //   <section class="partners" data-partners="nashville" hidden></section>      -> one city
 //   add data-more="/lineup/nashville" to show a "See every restaurant & deal" link
 //   <script src="/partners.js" defer></script>
+// A partner with no logo yet shows its name on the tile until a logo is added.
 (function () {
   var CITY = { denver: 'Denver', nashville: 'Nashville', phoenix: 'Phoenix' };
   var EVENT = { burger: 'Burger Blastoff', wings: 'Wing Month' };
@@ -22,6 +23,7 @@
     '.partners .logo-tile.fill{padding:0;overflow:hidden}' +
     '.partners .logo-tile.fill img{width:100%;height:100%;max-width:none;max-height:none;object-fit:cover}' +
     '.partners .logo-tile img{max-width:100%;max-height:100%;object-fit:contain}' +
+    '.partners .logo-tile.name span{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;line-height:1.05;letter-spacing:-.01em;color:#1c140f;text-align:center;text-wrap:balance}' +
     '.partners-more{text-align:center;margin-top:24px;font-family:"Space Mono",monospace;font-size:.8rem}' +
     '.partners-more a{color:#f2ac1d}' +
     '@keyframes bb-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}' +
@@ -50,14 +52,16 @@
   }
 
   function tile(p, dup) {
-    var cls = 'logo-tile' + (p.tile ? ' ' + p.tile : '') + (dup ? ' dup' : '');
-    return '<div class="' + cls + '"' + (dup ? ' aria-hidden="true"' : '') + '>' +
-      '<img src="' + esc(p.logo) + '" alt="' + (dup ? '' : esc(p.name)) + '" loading="lazy"></div>';
+    var cls = 'logo-tile' + (p.logo && p.tile ? ' ' + p.tile : '') + (p.logo ? '' : ' name') + (dup ? ' dup' : '');
+    var inner = p.logo
+      ? '<img src="' + esc(p.logo) + '" alt="' + (dup ? '' : esc(p.name)) + '" loading="lazy">'
+      : '<span>' + esc(p.name) + '</span>'; // no logo yet: show the name
+    return '<div class="' + cls + '"' + (dup ? ' aria-hidden="true"' : '') + '>' + inner + '</div>';
   }
 
   function render(el, all) {
     var city = el.getAttribute('data-partners');
-    var list = all.filter(function (p) { return p && p.logo && (!city || p.city === city); });
+    var list = all.filter(function (p) { return p && p.name && (!city || p.city === city); });
     if (!list.length) return; // nothing to show yet: section stays hidden
     if (!city) list = mix(list);
 

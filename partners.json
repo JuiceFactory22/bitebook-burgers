@@ -12,6 +12,7 @@
     { "name": "Twisted Fork", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-twisted-fork.png" },
     { "name": "Little Bite of Everything", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-little-bite.png", "tile": "dark" },
     { "name": "Makeshift", "city": "nashville", "events": ["burger"], "logo": "/logos/nash-makeshift.png", "tile": "dark" },
+    { "name": "Broadway Brewhouse Downtown", "city": "nashville", "events": ["wings"] },
 
     { "name": "Happy's Hamburgers", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-happys.png" },
     { "name": "Jim's Burgers & Eggs", "city": "phoenix", "events": ["burger"], "logo": "/logos/phx-jims.png" },
