@@ -59,6 +59,7 @@ function shell({ title, desc, eyebrow, hero, main }) {
   return `<!doctype html>
 <html lang="en">
 <head>
+<script src="/meta-pixel.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)} · BiteBook</title>
