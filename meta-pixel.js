@@ -6,7 +6,7 @@
 // Set the Pixel ID below (also set META_PIXEL_ID in lib/config.js to the same number).
 // Leave it blank and nothing loads.
 (function () {
-  var PIXEL_ID = '';
+  var PIXEL_ID = '2728483774150410';
   window.bbTrack = function (name, data, eventId) {
     if (!window.fbq) return;
     if (eventId) window.fbq('track', name, data || {}, { eventID: eventId });
