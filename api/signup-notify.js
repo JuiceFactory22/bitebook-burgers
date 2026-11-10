@@ -10,11 +10,19 @@
 import { resolveMx, resolve4 } from 'node:dns/promises';
 import { query, logEvent } from '../lib/db.js';
 import { esc } from '../lib/html.js';
-import { FROM_EMAIL } from '../lib/config.js';
+import { FROM_EMAIL, CITIES } from '../lib/config.js';
 
 const NOTIFY_TO = ['carol@getbitebook.com'];
 const UNFINISHED_TO = ['will@getbitebook.com']; // who hears about people who started but didn't finish
 const MAX_PER_HOUR = 30; // safety cap so junk submissions can't flood the inbox
+const DEAL_TO = ['will@getbitebook.com', 'carol@getbitebook.com']; // who hears when a restaurant sends a deal from /wing-deals
+
+// The friendly "your spot is saved" email to the restaurant. Turn on once the old one in the
+// Google Sheet's Apps Script (Code.gs) is switched off, so restaurants don't get two.
+const SEND_RESTAURANT_WELCOME = false;
+const WELCOME_FROM = 'Will at BiteBook <info@getbitebook.com>';
+const WELCOME_REPLY_TO = 'will@getbitebook.com';
+const SITE = 'https://www.getbitebook.com';
 
 const FIELDS = [
   ['location', 'City'], ['event', 'Event'], ['restaurantName', 'Restaurant'], ['instagram', 'Instagram'],
@@ -97,12 +105,104 @@ async function track(req, res) {
   return res.json({ ok: r.ok });
 }
 
+// A restaurant sent a deal from /wing-deals
+async function dealPicked(req, res) {
+  let b = req.body;
+  if (typeof b === 'string') { try { b = JSON.parse(b); } catch { b = {}; } }
+  b = b || {};
+  const name = String(b.restaurantName || '').trim().slice(0, 120);
+  const city = String(b.location || '').trim().slice(0, 30);
+  const email = String(b.email || '').trim().slice(0, 120);
+  const deal = String(b.deal || '').trim().slice(0, 500);
+  if (!name || !deal) return res.status(400).json({ ok: false });
+  const recent = await query(`SELECT count(*) AS n FROM events WHERE kind = 'wing_deal_picked' AND at > now() - interval '1 hour'`);
+  if (Number(recent[0]?.n || 0) >= 20) return res.json({ ok: true, skipped: 'cap' });
+  const html = `<div style="font-family:Helvetica,Arial,sans-serif;color:#1F1A15;font-size:15px;line-height:1.5">
+<p style="margin:0 0 12px"><b>${esc(name)}</b>${city ? ` (${esc(city)})` : ''} picked a Wing Month deal on getbitebook.com/wing-deals:</p>
+<p style="margin:0 0 12px;padding:12px 14px;background:#127e73;color:#f8efdd;font-size:17px;font-weight:600">${esc(deal)}</p>
+${email ? `<p style="margin:0 0 12px">Their email: ${esc(email)} (just reply to this email to reach them)</p>` : ''}
+<p style="margin:0;color:#5E5246">Next step: confirm it with them and add it to the CouponDetails column in the sign-up sheet.</p></div>`;
+  const text = `${name}${city ? ` (${city})` : ''} picked a Wing Month deal:\n\n${deal}\n${email ? `\nTheir email: ${email}\n` : ''}\nConfirm it with them and add it to the sign-up sheet.`;
+  const r = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from: FROM_EMAIL, to: DEAL_TO, subject: `Wing deal picked: ${name}${city ? ` (${city})` : ''}`, html, text,
+      ...(EMAIL_RE.test(email) ? { reply_to: email } : {}) }),
+  });
+  await logEvent('wing_deal_picked', { name, city, status: r.status });
+  return res.json({ ok: r.ok });
+}
+
+function firstNameOf(v) {
+  const f = String(v || '').trim().split(/\s+/)[0] || '';
+  return f ? f.charAt(0).toUpperCase() + f.slice(1) : 'there';
+}
+
+// Splits "deal | Best time to reach: X" back into its two parts
+function splitDetails(s) {
+  const parts = String(s || '').split('|').map((x) => x.trim()).filter(Boolean);
+  const best = parts.find((x) => /^best time to reach:/i.test(x));
+  return { deal: parts.filter((x) => x !== best).join(' '), bestTime: best ? best.replace(/^best time to reach:\s*/i, '') : '' };
+}
+
+export function restaurantWelcome(v) {
+  const first = firstNameOf(v.primaryName);
+  const cityId = String(v.location || '').toLowerCase();
+  const area = CITIES[cityId]?.area || v.location || 'your city';
+  const { deal, bestTime } = splitDetails(v.couponDetails);
+  const how = { phone: 'give you a call', text: 'send you a text', email: 'email you' }[String(v.primaryMethod || '').toLowerCase()] || 'reach out';
+  const dealsUrl = `${SITE}/wing-deals?${new URLSearchParams({ r: v.restaurantName, city: cityId, ...(EMAIL_RE.test(v.primaryEmail) ? { e: v.primaryEmail } : {}) })}`;
+  const subject = `Your spot in Wing Month is saved, ${first}!`;
+
+  const steps = [
+    `<b>We'll follow up to confirm your spot.</b> I'll ${how} to go over the details${bestTime ? ` (best time to reach you: ${esc(bestTime)})` : ''}.`,
+    deal ? `<b>We'll lock in your wing deal.</b> You told us: <i>&ldquo;${esc(/[.!?]$/.test(deal) ? deal : deal + '.')}&rdquo;</i> We'll confirm it together.` : `<b>We'll pick your wing deal together.</b> Any wing deal works. Something simple like "Buy 6, get 6 free" is a great start.`,
+    `<b>Send us your logo and a few photos,</b> and we'll start promoting you to locals.`,
+  ];
+  const btn = (href, label) => `<a href="${href}" style="display:inline-block;background:#e0442a;color:#f8efdd;font-family:Helvetica,Arial,sans-serif;font-weight:700;font-size:16px;text-decoration:none;padding:14px 22px;border:2px solid #1c140f">${label}</a>`;
+
+  const html = `<!doctype html><html><body style="margin:0;padding:0;background:#f8efdd">
+<div style="max-width:560px;margin:0 auto;padding:28px 20px;font-family:Helvetica,Arial,sans-serif;color:#1c140f;font-size:16px;line-height:1.55">
+  <div style="font-family:'Courier New',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#e0442a;font-weight:700">BiteBook · Wing Month · Dec 15 – Jan 15</div>
+  <h1 style="font-size:28px;line-height:1.1;margin:10px 0 18px;font-weight:800">${esc(v.restaurantName)} is on the list 🍗</h1>
+  <p style="margin:0 0 14px">Hi ${esc(first)},</p>
+  <p style="margin:0 0 14px">Thanks for saving a spot in BiteBook's Wing Month! I'm Will, the owner of BiteBook, and I'm excited you're interested.</p>
+  <p style="margin:0 0 20px">Here's how it works: from December 15 to January 15, locals across ${esc(area)} buy a BiteBook passport and head out to try the wing deals inside. You offer one wing deal, and we handle all the promotion. It's a simple way to bring new faces through your door.</p>
+  <div style="background:#ffffff;border:2px solid #1c140f;padding:18px 20px;margin:0 0 22px">
+    <div style="font-family:'Courier New',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#127e73;font-weight:700;margin-bottom:10px">What happens next</div>
+    ${steps.map((s, i) => `<p style="margin:0 0 10px"><span style="display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;background:#f2ac1d;font-weight:700;font-size:13px;margin-right:6px">${i + 1}</span>${s}</p>`).join('')}
+  </div>
+  <div style="background:#1c140f;color:#f8efdd;padding:20px;margin:0 0 22px;text-align:center">
+    <p style="margin:0 0 6px;font-size:19px;font-weight:800">Need help picking your deal?</p>
+    <p style="margin:0 0 16px;color:#f1e4c9;font-size:15px">See what other restaurants are offering, then build yours in about 30 seconds.</p>
+    ${btn(dealsUrl, 'See the deals &amp; build mine &rarr;')}
+  </div>
+  <p style="margin:0 0 14px">Questions in the meantime? Just reply to this email, or call or text me at <a href="tel:+14015953611" style="color:#1c140f">401-595-3611</a>.</p>
+  <p style="margin:0 0 4px">Talk soon,</p>
+  <p style="margin:0">Will<br><span style="color:#3a2c22">Owner, BiteBook · <a href="${SITE}" style="color:#3a2c22">getbitebook.com</a></span></p>
+  <p style="margin:26px 0 0;padding-top:14px;border-top:1px solid #d9cbb0;font-size:13px;color:#5E5246">What you sent us: ${esc(v.restaurantName)} · ${esc(v.address || '')} · ${esc(v.primaryName || '')}${v.primaryPhone ? `, ${esc(v.primaryPhone)}` : ''} (prefers ${esc(v.primaryMethod || 'any')})</p>
+</div></body></html>`;
+
+  const text = [
+    `Hi ${first},`, '',
+    `Thanks for saving a spot for ${v.restaurantName} in BiteBook's Wing Month! I'm Will, the owner of BiteBook, and I'm excited you're interested.`, '',
+    `Here's how it works: from December 15 to January 15, locals across ${area} buy a BiteBook passport and head out to try the wing deals inside. You offer one wing deal, and we handle all the promotion.`, '',
+    'What happens next:',
+    ...steps.map((s, i) => `${i + 1}. ${s.replace(/<[^>]+>/g, '').replace(/&ldquo;|&rdquo;/g, '"')}`), '',
+    `Need help picking your deal? See what other restaurants are offering and build yours here: ${dealsUrl}`, '',
+    'Questions in the meantime? Just reply to this email, or call or text me at 401-595-3611.', '',
+    'Talk soon,', 'Will', 'Owner, BiteBook', 'getbitebook.com',
+  ].join('\n');
+  return { subject, html, text };
+}
+
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   const op = String(req.query.op || '');
   try {
     if (op === 'check-email' && req.method === 'GET') return await checkEmail(req, res);
     if (op === 'track' && req.method === 'POST') return await track(req, res);
+    if (op === 'deal' && req.method === 'POST') return await dealPicked(req, res);
   } catch (e) {
     console.error(e);
     return res.status(500).json({ ok: false });
@@ -142,6 +242,19 @@ export default async function handler(req, res) {
     });
     const out = await r.json().catch(() => ({}));
     await logEvent('signup_notify', { key, sid, status: r.status, id: out.id || null, error: r.ok ? null : JSON.stringify(out).slice(0, 200) });
+
+    // Welcome email to the restaurant (Wing Month sign-ups only)
+    if (SEND_RESTAURANT_WELCOME && /wing/i.test(v.event) && EMAIL_RE.test(v.primaryEmail)) {
+      try {
+        const w = restaurantWelcome(v);
+        const wr = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ from: WELCOME_FROM, to: [v.primaryEmail], reply_to: WELCOME_REPLY_TO, bcc: ['will@getbitebook.com'], ...w }),
+        });
+        await logEvent('restaurant_welcome', { key, status: wr.status });
+      } catch (e) { await logEvent('restaurant_welcome_error', { key, error: String(e.message || e).slice(0, 200) }); }
+    }
     return res.json({ ok: r.ok });
   } catch (e) {
     console.error(e);

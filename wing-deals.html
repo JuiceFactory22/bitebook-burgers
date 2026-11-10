@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/meta-pixel.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pick Your Wing Deal · Wing Month · BiteBook</title>
+<meta name="description" content="See the wing deals restaurants are offering in BiteBook's Wing Month, and build yours in a few clicks.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c140f; --ink-soft:#3a2c22; --paper:#f8efdd; --paper-2:#f1e4c9;
+    --gold:#f2ac1d; --tomato:#e0442a; --teal:#127e73; --line:rgba(28,20,15,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+  .display{font-family:'Bricolage Grotesque',sans-serif;line-height:1.02;letter-spacing:-.02em}
+  .mono{font-family:'Space Mono',monospace}
+  a{color:inherit}
+
+  nav{border-bottom:2.5px solid var(--ink)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;max-width:760px;margin:0 auto}
+  .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.03em;display:flex;align-items:center;gap:9px;text-decoration:none}
+  .brand .dot{width:14px;height:14px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink);flex:none}
+  .nav-call{font-family:'Space Mono',monospace;font-size:.78rem;text-decoration:none;border-bottom:2px solid var(--gold)}
+
+  header{padding:40px 0 8px}
+  .kicker{font-family:'Space Mono',monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tomato);font-weight:700}
+  header h1{font-size:clamp(2rem,6vw,3rem);font-weight:800;margin-top:8px}
+  header p{color:var(--ink-soft);margin-top:12px;max-width:56ch;font-size:1.04rem}
+  .jump{display:inline-flex;gap:8px;margin-top:18px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;padding:10px 16px;border:2.5px solid var(--ink);background:var(--gold);color:var(--ink);text-decoration:none;box-shadow:4px 4px 0 var(--ink)}
+
+  section{padding:36px 0 8px}
+  h2{font-size:clamp(1.5rem,4vw,2rem);font-weight:800}
+  .sub{color:var(--ink-soft);margin-top:6px}
+
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 16px}
+  .tab{font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;border:2px solid var(--ink);background:var(--paper);cursor:pointer;color:var(--ink)}
+  .tab[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .card{background:#fff;border:2px solid var(--ink);padding:14px 16px;display:flex;flex-direction:column;gap:6px;box-shadow:4px 4px 0 var(--ink)}
+  .card .deal{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.18rem;line-height:1.15}
+  .card .note{font-size:.86rem;color:var(--ink-soft)}
+  .card .who{margin-top:auto;padding-top:6px;border-top:1px dashed var(--line);font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ink-soft)}
+  .card .who b{color:var(--ink)}
+  .empty{color:var(--ink-soft);font-style:italic}
+  .tips{margin-top:18px;background:var(--paper-2);border:2px solid var(--ink);padding:14px 16px}
+  .tips b{font-family:'Bricolage Grotesque',sans-serif}
+  .tips ul{margin:6px 0 0 18px;font-size:.95rem}
+
+  /* Builder (same pieces as the reserve form pop-up) */
+  .builder{background:var(--paper);border:2.5px solid var(--ink);box-shadow:10px 10px 0 var(--ink);padding:20px;margin-top:16px}
+  .step{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tomato);font-weight:700;margin:16px 0 8px}
+  .step:first-child{margin-top:0}
+  .types{display:grid;gap:8px}
+  .type{display:block;border:2px solid var(--ink);background:#fff;padding:12px 14px;cursor:pointer}
+  .type:has(input:checked){background:var(--paper-2);box-shadow:4px 4px 0 var(--ink)}
+  .type input[type=radio]{margin:0 8px 0 0;accent-color:var(--tomato)}
+  .type b{font-family:'Bricolage Grotesque',sans-serif}
+  .type .ex{display:block;font-size:.85rem;color:var(--ink-soft);margin:2px 0 0 26px}
+  .opts{display:none;margin:10px 0 0 26px;line-height:2.4}
+  .type:has(input:checked) .opts{display:block}
+  select,input[type=text],input[type=number],input[type=email],textarea{font-family:'Inter',sans-serif;font-size:.95rem;padding:6px 8px;border:2px solid var(--ink);background:var(--paper);color:var(--ink)}
+  .opts input.num{width:4.5em}
+  .opts input.wide{width:min(100%,22em)}
+  .checks label{display:flex;align-items:center;gap:8px;font-size:.95rem;margin:6px 0}
+  .checks input[type=checkbox]{width:18px;height:18px;accent-color:var(--tomato)}
+  .checks input.days{flex:1;min-width:0}
+  .preview{margin-top:16px;background:var(--teal);color:var(--paper);border:2px solid var(--ink);padding:12px 14px}
+  .preview .mono{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .preview p{margin-top:4px;font-size:1.05rem}
+  .who-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .who-fields label{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:4px}
+  .who-fields input,.who-fields select{width:100%;padding:10px 12px;font-size:1rem}
+  .who-fields .full{grid-column:1/-1}
+  @media(max-width:560px){.who-fields{grid-template-columns:1fr}}
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:18px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.08rem;border:2.5px solid var(--ink);padding:15px 24px;background:var(--tomato);color:var(--paper);cursor:pointer;box-shadow:6px 6px 0 var(--ink)}
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+  .fine{font-size:.84rem;color:var(--ink-soft);margin-top:10px}
+  .err{color:var(--tomato);font-family:'Space Mono',monospace;font-size:.8rem;margin-top:10px;display:none}
+  .done{display:none;text-align:center;padding:26px 8px}
+  .done .check{width:56px;height:56px;border-radius:50%;background:var(--teal);border:2.5px solid var(--ink);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+  .done h3{font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:800}
+  .done p{color:var(--ink-soft);margin-top:8px}
+  .done .yours{display:inline-block;margin-top:12px;background:var(--teal);color:var(--paper);border:2px solid var(--ink);padding:10px 14px;font-weight:600}
+
+  footer{margin-top:48px;padding:28px 0;border-top:2.5px solid var(--ink);text-align:center;font-size:.88rem;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="/"><span class="dot"></span>BiteBook</a>
+    <a class="nav-call" href="tel:+14015953611">Questions? 401-595-3611</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <div class="kicker">Wing Month · Dec 15 – Jan 15</div>
+    <h1 class="display" id="hello">Pick your wing deal</h1>
+    <p>Not sure what to offer? Here's what other restaurants are doing for Wing Month. Then build yours below in about 30 seconds. Nothing's locked in until we talk.</p>
+    <a class="jump" href="#build">Build my deal ↓</a>
+  </header>
+
+  <section aria-labelledby="othersTitle">
+    <h2 class="display" id="othersTitle">What other restaurants are offering</h2>
+    <p class="sub">Real deals from restaurants already confirmed for Wing Month.</p>
+    <div class="tabs" role="group" aria-label="Filter by city" id="tabs">
+      <button class="tab" type="button" data-city="" aria-pressed="true">All cities</button>
+      <button class="tab" type="button" data-city="denver" aria-pressed="false">Denver</button>
+      <button class="tab" type="button" data-city="nashville" aria-pressed="false">Nashville</button>
+      <button class="tab" type="button" data-city="phoenix" aria-pressed="false">Phoenix</button>
+    </div>
+    <div class="grid" id="deals"><p class="empty">Loading deals…</p></div>
+    <div class="tips">
+      <b>What works best</b>
+      <ul>
+        <li>A deal people can understand in one glance, like "Buy 6, get 6 free."</li>
+        <li>Something that brings in new faces without hurting your food cost. Pairing wings with a drink or entrée is a great way to do that.</li>
+        <li>Add any fine print you need: dine-in only, limit 1 per group, certain days or times.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="build" aria-labelledby="buildTitle">
+    <h2 class="display" id="buildTitle">Build your deal</h2>
+    <p class="sub">Pick a style, tweak the numbers, and send it to us. We'll fine-tune it together when we talk.</p>
+
+    <form class="builder" id="dealForm" novalidate>
+      <div id="formBody">
+        <div class="step">1 · Pick a deal type</div>
+        <div class="types" role="radiogroup" aria-label="Deal type">
+          <label class="type"><input type="radio" name="dtype" value="bogo" checked><b>Buy some, get some free</b>
+            <span class="ex">The most popular. e.g. Buy 6 wings, get 6 free.</span>
+            <span class="opts">Buy <select id="bogoBuy"><option>6</option><option>10</option><option>12</option><option>1 lb of</option></select> wings, get <select id="bogoGet"><option>6</option><option>3</option><option>5</option><option>10</option><option>12</option><option>1 lb of</option></select> free</span>
+          </label>
+          <label class="type"><input type="radio" name="dtype" value="withbuy"><b>Wings with a purchase</b>
+            <span class="ex">e.g. 6 wings with the purchase of an entrée.</span>
+            <span class="opts"><select id="wbCount"><option>6</option><option>5</option><option>3</option><option>10</option><option>12</option></select> free wings with the purchase of <select id="wbItem"><option>an entrée</option><option>an appetizer</option><option>any food item</option><option>2 drinks</option><option>a drink</option><option>a pitcher or bucket of beer</option></select></span>
+          </label>
+          <label class="type"><input type="radio" name="dtype" value="combo"><b>Combo price</b>
+            <span class="ex">e.g. 6 wings + a beer for $12.</span>
+            <span class="opts"><select id="coCount"><option>6</option><option>5</option><option>10</option><option>12</option><option>1 lb of</option></select> wings + <select id="coItem"><option>a draft beer</option><option>a drink</option><option>a side</option><option>fries and a drink</option></select> for $<input class="num" id="coPrice" type="number" min="1" step="0.5" value="12" inputmode="decimal" aria-label="Combo price"></span>
+          </label>
+          <label class="type"><input type="radio" name="dtype" value="off"><b>Money off wings</b>
+            <span class="ex">e.g. $5 off any wing order of $20 or more.</span>
+            <span class="opts"><select id="offKind" aria-label="Dollars or percent"><option value="$">$</option><option value="%">%</option></select><input class="num" id="offAmt" type="number" min="1" step="1" value="5" inputmode="numeric" aria-label="Amount off"> off any wing order <select id="offMin" aria-label="Minimum order"><option value="">(no minimum)</option><option value="15">of $15 or more</option><option value="20" selected>of $20 or more</option><option value="30">of $30 or more</option></select></span>
+          </label>
+          <label class="type"><input type="radio" name="dtype" value="other"><b>Something else</b>
+            <span class="ex">Describe your own idea.</span>
+            <span class="opts"><input class="wide" id="otherText" type="text" placeholder="e.g. Free side of wings with any burger" aria-label="Your deal idea"></span>
+          </label>
+        </div>
+
+        <div class="step">2 · Add any fine print <span style="color:var(--ink-soft);text-transform:none;letter-spacing:0">(optional)</span></div>
+        <div class="checks">
+          <label><input type="checkbox" id="fpDine" checked> Dine-in only</label>
+          <label><input type="checkbox" id="fpGroup" checked> Limit 1 per group</label>
+          <label><input type="checkbox" id="fpFlavor"> Premium flavors / sauces extra</label>
+          <label><input type="checkbox" id="fpDays"> Only valid <input class="days" id="fpDaysText" type="text" placeholder="e.g. Mon–Thu, or 2–5pm" aria-label="Valid days or times"></label>
+        </div>
+
+        <div class="preview" aria-live="polite">
+          <div class="mono">Your deal</div>
+          <p id="dealPreview"></p>
+        </div>
+
+        <div class="step">3 · Who's it for?</div>
+        <div class="who-fields">
+          <div><label for="rName">Restaurant name</label><input type="text" id="rName" required autocomplete="organization"></div>
+          <div><label for="rCity">City</label>
+            <select id="rCity" required><option value="" disabled selected>Select a city</option><option value="Denver">Denver</option><option value="Nashville">Nashville</option><option value="Phoenix">Phoenix</option></select></div>
+          <div class="full"><label for="rEmail">Your email <span class="mono" style="font-weight:400;font-size:.72rem">(so we can confirm it)</span></label><input type="email" id="rEmail" autocomplete="email" placeholder="you@yourrestaurant.com"></div>
+        </div>
+
+        <button type="submit" class="btn" id="sendBtn">Send my deal to BiteBook <span>→</span></button>
+        <div class="err" id="err"></div>
+        <p class="fine">Nothing's locked in. We'll confirm the details with you before anything is printed. Questions? Call or text Will at <a href="tel:+14015953611">401-595-3611</a>.</p>
+      </div>
+
+      <div class="done" id="done" aria-live="polite">
+        <div class="check" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="#f8efdd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Got it, thanks!</h3>
+        <div class="yours" id="doneDeal"></div>
+        <p>We'll follow up to confirm your deal and your spot. Want to change something? Just reply to our email or text Will at 401-595-3611.</p>
+      </div>
+    </form>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">BiteBook · Wing Month · Dec 15 – Jan 15 · <a href="/">getbitebook.com</a></div>
+</footer>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var CITY = { denver: 'Denver', nashville: 'Nashville', phoenix: 'Phoenix' };
+  var params = new URLSearchParams(location.search);
+  var r = (params.get('r') || '').trim().slice(0, 120);
+  var cityParam = (params.get('city') || '').toLowerCase();
+  var emailParam = (params.get('e') || '').trim().slice(0, 120);
+  if (r) { $('rName').value = r; $('hello').textContent = 'Pick a wing deal for ' + r; }
+  if (CITY[cityParam]) $('rCity').value = CITY[cityParam];
+  if (emailParam) $('rEmail').value = emailParam;
+
+  /* ---------- Other restaurants' deals ---------- */
+  var all = [], current = CITY[cityParam] ? cityParam : '';
+  function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function render() {
+    var list = all.filter(function (d) { return !current || d.city === current; });
+    $('deals').innerHTML = list.length ? list.map(function (d) {
+      return '<div class="card"><div class="deal">' + esc(d.deal) + '</div>' +
+        (d.note ? '<div class="note">' + esc(d.note) + '</div>' : '') +
+        '<div class="who"><b>' + esc(d.name) + '</b> · ' + esc(CITY[d.city] || '') + '</div></div>';
+    }).join('') : '<p class="empty">More deals coming soon for this city.</p>';
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) { t.setAttribute('aria-pressed', String(t.dataset.city === current)); });
+  }
+  document.getElementById('tabs').addEventListener('click', function (e) {
+    var t = e.target.closest('.tab'); if (!t) return;
+    current = t.dataset.city; render();
+  });
+  fetch('/wing-deals.json', { cache: 'no-store' }).then(function (x) { return x.json(); })
+    .then(function (j) { all = (j.deals || []).slice(); render(); })
+    .catch(function () { $('deals').innerHTML = '<p class="empty">Couldn\'t load the deals right now. Try refreshing.</p>'; });
+
+  /* ---------- Builder ---------- */
+  var form = $('dealForm');
+  function build() {
+    var t = (form.querySelector('input[name=dtype]:checked') || {}).value, d = '';
+    if (t === 'bogo') d = 'Buy ' + $('bogoBuy').value + ' wings, get ' + $('bogoGet').value + ' free.';
+    else if (t === 'withbuy') d = $('wbCount').value + ' free wings with the purchase of ' + $('wbItem').value + '.';
+    else if (t === 'combo') d = $('coCount').value + ' wings + ' + $('coItem').value + ' for $' + ($('coPrice').value || '?') + '.';
+    else if (t === 'off') {
+      var k = $('offKind').value, a = $('offAmt').value || '?';
+      d = (k === '$' ? '$' + a : a + '%') + ' off any wing order' + ($('offMin').value ? ' of $' + $('offMin').value + ' or more' : '') + '.';
+    } else d = ($('otherText').value || '').trim();
+    if (d && !/[.!?]$/.test(d)) d += '.';
+    var fine = [];
+    if ($('fpDine').checked) fine.push('Dine-in only.');
+    if ($('fpGroup').checked) fine.push('Limit 1 per group.');
+    if ($('fpFlavor').checked) fine.push('Premium flavors and sauces extra.');
+    if ($('fpDays').checked && $('fpDaysText').value.trim()) fine.push('Valid ' + $('fpDaysText').value.trim().replace(/\.$/, '') + ' only.');
+    return [d].concat(fine).filter(Boolean).join(' ');
+  }
+  function refresh() { $('dealPreview').textContent = build() || 'Pick a deal type above.'; }
+  form.addEventListener('input', refresh);
+  form.addEventListener('change', refresh);
+  $('fpDaysText').addEventListener('input', function () { if (this.value.trim()) $('fpDays').checked = true; refresh(); });
+  refresh();
+
+  function fail(msg, el) { $('err').textContent = msg; $('err').style.display = 'block'; if (el) el.focus(); }
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    $('err').style.display = 'none';
+    var deal = build();
+    if (!deal) return fail('Pick a deal type or describe your idea.', $('otherText'));
+    if (!$('rName').value.trim()) return fail('Please add your restaurant name.', $('rName'));
+    if (!$('rCity').value) return fail('Please pick your city.', $('rCity'));
+    var email = $('rEmail').value.trim();
+    if (email && !/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(email)) return fail("That email doesn't look complete.", $('rEmail'));
+    $('sendBtn').disabled = true; $('sendBtn').textContent = 'Sending...';
+    fetch('/api/signup-notify?op=deal', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ restaurantName: $('rName').value.trim(), location: $('rCity').value, email: email, deal: deal })
+    }).then(function (x) { if (!x.ok) throw new Error(); return x.json(); })
+      .then(function () {
+        $('formBody').style.display = 'none';
+        $('doneDeal').textContent = deal;
+        $('done').style.display = 'block';
+        $('done').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        try { window.fbq && fbq('trackCustom', 'WingDealSubmitted'); } catch (e) {}
+      })
+      .catch(function () {
+        $('sendBtn').disabled = false; $('sendBtn').innerHTML = 'Send my deal to BiteBook <span>→</span>';
+        fail('Something went wrong sending that. Please try again, or text Will at 401-595-3611.');
+      });
+  });
+})();
+</script>
+</body>
+</html>
