@@ -491,6 +491,7 @@
   attachLookup($('address'), $('addrList'), 'address');
 
   /* ---------------- Submit ---------------- */
+  let dealAsked = false;
   form.addEventListener('submit', async function(ev){
     ev.preventDefault();
     errMsg.style.display = 'none';
@@ -505,6 +506,12 @@
       submitBtn.disabled = false;
       submitBtn.textContent = 'Save my spot →';
       return;
+    }
+    // No deal yet? Pop up the deal builder once before saving (they can skip it)
+    if (!$('couponDetails').value.trim() && !dealAsked && window.bbAskForDeal) {
+      dealAsked = true;
+      submitBtn.textContent = 'Almost done...';
+      await window.bbAskForDeal();
     }
     submitBtn.textContent = 'Submitting...';
 
@@ -657,6 +664,29 @@
     close();
     openBtn.innerHTML = 'Change my deal <span aria-hidden="true">→</span>';
   });
+
+  // Close by any route (X, Skip, Esc, backdrop, Use) finishes the "before you submit" prompt
+  var waiting = null;
+  var useHTML = $('dealUse').innerHTML, cancelText = $('dealCancel').textContent, subText = dlg.querySelector('.deal-sub').textContent;
+  dlg.addEventListener('close', function () {
+    if (!waiting) return;
+    var done = waiting; waiting = null;
+    $('dealUse').innerHTML = useHTML; $('dealCancel').textContent = cancelText; dlg.querySelector('.deal-sub').textContent = subText;
+    done();
+  });
+  // Called by the main form when someone hits "Save my spot" without a deal
+  window.bbAskForDeal = function () {
+    return new Promise(function (resolve) {
+      if (typeof dlg.showModal !== 'function') return resolve();
+      waiting = resolve;
+      shown = true;
+      dlg.querySelector('.deal-sub').textContent = "Before we save your spot: want to pick a wing deal? It takes 10 seconds, and nothing's locked in. Not sure yet? Skip it and we'll figure it out together.";
+      $('dealUse').innerHTML = 'Use this deal &amp; save my spot <span>→</span>';
+      $('dealCancel').textContent = 'Skip for now';
+      open();
+      try { window.fbq && fbq('trackCustom', 'DealBuilderPromptOnSubmit'); } catch (e) {}
+    });
+  };
 
   // Pop it up automatically once, when someone reaches the deal field with it still empty
   var shown = false;
