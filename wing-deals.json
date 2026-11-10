@@ -1,0 +1,20 @@
+{
+  "_howTo": "Wing Month deals shown on getbitebook.com/wing-deals so new restaurants can see what others are offering. Only list confirmed restaurants. To add one, copy a line and change name, city (denver, nashville or phoenix) and deal. Keep the deal short; fine print goes in note.",
+  "deals": [
+    { "name": "Kickin Chicken", "city": "denver", "deal": "Buy 10 wings, get 5 free" },
+    { "name": "The Wing Spot", "city": "denver", "deal": "$1 wings, all day", "note": "1 sauce per 5 wings" },
+    { "name": "Inga's Alpine Tavern", "city": "denver", "deal": "Buy 8 wings, get 8 free", "note": "Dine-in only" },
+    { "name": "The Barn South Broadway", "city": "denver", "deal": "1 lb of wings + a Howdy Lager for $10" },
+    { "name": "Joe Willy's on Broadway", "city": "denver", "deal": "$2.50 off 6 wings, $3.50 off 12, $5 off 24" },
+    { "name": "Two Lazy Dogs Bar and Grill", "city": "denver", "deal": "$2 off a pound of house-smoked wings" },
+    { "name": "Broadway Brewhouse Downtown", "city": "nashville", "deal": "Buy 6 wings, get 6 free", "note": "Dine-in only. Limit 1 per group" },
+    { "name": "Baqbone BBQ", "city": "nashville", "deal": "$5 off 12 wings" },
+    { "name": "Lost in da Sauce", "city": "nashville", "deal": "Buy 6 wings, get 6 free" },
+    { "name": "The Lounge @2nd", "city": "nashville", "deal": "$1 wings", "note": "Up to 15 wings, 1 sauce per order. Dine-in only" },
+    { "name": "Drifters BBQ", "city": "nashville", "deal": "3 free smoked wings with any entrée" },
+    { "name": "Fairvue Pizza and Pub", "city": "nashville", "deal": "10 wings + a drink or beer for $12" },
+    { "name": "Sneaky Bird", "city": "phoenix", "deal": "Buy 1 order of wings, get the 2nd 50% off" },
+    { "name": "Saddle Mountain Brewing Company", "city": "phoenix", "deal": "5 wings + a pint of beer for $5" },
+    { "name": "Kimmyz (Greenway & Tatum Point)", "city": "phoenix", "deal": "6 free wings with any entrée", "note": "Dine-in only. Limit 1 per group" }
+  ]
+}
