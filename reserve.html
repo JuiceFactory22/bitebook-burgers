@@ -88,6 +88,39 @@
 
   footer{padding:28px 0;border-top:2.5px solid var(--ink);text-align:center}
   .foot-note{font-size:.85rem;color:var(--ink-soft)}
+
+  /* ---------- Deal builder pop-up ---------- */
+  .deal-open{display:inline-flex;align-items:center;gap:8px;margin:0 0 10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.98rem;padding:10px 16px;border:2.5px solid var(--ink);background:var(--gold);color:var(--ink);cursor:pointer;box-shadow:4px 4px 0 rgba(28,20,15,1)}
+  .deal-open:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 rgba(28,20,15,1)}
+  dialog.deal{width:min(560px,calc(100vw - 24px));max-height:calc(100vh - 24px);padding:0;border:2.5px solid var(--ink);background:var(--paper);color:var(--ink);box-shadow:12px 12px 0 rgba(28,20,15,1)}
+  dialog.deal::backdrop{background:rgba(28,20,15,.55)}
+  .deal-in{padding:22px 22px 18px;overflow:auto;max-height:calc(100vh - 28px)}
+  .deal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px}
+  .deal-head h2{font-size:1.7rem;margin:0}
+  .deal-x{font:700 1.4rem/1 'Space Mono',monospace;background:none;border:0;cursor:pointer;color:var(--ink);padding:4px 8px}
+  .deal-sub{color:var(--ink-soft);font-size:.95rem;margin:0 0 16px}
+  .deal-step{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tomato);font-weight:700;margin:16px 0 8px}
+  .deal-types{display:grid;gap:8px}
+  .deal-type{display:block;border:2px solid var(--ink);background:#fff;padding:12px 14px;cursor:pointer}
+  .deal-type:has(input:checked){background:var(--paper-2);box-shadow:4px 4px 0 rgba(28,20,15,1)}
+  .deal-type input[type=radio]{width:auto;margin:0 8px 0 0;accent-color:var(--tomato)}
+  .deal-type b{font-family:'Bricolage Grotesque',sans-serif}
+  .deal-type .ex{display:block;font-size:.85rem;color:var(--ink-soft);margin:2px 0 0 26px}
+  .deal-opts{display:none;margin:10px 0 0 26px;line-height:2.4}
+  .deal-type:has(input:checked) .deal-opts{display:block}
+  .deal-opts select,.deal-opts input{display:inline-block;width:auto;padding:6px 8px;font-size:.95rem;margin:0 2px}
+  .deal-opts input.num{width:4.5em}
+  .deal-opts input.wide{width:min(100%,22em)}
+  .deal-checks label{display:flex;align-items:center;gap:8px;font-size:.95rem;margin:6px 0;font-family:'Inter',sans-serif;font-weight:400}
+  .deal-checks input[type=checkbox]{width:18px;height:18px;margin:0;accent-color:var(--tomato)}
+  .deal-checks input.days{width:auto;flex:1;padding:6px 8px;font-size:.95rem}
+  .deal-preview{margin-top:16px;background:var(--teal);color:var(--paper);border:2px solid var(--ink);padding:12px 14px}
+  .deal-preview .mono{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .deal-preview p{margin:4px 0 0;font-size:1rem}
+  .deal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .deal-actions .btn{flex:1 1 200px}
+  .deal-cancel{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;border:2.5px solid var(--ink);background:var(--paper);padding:12px 18px;cursor:pointer}
+  .deal-note{font-size:.82rem;color:var(--ink-soft);margin-top:10px}
 </style>
 </head>
 <body>
@@ -177,8 +210,9 @@
         <input type="text" id="bestTime" name="bestTime" placeholder="e.g. weekday afternoons">
       </div>
       <div class="field">
-        <label for="couponDetails">Any deal ideas? <span class="opt">(optional)</span></label>
-        <textarea id="couponDetails" name="couponDetails" placeholder="e.g. 6 free wings with the purchase of 6 more, or with any appetizer. Totally fine to leave this blank. We'll figure it out together."></textarea>
+        <label for="couponDetails">Your wing deal <span class="opt">(optional)</span></label>
+        <button type="button" class="deal-open" id="dealOpen" aria-haspopup="dialog">Help me build my deal <span aria-hidden="true">→</span></button>
+        <textarea id="couponDetails" name="couponDetails" placeholder="e.g. Buy 6 wings, get 6 free. Dine-in only. Not sure yet? Leave this blank and we'll figure it out together."></textarea>
       </div>
     </fieldset>
 
@@ -516,6 +550,122 @@
       submitBtn.textContent = 'Save my spot →';
     }
   });
+</script>
+
+<dialog class="deal" id="dealDialog" aria-labelledby="dealTitle">
+  <form method="dialog" class="deal-in" id="dealForm">
+    <div class="deal-head">
+      <h2 class="display" id="dealTitle">Build your wing deal</h2>
+      <button type="button" class="deal-x" id="dealClose" aria-label="Close">×</button>
+    </div>
+    <p class="deal-sub">Any wing deal works. Pick what fits your menu and margins, and we'll fine-tune it together when we talk.</p>
+
+    <div class="deal-step">1 · Pick a deal type</div>
+    <div class="deal-types" role="radiogroup" aria-label="Deal type">
+      <label class="deal-type"><input type="radio" name="dtype" value="bogo" checked><b>Buy some, get some free</b>
+        <span class="ex">The most popular. e.g. Buy 6 wings, get 6 free.</span>
+        <span class="deal-opts">Buy <select id="bogoBuy"><option>6</option><option>10</option><option>12</option><option>1 lb of</option></select> wings, get <select id="bogoGet"><option>6</option><option>3</option><option>5</option><option>10</option><option>12</option><option>1 lb of</option></select> free</span>
+      </label>
+      <label class="deal-type"><input type="radio" name="dtype" value="withbuy"><b>Wings with a purchase</b>
+        <span class="ex">e.g. 6 wings with the purchase of an entrée.</span>
+        <span class="deal-opts"><select id="wbCount"><option>6</option><option>5</option><option>3</option><option>10</option><option>12</option></select> free wings with the purchase of <select id="wbItem"><option>an entrée</option><option>an appetizer</option><option>any food item</option><option>2 drinks</option><option>a drink</option><option>a pitcher or bucket of beer</option></select></span>
+      </label>
+      <label class="deal-type"><input type="radio" name="dtype" value="combo"><b>Combo price</b>
+        <span class="ex">e.g. 6 wings + a beer for $12.</span>
+        <span class="deal-opts"><select id="coCount"><option>6</option><option>5</option><option>10</option><option>12</option><option>1 lb of</option></select> wings + <select id="coItem"><option>a draft beer</option><option>a drink</option><option>a side</option><option>fries and a drink</option></select> for $<input class="num" id="coPrice" type="number" min="1" step="0.5" value="12" inputmode="decimal" aria-label="Combo price"></span>
+      </label>
+      <label class="deal-type"><input type="radio" name="dtype" value="off"><b>Money off wings</b>
+        <span class="ex">e.g. $5 off any wing order of $20 or more.</span>
+        <span class="deal-opts"><select id="offKind"><option value="$">$</option><option value="%">%</option></select><input class="num" id="offAmt" type="number" min="1" step="1" value="5" inputmode="numeric" aria-label="Amount off"> off any wing order<select id="offMin"><option value="">(no minimum)</option><option value="15">of $15 or more</option><option value="20" selected>of $20 or more</option><option value="30">of $30 or more</option></select></span>
+      </label>
+      <label class="deal-type"><input type="radio" name="dtype" value="other"><b>Something else</b>
+        <span class="ex">Describe your own idea.</span>
+        <span class="deal-opts"><input class="wide" id="otherText" type="text" placeholder="e.g. Free side of wings with any burger" aria-label="Your deal idea"></span>
+      </label>
+    </div>
+
+    <div class="deal-step">2 · Add any fine print <span style="color:var(--ink-soft);text-transform:none;letter-spacing:0">(optional)</span></div>
+    <div class="deal-checks">
+      <label><input type="checkbox" id="fpDine" checked> Dine-in only</label>
+      <label><input type="checkbox" id="fpGroup" checked> Limit 1 per group</label>
+      <label><input type="checkbox" id="fpFlavor"> Premium flavors / sauces extra</label>
+      <label><input type="checkbox" id="fpDays"> Only valid <input class="days" id="fpDaysText" type="text" placeholder="e.g. Mon–Thu, or 2–5pm" aria-label="Valid days or times"></label>
+    </div>
+
+    <div class="deal-preview" aria-live="polite">
+      <div class="mono">Your deal</div>
+      <p id="dealPreview"></p>
+    </div>
+
+    <div class="deal-actions">
+      <button type="button" class="btn" id="dealUse">Use this deal <span>→</span></button>
+      <button type="button" class="deal-cancel" id="dealCancel">Cancel</button>
+    </div>
+    <p class="deal-note">Nothing's locked in. You can edit the wording after, and we'll confirm the details with you before anything is printed.</p>
+  </form>
+</dialog>
+<script>
+(function () {
+  var dlg = document.getElementById('dealDialog');
+  var openBtn = document.getElementById('dealOpen');
+  var ta = document.getElementById('couponDetails');
+  if (!dlg || !openBtn || !ta) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var form = $('dealForm');
+
+  function build() {
+    var t = (form.querySelector('input[name=dtype]:checked') || {}).value;
+    var d = '';
+    if (t === 'bogo') d = 'Buy ' + $('bogoBuy').value + ' wings, get ' + $('bogoGet').value + ' free.';
+    else if (t === 'withbuy') d = $('wbCount').value + ' free wings with the purchase of ' + $('wbItem').value + '.';
+    else if (t === 'combo') d = $('coCount').value + ' wings + ' + $('coItem').value + ' for $' + ($('coPrice').value || '?') + '.';
+    else if (t === 'off') {
+      var k = $('offKind').value, a = $('offAmt').value || '?';
+      d = (k === '$' ? '$' + a : a + '%') + ' off any wing order' + ($('offMin').value ? ' of $' + $('offMin').value + ' or more' : '') + '.';
+    } else d = ($('otherText').value || '').trim();
+    if (d && !/[.!?]$/.test(d)) d += '.';
+    var fine = [];
+    if ($('fpDine').checked) fine.push('Dine-in only.');
+    if ($('fpGroup').checked) fine.push('Limit 1 per group.');
+    if ($('fpFlavor').checked) fine.push('Premium flavors and sauces extra.');
+    if ($('fpDays').checked && $('fpDaysText').value.trim()) fine.push('Valid ' + $('fpDaysText').value.trim().replace(/\.$/, '') + ' only.');
+    return [d].concat(fine).filter(Boolean).join(' ');
+  }
+  function refresh() { $('dealPreview').textContent = build() || 'Pick a deal type above.'; }
+
+  function open() {
+    refresh();
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+    var first = form.querySelector('input[name=dtype]:checked');
+    if (first) first.focus();
+    try { window.fbq && fbq('trackCustom', 'DealBuilderOpened'); } catch (e) {}
+  }
+  function close() { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); openBtn.focus(); }
+
+  openBtn.addEventListener('click', open);
+  $('dealClose').addEventListener('click', close);
+  $('dealCancel').addEventListener('click', close);
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) close(); });
+  form.addEventListener('input', refresh);
+  form.addEventListener('change', refresh);
+  $('fpDaysText').addEventListener('input', function () { if (this.value.trim()) $('fpDays').checked = true; refresh(); });
+  $('dealUse').addEventListener('click', function () {
+    var v = build();
+    if (!v) { $('otherText').focus(); return; }
+    ta.value = v;
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    close();
+    openBtn.innerHTML = 'Change my deal <span aria-hidden="true">→</span>';
+  });
+
+  // Pop it up automatically once, when someone reaches the deal field with it still empty
+  var shown = false;
+  ta.addEventListener('focus', function () {
+    if (shown || ta.value.trim()) return;
+    shown = true;
+    open();
+  });
+})();
 </script>
 </body>
 </html>
