@@ -96,7 +96,6 @@
 <nav>
   <div class="nav-in">
     <a class="brand" href="/"><span class="dot"></span>BiteBook</a>
-    <a class="nav-call" href="tel:+14015953611">Questions? 401-595-3611</a>
   </div>
 </nav>
 
@@ -181,14 +180,14 @@
 
         <button type="submit" class="btn" id="sendBtn">Send my deal to BiteBook <span>→</span></button>
         <div class="err" id="err"></div>
-        <p class="fine">Nothing's locked in. We'll confirm the details with you before anything is printed. Questions? Call or text Will at <a href="tel:+14015953611">401-595-3611</a>.</p>
+        <p class="fine">Nothing's locked in. We'll confirm the details with you before anything is printed.</p>
       </div>
 
       <div class="done" id="done" aria-live="polite">
         <div class="check" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="#f8efdd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h3>Got it, thanks!</h3>
         <div class="yours" id="doneDeal"></div>
-        <p>We'll follow up to confirm your deal and your spot. Want to change something? Just reply to our email or text Will at 401-595-3611.</p>
+        <p>We'll follow up to confirm your deal and your spot. Want to change something? Just reply to our email.</p>
       </div>
     </form>
   </section>
@@ -279,7 +278,7 @@
       })
       .catch(function () {
         $('sendBtn').disabled = false; $('sendBtn').innerHTML = 'Send my deal to BiteBook <span>→</span>';
-        fail('Something went wrong sending that. Please try again, or text Will at 401-595-3611.');
+        fail('Something went wrong sending that. Please try again, or reply to our email.');
       });
   });
 })();
