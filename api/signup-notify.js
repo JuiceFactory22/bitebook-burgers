@@ -19,7 +19,7 @@ const DEAL_TO = ['will@getbitebook.com', 'carol@getbitebook.com']; // who hears 
 
 // The friendly "your spot is saved" email to the restaurant. Turn on once the old one in the
 // Google Sheet's Apps Script (Code.gs) is switched off, so restaurants don't get two.
-const SEND_RESTAURANT_WELCOME = false;
+const SEND_RESTAURANT_WELCOME = true;
 const WELCOME_FROM = 'Will at BiteBook <info@getbitebook.com>';
 const WELCOME_REPLY_TO = 'will@getbitebook.com';
 const SITE = 'https://www.getbitebook.com';
