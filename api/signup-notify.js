@@ -177,7 +177,7 @@ export function restaurantWelcome(v) {
     <p style="margin:0 0 16px;color:#f1e4c9;font-size:15px">See what other restaurants are offering, then build yours in about 30 seconds.</p>
     ${btn(dealsUrl, 'See the deals &amp; build mine &rarr;')}
   </div>
-  <p style="margin:0 0 14px">Questions in the meantime? Just reply to this email, or call or text me at <a href="tel:+14015953611" style="color:#1c140f">401-595-3611</a>.</p>
+  <p style="margin:0 0 14px">Questions in the meantime? Just reply to this email.</p>
   <p style="margin:0 0 4px">Talk soon,</p>
   <p style="margin:0">Will<br><span style="color:#3a2c22">Owner, BiteBook · <a href="${SITE}" style="color:#3a2c22">getbitebook.com</a></span></p>
   <p style="margin:26px 0 0;padding-top:14px;border-top:1px solid #d9cbb0;font-size:13px;color:#5E5246">What you sent us: ${esc(v.restaurantName)} · ${esc(v.address || '')} · ${esc(v.primaryName || '')}${v.primaryPhone ? `, ${esc(v.primaryPhone)}` : ''} (prefers ${esc(v.primaryMethod || 'any')})</p>
@@ -190,7 +190,7 @@ export function restaurantWelcome(v) {
     'What happens next:',
     ...steps.map((s, i) => `${i + 1}. ${s.replace(/<[^>]+>/g, '').replace(/&ldquo;|&rdquo;/g, '"')}`), '',
     `Need help picking your deal? See what other restaurants are offering and build yours here: ${dealsUrl}`, '',
-    'Questions in the meantime? Just reply to this email, or call or text me at 401-595-3611.', '',
+    'Questions in the meantime? Just reply to this email.', '',
     'Talk soon,', 'Will', 'Owner, BiteBook', 'getbitebook.com',
   ].join('\n');
   return { subject, html, text };
