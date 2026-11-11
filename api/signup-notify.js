@@ -20,7 +20,7 @@ const DEAL_TO = ['will@getbitebook.com', 'carol@getbitebook.com']; // who hears 
 // The friendly "your spot is saved" email to the restaurant. Turn on once the old one in the
 // Google Sheet's Apps Script (Code.gs) is switched off, so restaurants don't get two.
 const SEND_RESTAURANT_WELCOME = true;
-const WELCOME_FROM = 'Will at BiteBook <info@getbitebook.com>';
+const WELCOME_FROM = 'Will at BiteBook <will@getbitebook.com>';
 const WELCOME_REPLY_TO = 'will@getbitebook.com';
 const SITE = 'https://www.getbitebook.com';
 
@@ -159,29 +159,18 @@ export function restaurantWelcome(v) {
     deal ? `<b>We'll lock in your wing deal.</b> You told us: <i>&ldquo;${esc(/[.!?]$/.test(deal) ? deal : deal + '.')}&rdquo;</i> We'll confirm it together.` : `<b>We'll pick your wing deal together.</b> Any wing deal works. Something simple like "Buy 6, get 6 free" is a great start.`,
     `<b>Send us your logo and a few photos,</b> and we'll start promoting you to locals.`,
   ];
-  const btn = (href, label) => `<a href="${href}" style="display:inline-block;background:#e0442a;color:#f8efdd;font-family:Helvetica,Arial,sans-serif;font-weight:700;font-size:16px;text-decoration:none;padding:14px 22px;border:2px solid #1c140f">${label}</a>`;
-
-  const html = `<!doctype html><html><body style="margin:0;padding:0;background:#f8efdd">
-<div style="max-width:560px;margin:0 auto;padding:28px 20px;font-family:Helvetica,Arial,sans-serif;color:#1c140f;font-size:16px;line-height:1.55">
-  <div style="font-family:'Courier New',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#e0442a;font-weight:700">BiteBook · Wing Month · Dec 15 – Jan 15</div>
-  <h1 style="font-size:28px;line-height:1.1;margin:10px 0 18px;font-weight:800">${esc(v.restaurantName)} is on the list 🍗</h1>
-  <p style="margin:0 0 14px">Hi ${esc(first)},</p>
-  <p style="margin:0 0 14px">Thanks for saving a spot in BiteBook's Wing Month! I'm Will, the owner of BiteBook, and I'm excited you're interested.</p>
-  <p style="margin:0 0 20px">Here's how it works: from December 15 to January 15, locals across ${esc(area)} buy a BiteBook passport and head out to try the wing deals inside. You offer one wing deal, and we handle all the promotion. It's a simple way to bring new faces through your door.</p>
-  <div style="background:#ffffff;border:2px solid #1c140f;padding:18px 20px;margin:0 0 22px">
-    <div style="font-family:'Courier New',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#127e73;font-weight:700;margin-bottom:10px">What happens next</div>
-    ${steps.map((s, i) => `<p style="margin:0 0 10px"><span style="display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;background:#f2ac1d;font-weight:700;font-size:13px;margin-right:6px">${i + 1}</span>${s}</p>`).join('')}
-  </div>
-  <div style="background:#1c140f;color:#f8efdd;padding:20px;margin:0 0 22px;text-align:center">
-    <p style="margin:0 0 6px;font-size:19px;font-weight:800">Need help picking your deal?</p>
-    <p style="margin:0 0 16px;color:#f1e4c9;font-size:15px">See what other restaurants are offering, then build yours in about 30 seconds.</p>
-    ${btn(dealsUrl, 'See the deals &amp; build mine &rarr;')}
-  </div>
-  <p style="margin:0 0 14px">Questions in the meantime? Just reply to this email.</p>
-  <p style="margin:0 0 4px">Talk soon,</p>
-  <p style="margin:0">Will<br><span style="color:#3a2c22">Owner, BiteBook · <a href="${SITE}" style="color:#3a2c22">getbitebook.com</a></span></p>
-  <p style="margin:26px 0 0;padding-top:14px;border-top:1px solid #d9cbb0;font-size:13px;color:#5E5246">What you sent us: ${esc(v.restaurantName)} · ${esc(v.address || '')} · ${esc(v.primaryName || '')}${v.primaryPhone ? `, ${esc(v.primaryPhone)}` : ''} (prefers ${esc(v.primaryMethod || 'any')})</p>
-</div></body></html>`;
+  // Kept deliberately plain (like a normal email from Will) so Gmail files it in the main inbox, not Promotions/Updates
+  const p = (inner) => `<p style="margin:0 0 14px">${inner}</p>`;
+  const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#222">
+${p(`Hi ${esc(first)},`)}
+${p(`Thanks for saving a spot for ${esc(v.restaurantName)} in BiteBook's Wing Month! I'm Will, the owner of BiteBook, and I'm excited you're interested.`)}
+${p(`Here's how it works: from December 15 to January 15, locals across ${esc(area)} buy a BiteBook passport and head out to try the wing deals inside. You offer one wing deal, and we handle all the promotion. It's a simple way to bring new faces through your door.`)}
+${p('<b>What happens next:</b>')}
+<ol style="margin:0 0 14px;padding-left:22px">${steps.map((s) => `<li style="margin:0 0 8px">${s}</li>`).join('')}</ol>
+${p(`Need help picking your deal? <a href="${dealsUrl}">See what other restaurants are offering and build yours here</a>. It takes about 30 seconds.`)}
+${p('Questions in the meantime? Just reply to this email.')}
+${p('Talk soon,<br>Will<br>Owner, BiteBook<br><a href="' + SITE + '">getbitebook.com</a>')}
+</div>`;
 
   const text = [
     `Hi ${first},`, '',
