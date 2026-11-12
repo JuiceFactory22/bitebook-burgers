@@ -29,6 +29,7 @@ const FIELDS = [
   ['address', 'Address'], ['primaryName', 'Contact'], ['primaryPhone', 'Phone'], ['primaryEmail', 'Email'],
   ['primaryMethod', 'Best way to reach'], ['secondaryName', 'Second contact'], ['secondaryPhone', 'Second phone'],
   ['secondaryEmail', 'Second email'], ['secondaryMethod', 'Second contact method'], ['couponDetails', 'Notes / deal details'],
+  ['googlePlaceId', 'Google Place ID'], ['googleMapsUrl', 'Google Maps'],
 ];
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
@@ -53,6 +54,78 @@ async function checkEmail(req, res) {
   if (!EMAIL_RE.test(email)) return res.json({ ok: false, reason: 'format' });
   const domain = email.split('@').pop();
   return res.json({ ok: await domainExists(domain) });
+}
+
+// ---------------- Google Places lookup for the /reserve page ----------------
+// The browser never sees the Google key: it asks us, we ask Google.
+//   GET /api/signup-notify?op=places&q=...&city=nashville&kind=name|address&s=SESSION
+//   GET /api/signup-notify?op=place&id=PLACE_ID&s=SESSION
+// Needs the GOOGLE_MAPS_API_KEY environment variable in Vercel (Places API (New) turned on).
+// The session token (s) bundles a person's typing + their final pick into one Google charge.
+const PLACE_CENTERS = {
+  denver: { latitude: 39.7392, longitude: -104.9903 },
+  nashville: { latitude: 36.1627, longitude: -86.7816 },
+  phoenix: { latitude: 33.4484, longitude: -112.0740 },
+};
+const cleanSession = (s) => String(s || '').replace(/[^a-z0-9-]/gi, '').slice(0, 64) || undefined;
+const stripUSA = (a) => String(a || '').replace(/,\s*(USA|United States)$/i, '');
+
+async function placesSearch(req, res) {
+  const key = process.env.GOOGLE_MAPS_API_KEY;
+  if (!key) return res.json({ ok: false, reason: 'not-configured' }); // page falls back to the free search
+  const q = String(req.query.q || '').trim().slice(0, 100);
+  if (q.length < 2) return res.json({ ok: true, results: [] });
+  const kind = req.query.kind === 'address' ? 'address' : 'name';
+  const center = PLACE_CENTERS[String(req.query.city || '').toLowerCase()];
+  const body = {
+    input: q,
+    includedRegionCodes: ['us'],
+    languageCode: 'en',
+    sessionToken: cleanSession(req.query.s),
+    // Restaurant search: businesses only. Address search: real addresses only.
+    includedPrimaryTypes: kind === 'name' ? ['establishment'] : ['street_address', 'premise', 'subpremise', 'route'],
+    // Show spots near the chosen city first, but suburbs and farther towns still come up
+    ...(center ? { locationBias: { circle: { center, radius: 50000 } } } : {}),
+  };
+  const ask = async (b) => {
+    const r = await fetch('https://places.googleapis.com/v1/places:autocomplete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': key },
+      body: JSON.stringify(b),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) console.error('places autocomplete', r.status, JSON.stringify(j).slice(0, 300));
+    return r.ok ? j : null;
+  };
+  let j = await ask(body);
+  // Nothing with the type filter (or it was rejected)? Try once more without it.
+  if (!j || !(j.suggestions || []).length) { const { includedPrimaryTypes, ...loose } = body; j = await ask(loose) || j; }
+  if (!j) return res.json({ ok: false });
+  const results = (j.suggestions || []).map((s) => s.placePrediction).filter(Boolean).slice(0, 6).map((p) => ({
+    id: p.placeId,
+    name: p.structuredFormat?.mainText?.text || p.text?.text || '',
+    address: stripUSA(p.structuredFormat?.secondaryText?.text || ''),
+  }));
+  return res.json({ ok: true, results });
+}
+
+async function placeDetails(req, res) {
+  const key = process.env.GOOGLE_MAPS_API_KEY;
+  const id = String(req.query.id || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 300);
+  if (!key || !id) return res.json({ ok: false });
+  const s = cleanSession(req.query.s);
+  const r = await fetch(`https://places.googleapis.com/v1/places/${id}${s ? `?sessionToken=${s}` : ''}`, {
+    headers: { 'X-Goog-Api-Key': key, 'X-Goog-FieldMask': 'id,displayName,formattedAddress,googleMapsUri' },
+  });
+  const p = await r.json().catch(() => ({}));
+  if (!r.ok) { console.error('place details', r.status, JSON.stringify(p).slice(0, 300)); return res.json({ ok: false }); }
+  return res.json({
+    ok: true,
+    id: p.id,
+    name: p.displayName?.text || '',
+    address: stripUSA(p.formattedAddress),
+    mapsUrl: p.googleMapsUri || '',
+  });
 }
 
 const TRACK_STAGES = ['visit', 'started', 'left'];
@@ -192,6 +265,8 @@ export default async function handler(req, res) {
     if (op === 'check-email' && req.method === 'GET') return await checkEmail(req, res);
     if (op === 'track' && req.method === 'POST') return await track(req, res);
     if (op === 'deal' && req.method === 'POST') return await dealPicked(req, res);
+    if (op === 'places' && req.method === 'GET') return await placesSearch(req, res);
+    if (op === 'place' && req.method === 'GET') return await placeDetails(req, res);
   } catch (e) {
     console.error(e);
     return res.status(500).json({ ok: false });
@@ -230,7 +305,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({ from: FROM_EMAIL, to: NOTIFY_TO, subject, html, text, ...(EMAIL_RE.test(v.primaryEmail) ? { reply_to: v.primaryEmail } : {}) }),
     });
     const out = await r.json().catch(() => ({}));
-    await logEvent('signup_notify', { key, sid, status: r.status, id: out.id || null, error: r.ok ? null : JSON.stringify(out).slice(0, 200) });
+    await logEvent('signup_notify', { key, sid, placeId: v.googlePlaceId || null, status: r.status, id: out.id || null, error: r.ok ? null : JSON.stringify(out).slice(0, 200) });
 
     // Welcome email to the restaurant (Wing Month sign-ups only)
     if (SEND_RESTAURANT_WELCOME && /wing/i.test(v.event) && EMAIL_RE.test(v.primaryEmail)) {
