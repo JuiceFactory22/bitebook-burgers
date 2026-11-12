@@ -160,6 +160,8 @@
         <label for="restaurantName">Restaurant name</label>
         <input type="text" id="restaurantName" name="restaurantName" required autocomplete="organization" aria-autocomplete="list" aria-controls="nameList">
         <ul class="ac-list" id="nameList" role="listbox"></ul>
+        <input type="hidden" id="googlePlaceId" name="googlePlaceId">
+        <input type="hidden" id="googleMapsUrl" name="googleMapsUrl">
         <div class="hint">Start typing and pick your restaurant. We'll fill in the address for you.</div>
       </div>
       <div class="field">
@@ -414,7 +416,29 @@
   emailEl.addEventListener('blur', function(){ if (emailEl.value) checkEmail(true); });
   emailEl.addEventListener('input', function(){ if (emailEl.classList.contains('invalid')) { emailEl.classList.remove('invalid'); setEmailMsg('', false); } emailEl.setCustomValidity(''); });
 
-  /* ---------------- Restaurant + address lookup (free OpenStreetMap search) ---------------- */
+  /* ---------------- Restaurant + address lookup ----------------
+     Google Places first (through our own server, so the key stays private).
+     If Google isn't set up or fails, falls back to the free OpenStreetMap search. */
+  function newSession() { return (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now().toString(36)); }
+  let placesSession = newSession();
+  let googleOff = false;
+  async function googleLookup(q, kind) {
+    if (googleOff) return null;
+    const city = (locSelect.value || cityParam || '').toLowerCase();
+    const r = await fetch('/api/signup-notify?op=places&kind=' + kind + '&city=' + encodeURIComponent(city) + '&s=' + placesSession + '&q=' + encodeURIComponent(q));
+    const j = await r.json();
+    if (!j.ok) { if (j.reason === 'not-configured') googleOff = true; return null; }
+    return j.results;
+  }
+  async function googleDetails(id) {
+    const r = await fetch('/api/signup-notify?op=place&id=' + encodeURIComponent(id) + '&s=' + placesSession);
+    placesSession = newSession(); // a pick ends the Google session
+    const j = await r.json();
+    return j.ok ? j : null;
+  }
+  function clearPlace() { $('googlePlaceId').value = ''; $('googleMapsUrl').value = ''; }
+
+  /* Free OpenStreetMap search (backup) */
   function formatAddress(p) {
     const street = [p.housenumber, p.street].filter(Boolean).join(' ');
     const city = p.city || p.town || p.village || p.district || p.county || '';
@@ -424,6 +448,10 @@
   }
   const STATE_ABBR = { Colorado: 'CO', Tennessee: 'TN', Arizona: 'AZ' };
   async function lookup(q, kind) {
+    try { const g = await googleLookup(q, kind); if (g) return g; } catch (e) {}
+    return osmLookup(q, kind);
+  }
+  async function osmLookup(q, kind) {
     const c = CITY_CENTERS[locSelect.value] || CITY_CENTERS[cityParam] || null;
     let url = 'https://photon.komoot.io/api/?limit=8&lang=en&q=' + encodeURIComponent(q);
     if (c) url += '&lat=' + c.lat + '&lon=' + c.lon;
@@ -441,11 +469,25 @@
   function attachLookup(inputEl, listEl, kind) {
     let timer = null, items = [], active = -1, lastQ = '';
     function close() { listEl.style.display = 'none'; listEl.innerHTML = ''; active = -1; inputEl.setAttribute('aria-expanded', 'false'); }
-    function pick(i) {
+    async function pick(i) {
       const it = items[i]; if (!it) return;
       if (kind === 'name') { inputEl.value = it.name; $('address').value = it.address; $('address').classList.add('valid'); }
       else { inputEl.value = it.address; inputEl.classList.add('valid'); }
       close();
+      if (!it.id) return; // came from the backup search
+      // Google gave us a match: get the full street address (and, for a restaurant, its Google ID)
+      try {
+        const d = await googleDetails(it.id);
+        if (!d) return;
+        if (kind === 'name') {
+          if (inputEl.value !== it.name) return; // they kept typing; don't overwrite
+          $('address').value = d.address || it.address;
+          $('googlePlaceId').value = d.id || it.id;
+          $('googleMapsUrl').value = d.mapsUrl || '';
+        } else if (inputEl.value === it.address) {
+          inputEl.value = d.address || it.address;
+        }
+      } catch (e) {}
     }
     function render() {
       listEl.innerHTML = '';
@@ -466,6 +508,7 @@
     }
     inputEl.addEventListener('input', function(){
       inputEl.classList.remove('valid');
+      if (kind === 'name') clearPlace(); // changed the name, so the old Google match no longer applies
       const q = inputEl.value.trim();
       clearTimeout(timer);
       if (q.length < 3) { close(); return; }
@@ -522,6 +565,8 @@
       restaurantName: $('restaurantName').value.trim(),
       instagram: $('instagram').value.trim(),
       address: $('address').value.trim(),
+      googlePlaceId: $('googlePlaceId').value,
+      googleMapsUrl: $('googleMapsUrl').value,
       primaryName: $('p_name').value.trim(),
       primaryPhone: formatPhone(phoneDigits(phoneEl.value)),
       primaryEmail: emailEl.value.trim(),
