@@ -8,11 +8,6 @@
       "permanent": false
     },
     {
-      "source": "/denver",
-      "destination": "/wings/denver",
-      "permanent": false
-    },
-    {
       "source": "/denver-passport",
       "destination": "/wings/denver",
       "permanent": false

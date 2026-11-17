@@ -224,7 +224,12 @@ async function logosPage(req, res) {
       ${logos.length ? `<div class="row">${imgs}</div>` : `<p class="miss">Nothing found${note ? ' — ' + esc(note) : ''}. Ask them to send their logo.</p>`}</section>`;
   }).join('');
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  return res.send(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Restaurant logos</title>
+  return res.send(`<!doctype html><html><head><meta charset="utf-8">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/icon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/icon-192.png">
+<link rel="apple-touch-icon" href="/brand/icon-180.png">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Restaurant logos</title>
 <style>body{margin:0;background:#FBF4E4;color:#1F1A15;font-family:Inter,system-ui,sans-serif;padding:20px 16px 60px}h1{margin:0 0 4px}p.sub{color:#5E5246;margin:0 0 20px}
 section{background:#fff;border:2px solid #1F1A15;border-radius:12px;padding:14px;margin:0 auto 14px;max-width:980px}h3{margin:0 0 10px}small{font-weight:400;color:#5E5246;text-transform:capitalize}
 .row{display:flex;gap:12px;flex-wrap:wrap}figure{margin:0;width:200px}.ph{height:130px;border:1px solid #ddd;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:8px;background:repeating-conic-gradient(#eee 0 25%,#fff 0 50%) 0 0/16px 16px}

@@ -61,6 +61,10 @@ function shell({ title, desc, eyebrow, hero, main }) {
 <head>
 <script src="/meta-pixel.js"></script>
 <meta charset="utf-8">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/icon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/icon-192.png">
+<link rel="apple-touch-icon" href="/brand/icon-180.png">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)} · BiteBook</title>
 <meta name="description" content="${esc(desc)}">
