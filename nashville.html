@@ -3,9 +3,14 @@
 <head>
 <script src="/meta-pixel.js"></script>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/icon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/icon-192.png">
+<link rel="apple-touch-icon" href="/brand/icon-180.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Burger Blastoff Nashville — A month of burgers. One passport.</title>
-<meta name="description" content="BiteBook runs city-wide food events. Locals grab a passport full of burger deals. Restaurants get a room full of new regulars.">
+<title>BiteBook Nashville — Wing Month, Dec 15 – Jan 15</title>
+<meta name="description" content="BiteBook Nashville: one passport full of wing deals at local restaurants across the Greater Nashville area, Dec 15 – Jan 15. Restaurants: save your spot.">
+<link rel="canonical" href="https://www.getbitebook.com/nashville">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -49,12 +54,34 @@
   .cities-pill{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--ink);border-radius:40px;padding:6px 14px;background:var(--gold)}
   @media(max-width:620px){.cities-pill{display:none}}
 
+    .nav-links{display:flex;align-items:center;gap:24px;margin-left:32px}
+  .nav-link{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.95rem;text-decoration:none;color:var(--ink);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0}
+  .nav-dropdown{position:relative}
+  .caret{font-size:.7rem;transition:transform .15s ease}
+  .nav-dropdown.open .caret{transform:rotate(180deg)}
+  .dropdown-menu{
+    display:none;position:absolute;top:calc(100% + 14px);left:0;
+    background:var(--paper);border:2.5px solid var(--ink);box-shadow:6px 6px 0 rgba(28,20,15,1);
+    min-width:160px;z-index:60;
+  }
+  .nav-dropdown.open .dropdown-menu{display:block}
+  .dropdown-menu a{display:block;padding:12px 16px;font-family:'Space Mono',monospace;font-size:.85rem;text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--line)}
+  .dropdown-menu a:last-child{border-bottom:none}
+  .dropdown-menu a:hover{background:var(--paper-2)}
+  @media(max-width:700px){.nav-links{margin-left:14px;gap:14px}.nav-link{font-size:.85rem}}
+
   /* ---------- HERO ---------- */
   .hero{padding:74px 0 30px;position:relative}
   .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:54px;align-items:center}
   .eyebrow{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:22px}
   h1.hero-title{font-size:clamp(3rem,7.2vw,5.6rem);font-weight:800}
   h1.hero-title .swap{color:var(--tomato)}
+  /* Rotating food word: "A month of ____." */
+  /* inline (not inline-block) so the period stays on the same line as the last word */
+  h1.hero-title .food{display:inline;transition:opacity .35s ease}
+  /* Underline hugs the words, even when a long food ("international eats") wraps onto two lines */
+  h1.hero-title .food .ul{background-image:linear-gradient(var(--gold),var(--gold));background-repeat:no-repeat;background-size:100% .18em;background-position:0 100%;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  h1.hero-title .food.out{opacity:0}
   .hero-sub{font-size:1.16rem;max-width:34ch;margin:26px 0 0;color:var(--ink-soft)}
   .hero-scroll{margin-top:30px;font-family:'Space Mono',monospace;font-size:.8rem;letter-spacing:.05em;color:var(--ink-soft);display:flex;align-items:center;gap:10px}
   .hero-scroll .arw{display:inline-block;animation:bob 1.8s ease-in-out infinite}
@@ -108,7 +135,8 @@
   .path:hover{transform:translate(-2px,-2px);box-shadow:14px 14px 0 rgba(28,20,15,1)}
   .path.rest{background:var(--paper)}
   .path.local{background:var(--teal);color:var(--paper)}
-  .path-tag{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;display:inline-block;padding:5px 11px;border:2px solid var(--ink);border-radius:30px;margin-bottom:18px}
+  .path-tag{font-family:'Space Mono',monospace;font-size:1.05rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;display:inline-block;padding:10px 20px;border:2.5px solid var(--ink);border-radius:40px;margin-bottom:20px;box-shadow:4px 4px 0 rgba(28,20,15,1)}
+  @media(max-width:620px){.path-tag{font-size:.92rem;padding:9px 16px}}
   .path.rest .path-tag{background:var(--gold)}
   .path.local .path-tag{background:var(--gold);color:var(--ink);border-color:var(--ink)}
   .path h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.9rem;line-height:1;letter-spacing:-.02em;margin-bottom:12px}
@@ -156,21 +184,6 @@
   .step p{font-size:.98rem;color:var(--ink-soft)}
 
   /* ---------- STATS ---------- */
-  .partners{background:var(--ink);color:var(--paper);margin-top:44px;padding:44px 0 40px;overflow:hidden}
-  .partners-head{text-align:center;padding:0 24px 22px}
-  .partners-head .k{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
-  .partners-head h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.6rem,4vw,2.3rem);margin:6px 0 0}
-  .marquee{display:flex;width:max-content;animation:bb-scroll 40s linear infinite}
-  .partners:hover .marquee{animation-play-state:paused}
-  .logo-tile{flex:0 0 auto;width:200px;height:120px;margin:0 9px;background:var(--paper);border:2px solid var(--gold);border-radius:14px;display:flex;align-items:center;justify-content:center;padding:14px}
-  .logo-tile.dark{background:#2b2119}
-  .logo-tile.fill{padding:0;overflow:hidden}
-  .logo-tile.fill img{width:100%;height:100%;max-width:none;max-height:none;object-fit:cover}
-  .logo-tile img{max-width:100%;max-height:100%;object-fit:contain}
-  .partners-more{text-align:center;margin-top:24px;font-family:'Space Mono',monospace;font-size:.8rem}
-  .partners-more a{color:var(--gold)}
-  @keyframes bb-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-  @media(prefers-reduced-motion:reduce){.marquee{animation:none;flex-wrap:wrap;justify-content:center;width:auto;row-gap:14px}.marquee .dup{display:none}}
   .stats{background:var(--ink);color:var(--paper);margin-top:44px}
   .stats-in{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:48px 24px;max-width:1140px;margin:0 auto}
   .stat{text-align:center}
@@ -207,9 +220,19 @@
 <body>
 
 <nav>
-  <div class="nav-in">
-    <div class="brand"><span class="dot"></span>BiteBook</div>
-    <div class="cities-pill">Nashville</div>
+    <div class="nav-in">
+    <a class="brand" href="/" style="text-decoration:none"><img src="/brand/logo-mark.png" alt="" width="44" height="30" style="height:30px;width:auto;display:block;flex:none">BiteBook</a>
+    <div class="nav-links">
+      <div class="nav-dropdown" id="locationsDropdown">
+        <button class="nav-link" id="locationsToggle">Locations <span class="caret">▾</span></button>
+        <div class="dropdown-menu">
+          <a href="/denver">Denver</a>
+          <a href="/nashville">Nashville</a>
+          <a href="/phoenix">Phoenix</a>
+        </div>
+      </div>
+      <a class="nav-link" href="/news">News &amp; Updates</a>
+    </div>
   </div>
 </nav>
 
@@ -217,26 +240,26 @@
 <header class="hero">
   <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow">Monthly food event · Nashville</div>
-      <h1 class="hero-title display">A month of burgers.<br><span class="swap">One passport.</span></h1>
-      <p class="hero-sub">BiteBook throws city-wide food events. Locals grab a passport stuffed with burger deals. Restaurants get a room full of brand-new regulars. Everybody eats.</p>
+      <div class="eyebrow">BiteBook Nashville · Wing Month</div>
+      <h1 class="hero-title display">A month of <span class="food"><span class="ul">wings</span></span>.<br><span class="swap">One passport.</span></h1>
+      <p class="hero-sub">Wing Month runs Dec 15 – Jan 15 across the Greater Nashville area. Locals grab one passport stuffed with wing deals at local spots. Restaurants get a room full of brand-new regulars.</p>
       <div class="hero-scroll">
-        <span class="arw">↓</span> Two ways in — pick yours below
+        <span class="arw">↓</span> Hungry or running a restaurant? Pick your door below
       </div>
     </div>
     <div class="ticket-stage">
       <div class="ticket" aria-hidden="true">
         <div class="ticket-top">
           <div class="ticket-kicker">Admit one · limited time offer</div>
-          <div class="ticket-title display">Burger<br>Blastoff</div>
-          <div class="ticket-sub">1 FREE BURGER · See details</div>
-          <div class="stamp">Best<br>Burger<br>Nominee</div>
+          <div class="ticket-title display">BiteBook<br>Passport</div>
+          <div class="ticket-sub">WING MONTH · NASHVILLE</div>
+          <div class="stamp">The<br>Best<br>Of</div>
         </div>
         <div class="perf"></div>
         <div class="ticket-bot">
-          <div class="tk"><div class="lbl">Good thru</div><div class="val">OCT 15–NOV 15</div></div>
+          <div class="tk"><div class="lbl">Good thru</div><div class="val">JAN 15</div></div>
           <div class="tk"><div class="lbl">Seat</div><div class="val">YOUR TABLE</div></div>
-          <div class="route mono"><span>NASHVILLE</span></div>
+          <div class="route mono"><span>NSH</span> <span class="arrow">→</span> <span>YOUR TABLE</span></div>
         </div>
       </div>
     </div>
@@ -248,15 +271,32 @@
   <div class="wrap">
     <div class="fork-head reveal">
       <h2 class="display">Which one are you?</h2>
-      <p>Restaurants and hungry locals take different doors.</p>
+      <p>Hungry locals and restaurants take different doors.</p>
     </div>
     <div class="fork-grid">
+
+      <!-- LOCAL (first, so diners see the passport before the restaurant sign-up) -->
+      <div class="path local reveal">
+        <span class="path-tag">I'm here to eat</span>
+        <h3 class="display">Find your new favorite spot.</h3>
+        <p class="lede">One passport. A wing deal at local spots across the Greater Nashville area. A full month to find your new favorite.</p>
+        <ul class="plist">
+          <li>A wing deal at every participating spot</li>
+          <li>Use them any time, Dec 15 – Jan 15</li>
+          <li>Limited run — passports are capped</li>
+          <li>10% of every sale feeds a local charity</li>
+        </ul>
+        <div class="city-btns">
+          <a class="btn tomato" href="/wings/nashville">Get my passport · $20 <span class="go">→</span></a>
+          <div class="cap-note">See every restaurant and deal on the next page. Not happy? Full refund.</div>
+        </div>
+      </div>
 
       <!-- RESTAURANT -->
       <div class="path rest reveal">
         <span class="path-tag">I run a restaurant</span>
         <h3 class="display">Fill your dining room.</h3>
-        <p class="lede">New paying customers who turn into regulars — for the cost of one burger, not an ad budget.</p>
+        <p class="lede">New paying customers who turn into regulars — for the cost of one deal, not an ad budget.</p>
         <ul class="plist">
           <li>~70% have never walked in before</li>
           <li>~80% bring a friend paying full price</li>
@@ -264,67 +304,55 @@
           <li>We handle the marketing and the work. You cook.</li>
         </ul>
         <div class="city-btns">
-          <a class="btn" href="/restaurant-signup?city=Nashville">Sign up your restaurant <span class="go">→</span></a>
+          <p class="cap-note" style="color:var(--ink-soft);margin-bottom:2px;">Now booking Nashville-area restaurants for Wing Month (Dec 15 – Jan 15).</p>
+          <a class="btn" href="/reserve?city=Nashville">Save your spot <span class="go">→</span></a>
         </div>
       </div>
-
-      <!-- LOCAL -->
-      <div class="path local reveal">
-        <span class="path-tag">I'm here to eat</span>
-        <h3 class="display">Eat the whole city.</h3>
-        <p class="lede">One passport. 13 local burger spots. A full month to find your new favorite.</p>
-        <ul class="plist">
-          <li>13 burger deals in one book, each with a purchase</li>
-          <li>Use them any time, Oct 15 – Nov 15</li>
-          <li>Limited run — passports are capped</li>
-          <li>10% of every sale feeds a local charity</li>
-        </ul>
-       <a class="btn tomato" href="https://square.link/u/xIWWanki">Get your passport — $20 <span class="go">→</span></a>
-        <div class="cap-note">Secure checkout via Square. Passport emailed after purchase. <a href="/lineup/nashville" style="color:inherit;text-decoration:underline">See every restaurant &amp; deal →</a></div>
 
     </div>
   </div>
 </section>
 
+<!-- PARTNERS (all cities and events, from partners.json) -->
+<section class="partners" data-partners="nashville" hidden></section>
+<script src="/partners.js" defer></script>
+
 <!-- HOW IT WORKS -->
 <section class="how">
   <div class="wrap">
-    <h2 class="display reveal">How the Blastoff works</h2>
+    <h2 class="display reveal">How BiteBook works</h2>
     <p class="how-sub reveal">Three moves. One delicious month.</p>
     <div class="steps">
       <div class="step reveal">
         <div class="num mono">STEP 01</div>
         <h4>Restaurants pitch in</h4>
-        <p>Each spot offers one free burger, redeemable with any other purchase. Nominated for being genuinely great.</p>
+        <p>Each local spot offers one exclusive deal on the month’s featured food, always with the purchase of something else.</p>
       </div>
       <div class="step reveal">
         <div class="num mono">STEP 02</div>
         <h4>We build the passport</h4>
-        <p>Every coupon goes into one book. We sell it to locals and run all the design, marketing, and advertising.</p>
+        <p>Every deal goes into one passport. We sell it to locals and run all the design, marketing, and advertising.</p>
       </div>
       <div class="step reveal">
         <div class="num mono">STEP 03</div>
         <h4>The city shows up</h4>
-        <p>New customers redeem all month long, most bring a friend, and the best burger takes home the crown.</p>
+        <p>New customers redeem all month long, most bring a friend, and local restaurants gain new regulars.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PARTNERS -->
-<section class="partners" data-partners="nashville" data-more="/lineup/nashville" hidden></section>
-<script src="/partners.js" defer></script>
 
 <!-- FOOTER -->
 <footer>
   <div class="wrap foot-in">
     <div>
-      <div class="foot-brand"><span class="dot"></span>BiteBook</div>
+      <div class="foot-brand"><img src="/brand/logo-mark.png" alt="" width="35" height="24" style="height:24px;width:auto;display:block;flex:none">BiteBook</div>
       <p class="foot-note">Local food events that fill dining rooms and help hungry people find their next favorite spot.</p>
     </div>
     <div>
       <div class="foot-charity">10% of every event → a local charity</div>
-      <p class="foot-note">Nashville</p>
+      <p class="foot-note">Nashville · <a href="https://www.instagram.com/bitebook_nashville/" target="_blank" rel="noopener">@bitebook_nashville</a></p>
     </div>
   </div>
 </footer>
@@ -334,8 +362,17 @@
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
   },{threshold:.14});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
+  // Locations dropdown
+  const dropdown = document.getElementById('locationsDropdown');
+  const toggle = document.getElementById('locationsToggle');
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+  });
+  document.addEventListener('click', () => dropdown.classList.remove('open'));
 </script>
+
 </body>
 </html>

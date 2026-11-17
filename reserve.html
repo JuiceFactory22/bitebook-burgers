@@ -3,6 +3,10 @@
 <head>
 <script src="/meta-pixel.js"></script>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/icon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/icon-192.png">
+<link rel="apple-touch-icon" href="/brand/icon-180.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Save Your Spot · Wing Month · BiteBook</title>
 <meta name="description" content="Save your restaurant's spot in BiteBook's Wing Month, December 15, 2026 – January 15, 2027.">
@@ -127,7 +131,7 @@
 
 <nav>
   <div class="nav-in">
-    <div class="brand"><span class="dot"></span>BiteBook</div>
+    <a class="brand" href="/" style="text-decoration:none"><img src="/brand/logo-mark.png" alt="" width="44" height="30" style="height:30px;width:auto;display:block;flex:none">BiteBook</a>
   </div>
 </nav>
 
@@ -620,11 +624,11 @@
       </label>
       <label class="deal-type"><input type="radio" name="dtype" value="withbuy"><b>Wings with a purchase</b>
         <span class="ex">e.g. 6 wings with the purchase of an entrée.</span>
-        <span class="deal-opts"><select id="wbCount"><option>6</option><option>5</option><option>3</option><option>10</option><option>12</option></select> free wings with the purchase of <select id="wbItem"><option>an entrée</option><option>an appetizer</option><option>any food item</option><option>2 drinks</option><option>a drink</option><option>a pitcher or bucket of beer</option></select></span>
+        <span class="deal-opts"><select id="wbCount"><option>6</option><option>3</option><option>10</option><option>12</option></select> free wings with the purchase of <select id="wbItem"><option>an entrée</option><option>an appetizer</option><option>any food item</option><option>2 drinks</option><option>a drink</option><option>a pitcher or bucket of beer</option></select></span>
       </label>
       <label class="deal-type"><input type="radio" name="dtype" value="combo"><b>Combo price</b>
         <span class="ex">e.g. 6 wings + a beer for $12.</span>
-        <span class="deal-opts"><select id="coCount"><option>6</option><option>5</option><option>10</option><option>12</option><option>1 lb of</option></select> wings + <select id="coItem"><option>a draft beer</option><option>a drink</option><option>a side</option><option>fries and a drink</option></select> for $<input class="num" id="coPrice" type="number" min="1" step="0.5" value="12" inputmode="decimal" aria-label="Combo price"></span>
+        <span class="deal-opts"><select id="coCount"><option>6</option><option>10</option><option>12</option><option>1 lb of</option></select> wings + <select id="coItem"><option>a draft beer</option><option>a drink</option><option>a side</option><option>fries and a drink</option></select> for $<input class="num" id="coPrice" type="number" min="1" step="0.5" value="12" inputmode="decimal" aria-label="Combo price"></span>
       </label>
       <label class="deal-type"><input type="radio" name="dtype" value="off"><b>Money off wings</b>
         <span class="ex">e.g. $5 off any wing order of $20 or more.</span>
