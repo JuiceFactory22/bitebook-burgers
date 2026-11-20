@@ -15,12 +15,11 @@ const PREVIEW_BOT = /facebookexternalhit|facebot|twitterbot|whatsapp|slackbot|te
 
 function previewPage(passport, req) {
   const ev = eventOf(passport);
-  const city = CITIES[passport.city];
   const r = passport.free_restaurant ? restaurantById(passport.free_restaurant) : null;
-  const title = r ? `Your free ${ev.food} coupon: ${r.name}` : `Your ${ev.name} passport · ${city.name}`;
+  const title = r ? `Your free ${ev.food} coupon: ${r.name}` : `Your ${ev.name} passport`;
   const desc = r
     ? `${r.short || r.deal}. Show it at the restaurant ${ev.datesLabel}.`
-    : `A ${ev.food} deal at every participating spot in ${city.area}, ${ev.datesLabel}.`;
+    : `A ${ev.food} deal at every participating spot, ${ev.datesLabel}.`;
   const image = `${WWW}/brand/${r ? 'og-coupon' : 'og-passport'}.png`;
   const pdf = `/book/${passport.id}?pdf=1`;
   const bot = PREVIEW_BOT.test(String(req.headers['user-agent'] || ''));
@@ -81,7 +80,7 @@ export default async function handler(req, res) {
     const coupons = await ensureCoupons(passport);
     const bytes = await buildPassportPdf({ passport, coupons });
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `inline; filename="BiteBook-${eventOf(passport).fileName}-${CITIES[passport.city].name}.pdf"`);
+    res.setHeader('Content-Disposition', `inline; filename="BiteBook-${eventOf(passport).fileName}${passport.source === 'free' ? '-Free-Coupon' : ''}.pdf"`);
     res.setHeader('Cache-Control', 'no-store');
     res.setHeader('X-Robots-Tag', 'noindex');
     return res.status(200).send(Buffer.from(bytes));
