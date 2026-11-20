@@ -23,8 +23,10 @@
   a.setAttribute('aria-label', 'Spin for a free wing deal');
   a.innerHTML = '<span class="w" aria-hidden="true"></span>Free Spin';
   document.body.appendChild(a);
-  var fork = document.getElementById('start');
-  if (fork && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) { a.classList.toggle('off', es[0].isIntersecting); }, { threshold: 0.05 }).observe(fork);
+  // Hide only while the door cards fill the middle of the screen (not when they just peek in at the bottom)
+  var doors = document.querySelector('#start .fork-grid') || document.getElementById('start');
+  if (doors && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { a.classList.toggle('off', es[0].isIntersecting); },
+      { rootMargin: '-30% 0px -30% 0px', threshold: 0 }).observe(doors);
   }
 })();
