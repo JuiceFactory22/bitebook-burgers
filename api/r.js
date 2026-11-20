@@ -1,6 +1,7 @@
 // Coupon redemption page: getbitebook.com/r/<token>
 // GET shows the coupon; POST (the big Redeem button) redeems it once.
-import { getCoupon, redeemCoupon } from '../lib/passports.js';
+import { getCoupon, redeemCoupon, getPassport } from '../lib/passports.js';
+import { syncRedemption } from '../lib/ghl.js';
 import { restaurantById } from '../lib/restaurants.js';
 import { CITIES, eventOf, eventWindow, formatLocal, SUPPORT_EMAIL } from '../lib/config.js';
 import { page, esc, CHECK_SVG, X_SVG } from '../lib/html.js';
@@ -124,6 +125,13 @@ export default async function handler(req, res) {
       const done = await redeemCoupon(token);
       if (done) {
         await logEvent('redeem', { token, restaurant: r.id, passport: c.passport_id });
+        // GHL: redemption fields + "new redemption" tag (starts the feedback text). Never blocks the staff page.
+        if (!isTest) {
+          try {
+            const p = await getPassport(c.passport_id);
+            if (p) await Promise.race([syncRedemption({ passport: p, restaurantId: r.id }), new Promise((ok) => setTimeout(ok, 6000))]);
+          } catch (e) { console.error('GHL redemption', e); }
+        }
         return res.status(200).send(donePage(c, r, done.redeemed_at));
       }
       const fresh = await getCoupon(token);
