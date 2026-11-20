@@ -23,10 +23,14 @@
   a.setAttribute('aria-label', 'Spin for a free wing deal');
   a.innerHTML = '<span class="w" aria-hidden="true"></span>Free Spin';
   document.body.appendChild(a);
-  // Hide only while the door cards fill the middle of the screen (not when they just peek in at the bottom)
+  // Always shown at the top of the page. Once the visitor scrolls, it hides while the door cards
+  // ("Which one are you?") fill the middle of the screen.
   var doors = document.querySelector('#start .fork-grid') || document.getElementById('start');
+  var inMiddle = false;
+  function update() { a.classList.toggle('off', inMiddle && window.scrollY > 120); }
   if (doors && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) { a.classList.toggle('off', es[0].isIntersecting); },
+    new IntersectionObserver(function (es) { inMiddle = es[0].isIntersecting; update(); },
       { rootMargin: '-30% 0px -30% 0px', threshold: 0 }).observe(doors);
+    window.addEventListener('scroll', update, { passive: true });
   }
 })();
