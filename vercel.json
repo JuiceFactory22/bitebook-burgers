@@ -58,6 +58,10 @@
       "destination": "/api/shop?op=page&event=wings"
     },
     {
+      "source": "/wings/:city/purchased",
+      "destination": "/api/shop?op=page&event=wings&city=thanks&from=:city"
+    },
+    {
       "source": "/wings/:city",
       "destination": "/api/shop?op=page&event=wings&city=:city"
     },
@@ -84,6 +88,14 @@
     {
       "source": "/spin/:event",
       "destination": "/api/shop?op=spin&event=:event"
+    },
+    {
+      "source": "/spin/:event/:city/purchased",
+      "destination": "/api/shop?op=page&event=:event&city=thanks&from=:city&via=spin"
+    },
+    {
+      "source": "/spin/:event/:city/:stage(won|claimed)",
+      "destination": "/api/shop?op=spin&event=:event&city=:city&stage=:stage"
     },
     {
       "source": "/spin/:event/:city",
