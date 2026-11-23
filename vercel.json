@@ -90,6 +90,10 @@
       "destination": "/api/shop?op=spin&event=:event"
     },
     {
+      "source": "/spin/:event/:city/checkout",
+      "destination": "/api/shop?op=page&event=:event&city=:city&via=spin"
+    },
+    {
       "source": "/spin/:event/:city/purchased",
       "destination": "/api/shop?op=page&event=:event&city=thanks&from=:city&via=spin"
     },
