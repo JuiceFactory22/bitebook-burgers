@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/meta-pixel.js"></script>
+<meta charset="UTF-8">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/icon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/icon-192.png">
+<link rel="apple-touch-icon" href="/brand/icon-180.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wing Month Is Coming to Greater Nashville: The First Deals — BiteBook</title>
+<meta name="description" content="Wing Month runs Dec 15 – Jan 15 across the Greater Nashville area. Here are the first local spots and their wing deals, plus how the passport works.">
+<link rel="canonical" href="https://www.getbitebook.com/blog-wing-month-nashville">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c140f; --ink-soft:#3a2c22; --paper:#f8efdd; --paper-2:#f1e4c9;
+    --gold:#f2ac1d; --tomato:#e0442a; --teal:#127e73; --line:rgba(28,20,15,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:0 24px}
+  .display{font-family:'Bricolage Grotesque',sans-serif;line-height:1.05;letter-spacing:-.02em}
+  .mono{font-family:'Space Mono',monospace}
+  a{color:var(--teal)}
+
+  nav{border-bottom:2.5px solid var(--ink)}
+  .nav-in{display:flex;align-items:center;padding:16px 24px;max-width:720px;margin:0 auto}
+  .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.03em;display:flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none}
+  .brand .dot{width:14px;height:14px;background:var(--tomato);border-radius:50%;border:2.5px solid var(--ink);flex:none}
+  .nav-links{display:flex;align-items:center;gap:24px;margin-left:32px}
+  .nav-link{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.95rem;text-decoration:none;color:var(--ink);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0}
+  .nav-dropdown{position:relative}
+  .caret{font-size:.7rem;transition:transform .15s ease}
+  .nav-dropdown.open .caret{transform:rotate(180deg)}
+  .dropdown-menu{display:none;position:absolute;top:calc(100% + 14px);left:0;background:var(--paper);border:2.5px solid var(--ink);box-shadow:6px 6px 0 rgba(28,20,15,1);min-width:160px;z-index:60}
+  .nav-dropdown.open .dropdown-menu{display:block}
+  .dropdown-menu a{display:block;padding:12px 16px;font-family:'Space Mono',monospace;font-size:.85rem;text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--line)}
+  .dropdown-menu a:last-child{border-bottom:none}
+  .dropdown-menu a:hover{background:var(--paper-2)}
+
+  article{padding:48px 0 64px}
+  .post-meta{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:16px}
+  h1{font-size:clamp(1.9rem,4.4vw,2.7rem);font-weight:800;margin-bottom:24px}
+  .lede{font-size:1.15rem;color:var(--ink-soft);margin-bottom:32px}
+  .stat-block{border:2.5px solid var(--ink);background:var(--paper-2);padding:24px;margin:28px 0;box-shadow:8px 8px 0 rgba(28,20,15,1)}
+  .stat-block .num{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.4rem;color:var(--tomato);line-height:1}
+  .stat-block p{margin-top:8px;color:var(--ink-soft);font-size:.95rem}
+  article p{margin-bottom:20px;font-size:1.02rem}
+  article h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;margin:36px 0 14px}
+  .sources{font-family:'Space Mono',monospace;font-size:.78rem;color:var(--ink-soft);border-top:1.5px solid var(--line);padding-top:20px;margin-top:36px}
+  .sources li{margin-bottom:6px;list-style:none}
+  .cta{border:2.5px solid var(--ink);background:var(--teal);color:var(--paper);padding:28px;margin:36px 0;text-align:center}
+  .cta h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;margin-bottom:10px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;border:2.5px solid var(--ink);padding:12px 22px;text-decoration:none;background:var(--gold);color:var(--ink);margin-top:12px}
+
+  footer{padding:36px 0;border-top:2.5px solid var(--ink);text-align:center}
+  .foot-note{font-size:.85rem;color:var(--ink-soft)}
+  .deal-card{border:2.5px solid var(--ink);background:var(--paper);padding:16px 18px;margin:0 0 14px;box-shadow:6px 6px 0 rgba(28,20,15,1)}
+  .deal-card .name{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.2rem}
+  .deal-card .deal{font-weight:700;font-size:.85rem;color:var(--tomato);margin-top:4px}
+  .deal-card .fine{font-size:.88rem;color:var(--ink-soft);margin-top:4px}
+  article ol{margin:0 0 20px 22px}
+  article ol li{margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a href="/" class="brand"><img src="/brand/logo-mark.png" alt="" width="44" height="30" style="height:30px;width:auto;display:block;flex:none">BiteBook</a>
+    <div class="nav-links">
+      <div class="nav-dropdown" id="locationsDropdown">
+        <button class="nav-link" id="locationsToggle">Locations <span class="caret">▾</span></button>
+        <div class="dropdown-menu">
+          <a href="/denver">Denver</a>
+          <a href="/nashville">Nashville</a>
+          <a href="/phoenix">Phoenix</a>
+        </div>
+      </div>
+      <a class="nav-link" href="/news">News &amp; Updates</a>
+    </div>
+  </div>
+</nav>
+
+<article class="wrap">
+  <div class="post-meta">Nashville · November 21, 2026</div>
+  <h1 class="display">Wing Month Is Coming to Greater Nashville: The First Deals</h1>
+  <p class="lede">From December 15 to January 15, one BiteBook passport gets you a wing deal at local spots across the Greater Nashville area. Restaurants are still signing up, but here's who's in so far.</p>
+
+  <h2>The lineup so far</h2>
+  <p>These are the confirmed spots and their deals as of today. Each deal is listed the way the restaurant offers it, and some come with conditions like dine-in only.</p>
+  <div class="deal-card">
+    <div class="name">Broadway Brewhouse Downtown</div>
+    <div class="deal mono">Buy 6 wings, get 6 free</div><div class="fine">317 Broadway, Nashville · Dine-in only · Limit 1 per group</div>
+  </div>
+  <div class="deal-card">
+    <div class="name">Baqbone BBQ</div>
+    <div class="deal mono">$5 off a 12-count of wings</div><div class="fine">101 Van Buren St, Nashville (at Bearded Iris Brewing)</div>
+  </div>
+  <div class="deal-card">
+    <div class="name">The Lounge @2nd</div>
+    <div class="deal mono">$1 wings (up to 15)</div><div class="fine">139 2nd Ave N, Nashville · 1 sauce per order · Dine-in only</div>
+  </div>
+  <div class="deal-card">
+    <div class="name">Drifters BBQ</div>
+    <div class="deal mono">3 free smoked wings with the purchase of any entrée</div><div class="fine">1008-B Woodland St, Nashville</div>
+  </div>
+  <div class="deal-card">
+    <div class="name">Fairvue Pizza and Pub</div>
+    <div class="deal mono">10 wings and a drink or beer for $10</div><div class="fine">1483 Nashville Pike, Gallatin</div>
+  </div>
+  <div class="deal-card">
+    <div class="name">Fozzy's Bar &amp; Grill – Franklin</div>
+    <div class="deal mono">Free order of wings with the purchase of a beverage</div><div class="fine">600A Frazier Dr #135, Franklin · Dine-in only · Limit 1 per group</div>
+  </div>
+  <div class="deal-card">
+    <div class="name">Fozzy's Bar &amp; Grill – Spring Hill</div>
+    <div class="deal mono">Free order of wings with the purchase of a beverage</div><div class="fine">150 Stephen P Yokich Pkwy Ste B, Spring Hill · Dine-in only · Limit 1 per group</div>
+  </div>
+  <div class="deal-card">
+    <div class="name">McCreary's Irish Pub &amp; Eatery</div>
+    <div class="deal mono">$1 wings, no limit</div><div class="fine">414 Main St, Franklin</div>
+  </div>
+  <p>More restaurants are joining every week. Anyone added after you buy shows up in your passport automatically, so there's no need to wait for the full list.</p>
+
+  <h2>How the passport works</h2>
+  <ol>
+    <li><b>Get your passport.</b> It's $20, and you can buy a few if you're bringing friends. Each passport has its own set of coupons.</li>
+    <li><b>It lands in your inbox.</b> You get a confirmation right away, and the passport itself arrives by email when Wing Month kicks off on December 15.</li>
+    <li><b>Go eat.</b> Tell your server you have a BiteBook coupon and show the QR code on your phone. They scan it and you get the deal. Each coupon works once.</li>
+  </ol>
+  <p>A couple of good-guest notes: add-ons, upgrades and tax are extra, and please tip on the full value of your meal. Great guests are what keep local spots saying yes to deals like these.</p>
+
+  <h2>Why we do this</h2>
+  <p>BiteBook exists to send hungry locals to independent restaurants they haven't tried yet. Restaurants don't pay anything to be in the passport; they offer one deal, and we handle the promotion. If you're not happy with your passport for any reason, email us and we'll refund you in full.</p>
+
+  <div class="cta">
+    <h3 class="display">Get your Wing Month passport</h3>
+    <p>Greater Nashville · Dec 15 – Jan 15 · $20</p>
+    <a class="btn" href="/wings/nashville?src=blog">See every deal →</a>
+  </div>
+
+  <p>Run a restaurant in the Nashville area? <a href="/reserve?city=Nashville">Save your spot in Wing Month</a>. It takes about 30 seconds and there's no commitment.</p>
+</article>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-note">BiteBook · News &amp; Updates</p>
+  </div>
+</footer>
+
+<script>
+  const dropdown = document.getElementById('locationsDropdown');
+  const toggle = document.getElementById('locationsToggle');
+  toggle.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('open'); });
+  document.addEventListener('click', () => dropdown.classList.remove('open'));
+</script>
+</body>
+</html>
