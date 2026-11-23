@@ -17,7 +17,6 @@
     '.partners-head .k{font-family:"Space Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#f2ac1d}' +
     '.partners-head h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.05;letter-spacing:-.02em;margin:6px 0 0}' +
     '.partners .marquee{display:flex;width:max-content;animation:bb-scroll var(--bb-dur,40s) linear infinite}' +
-    '.partners:hover .marquee{animation-play-state:paused}' +
     '.partners .logo-tile{flex:0 0 auto;width:200px;height:120px;margin:0 9px;background:#f8efdd;border:2px solid #f2ac1d;border-radius:14px;display:flex;align-items:center;justify-content:center;padding:14px}' +
     '.partners .logo-tile.dark{background:#2b2119}' +
     '.partners .logo-tile.fill{padding:0;overflow:hidden}' +
