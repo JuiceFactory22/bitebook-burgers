@@ -16,9 +16,18 @@
       "source": "/denver-confirmation",
       "destination": "/wings/denver",
       "permanent": false
+    },
+    {
+      "source": "/reserve-page",
+      "destination": "/reserve",
+      "permanent": false
     }
   ],
   "rewrites": [
+    {
+      "source": "/reserve",
+      "destination": "/api/shop?op=reserve"
+    },
     {
       "source": "/desk",
       "destination": "/api/desk"
@@ -105,7 +114,8 @@
       "maxDuration": 10
     },
     "api/shop.js": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "includeFiles": "reserve-page.html"
     }
   },
   "crons": [
