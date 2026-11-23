@@ -21,6 +21,11 @@
       "source": "/reserve-page",
       "destination": "/reserve",
       "permanent": false
+    },
+    {
+      "source": "/spin/:city(denver|nashville|phoenix)",
+      "destination": "/spin/wings/:city",
+      "permanent": false
     }
   ],
   "rewrites": [
@@ -77,8 +82,12 @@
       "destination": "/api/shop?op=spin"
     },
     {
-      "source": "/spin/:city",
-      "destination": "/api/shop?op=spin&city=:city"
+      "source": "/spin/:event",
+      "destination": "/api/shop?op=spin&event=:event"
+    },
+    {
+      "source": "/spin/:event/:city",
+      "destination": "/api/shop?op=spin&event=:event&city=:city"
     },
     {
       "source": "/api/spin",
