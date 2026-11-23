@@ -3,7 +3,7 @@
 //   POST /api/checkout                          -> start a checkout (lib/shop/checkout.js)
 //   POST /api/stripe-webhook                    -> Stripe events    (lib/shop/webhook.js)
 //   POST /api/notify                            -> "tell me when restaurants are announced"
-//   GET  /spin/<city>, POST /api/spin           -> free-coupon spinner (lib/shop/spin.js)
+//   GET  /spin/<event>/<city>, POST /api/spin         -> free-coupon spinner (lib/shop/spin.js)
 //   GET  /terms                                 -> passport terms
 //   GET  /reserve?city=...                      -> restaurant sign-up page (lib/shop/reserve.js)
 // The friendly URLs are mapped here in vercel.json.
