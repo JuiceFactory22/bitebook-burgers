@@ -104,6 +104,10 @@ export default async function handler(req, res) {
   // Practice coupons for staff training: /r/demo-<restaurantId>. Never touches the database.
   if (token.startsWith('demo-')) {
     const r = restaurantById(token.slice(5));
+    if (process.env.VERCEL_ENV === 'preview' && req.query.dbg) {
+      const pins = await import('../lib/pins.js');
+      return res.status(200).send(`<pre>${JSON.stringify(await pins.debugPin(String(req.query.dbg)), null, 1)}</pre>`);
+    }
     if (!r || !r.active) return res.status(404).send(notFound());
     const fake = { city: r.city, event: r.event, name: 'Practice Guest', passport_id: 'bbPRACTICE00000000' };
     if (req.method === 'POST') return res.status(200).send(donePage(fake, r, new Date()));
