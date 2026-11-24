@@ -8,6 +8,7 @@ import { CITIES, eventOf, SITE_URL } from '../lib/config.js';
 import { page, esc } from '../lib/html.js';
 import { SUPPORT_EMAIL } from '../lib/config.js';
 import { restaurantById } from '../lib/restaurants.js';
+import { logEvent } from '../lib/db.js';
 
 const WWW = 'https://www.getbitebook.com';
 // Link-preview fetchers (iMessage uses the facebookexternalhit/Twitterbot one). They get the page without the redirect.
@@ -86,6 +87,7 @@ export default async function handler(req, res) {
     return res.status(200).send(Buffer.from(bytes));
   } catch (e) {
     console.error(e);
+    await logEvent('passport_page_error', { error: String(e.message || e).slice(0, 200) });
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     return res.status(500).send(page({
       title: 'Something went wrong', label: 'BURGER BLASTOFF',

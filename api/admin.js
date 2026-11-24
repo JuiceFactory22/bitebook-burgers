@@ -7,6 +7,7 @@
 //   /api/admin?action=test&city=nashville&email=you@x.com[&name=Will][&send=1]
 //   /api/admin?action=undo&token=XXXX    Undo an accidental redemption
 //   /api/admin?action=resend&order=ID    Re-send an order's passports
+//   /api/admin?action=alert-test         Post a test message to Slack #site-alerts
 import { timingSafeEqual } from 'node:crypto';
 import { query, initSchema, logEvent } from '../lib/db.js';
 import { createPassportsForOrder, undoRedemption, passportLabel } from '../lib/passports.js';
@@ -19,6 +20,7 @@ import { buildStaffSheet } from '../lib/staffsheet.js';
 import { sendRestaurantPacket } from '../lib/email.js';
 import { findLogos, proxyImage } from '../lib/logos.js';
 import { unlockKickoff, runKickoff } from '../lib/kickoff.js';
+import { post as slackPost } from '../lib/slack.js';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -35,6 +37,10 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   try {
     switch (action) {
+      case 'alert-test': {
+        const result = await slackPost('SLACK_ALERTS_WEBHOOK', ':white_check_mark: Test: #site-alerts is connected. Website problems will show up here.');
+        return res.status(200).json({ alerts: result });
+      }
       case 'health': {
         const env = Object.fromEntries(['DATABASE_URL', 'RESEND_API_KEY', 'SQUARE_ACCESS_TOKEN', 'ADMIN_KEY', 'STRIPE_SECRET_KEY', 'STRIPE_PUBLISHABLE_KEY', 'STRIPE_WEBHOOK_SECRET'].map((k) => [k, Boolean(process.env[k])]));
         let db = 'unknown';

@@ -13,10 +13,21 @@ import webhook from '../lib/shop/webhook.js';
 import notify from '../lib/shop/notify.js';
 import spin from '../lib/shop/spin.js';
 import reserve from '../lib/shop/reserve.js';
+import { logEvent } from '../lib/db.js';
 
 export const config = { api: { bodyParser: false } }; // the webhook needs the raw body to check Stripe's signature
 
 export default async function handler(req, res) {
+  try {
+    return await route(req, res);
+  } catch (e) {
+    console.error(e);
+    await logEvent('page_error', { path: String(req.url || '').split('?')[0].slice(0, 120), error: String(e.message || e).slice(0, 200) });
+    if (!res.headersSent) res.status(500).send('Something went wrong. Please try again in a minute.');
+  }
+}
+
+async function route(req, res) {
   const op = String(req.query.op || 'page');
   if (op === 'webhook') return webhook(req, res);
   if (op === 'reserve') return reserve(req, res);

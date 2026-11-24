@@ -142,6 +142,7 @@ export default async function handler(req, res) {
     return res.status(200).send(readyPage(c, r, token, isTest ? 'TEST PASSPORT — not a real purchase' : ''));
   } catch (e) {
     console.error(e);
+    await logEvent('coupon_page_error', { error: String(e.message || e).slice(0, 200) });
     return res.status(500).send(page({
       title: 'Something went wrong',
       body: `<main><h1>Something went wrong</h1><p class="muted">Please try scanning again in a moment. If it keeps happening, honor the coupon if it looks right and email ${esc(SUPPORT_EMAIL)}.</p></main>`,
