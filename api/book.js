@@ -7,7 +7,7 @@ import { buildPassportPdf } from '../lib/pdf.js';
 import { CITIES, eventOf, SITE_URL } from '../lib/config.js';
 import { page, esc } from '../lib/html.js';
 import { SUPPORT_EMAIL } from '../lib/config.js';
-import { restaurantById } from '../lib/restaurants.js';
+import { restaurantById, loadLineups } from '../lib/restaurants.js';
 import { logEvent } from '../lib/db.js';
 
 const WWW = 'https://www.getbitebook.com';
@@ -55,6 +55,7 @@ ${bot ? '' : `<script>location.replace(${JSON.stringify(pdf)});</script>`}
 }
 
 export default async function handler(req, res) {
+  await loadLineups(); // wheel + coupons from the backend sheet (lib/restaurants.js)
   const id = String(req.query.id || '').trim();
   try {
     const passport = /^bb[A-Za-z0-9]{14}$/.test(id) ? await getPassport(id) : null;

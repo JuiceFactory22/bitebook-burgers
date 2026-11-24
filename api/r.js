@@ -2,7 +2,7 @@
 // GET shows the coupon; POST (the big Redeem button) redeems it once.
 import { getCoupon, redeemCoupon, getPassport } from '../lib/passports.js';
 import { syncRedemption } from '../lib/ghl.js';
-import { restaurantById } from '../lib/restaurants.js';
+import { restaurantById, loadLineups } from '../lib/restaurants.js';
 import { CITIES, eventOf, eventWindow, formatLocal, SUPPORT_EMAIL } from '../lib/config.js';
 import { page, esc, CHECK_SVG, X_SVG } from '../lib/html.js';
 import { passportLabel } from '../lib/passports.js';
@@ -97,6 +97,7 @@ function windowPage(r, msg, ev) {
 }
 
 export default async function handler(req, res) {
+  await loadLineups(); // wheel + coupons from the backend sheet (lib/restaurants.js)
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
   const token = String(req.query.t || '').trim();

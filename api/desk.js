@@ -4,7 +4,7 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { page, esc } from '../lib/html.js';
 import { DESK_TOKEN_SHA256 } from '../lib/desk-auth.js';
-import { restaurantById } from '../lib/restaurants.js';
+import { restaurantById, loadLineups } from '../lib/restaurants.js';
 import { CITIES, SUPPORT_EMAIL } from '../lib/config.js';
 import { passportLabel } from '../lib/passports.js';
 import { query, logEvent } from '../lib/db.js';
@@ -300,6 +300,7 @@ async function execute(k, b) {
 }
 
 export default async function handler(req, res) {
+  await loadLineups(); // wheel + coupons from the backend sheet (lib/restaurants.js)
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex');

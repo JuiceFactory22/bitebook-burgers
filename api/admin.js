@@ -13,7 +13,7 @@ import { query, initSchema, logEvent } from '../lib/db.js';
 import { createPassportsForOrder, undoRedemption, passportLabel } from '../lib/passports.js';
 import { searchOrders } from '../lib/square.js';
 import { processOrder, emailOrder } from '../lib/delivery.js';
-import { RESTAURANTS, restaurantById } from '../lib/restaurants.js';
+import { RESTAURANTS, restaurantById, loadLineups } from '../lib/restaurants.js';
 import { CITIES, EVENTS, SITE_URL, formatLocal } from '../lib/config.js';
 import { page, esc } from '../lib/html.js';
 import { buildStaffSheet } from '../lib/staffsheet.js';
@@ -32,6 +32,7 @@ function authorized(req) {
 }
 
 export default async function handler(req, res) {
+  await loadLineups(); // wheel + coupons from the backend sheet (lib/restaurants.js)
   if (!authorized(req)) return res.status(401).json({ error: 'Not authorized' });
   const action = String(req.query.action || 'dashboard');
   res.setHeader('Cache-Control', 'no-store');
