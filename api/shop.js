@@ -8,12 +8,15 @@
 //   GET  /reserve?city=...                      -> restaurant sign-up page (lib/shop/reserve.js)
 // The friendly URLs are mapped here in vercel.json.
 import pages from '../lib/shop/pages.js';
-import checkout from '../lib/shop/checkout.js';
-import webhook from '../lib/shop/webhook.js';
-import notify from '../lib/shop/notify.js';
 import spin from '../lib/shop/spin.js';
-import reserve from '../lib/shop/reserve.js';
 import { logEvent } from '../lib/db.js';
+// Only the pages visitors land on load up front; the rest load when first needed. The Stripe webhook pulls in
+// the PDF library, which alone added ~150-250 ms to every cold start of the spin page.
+// (Literal paths so Vercel still bundles these files.)
+const checkout = async (req, res) => (await import('../lib/shop/checkout.js')).default(req, res);
+const webhook = async (req, res) => (await import('../lib/shop/webhook.js')).default(req, res);
+const notify = async (req, res) => (await import('../lib/shop/notify.js')).default(req, res);
+const reserve = async (req, res) => (await import('../lib/shop/reserve.js')).default(req, res);
 
 export const config = { api: { bodyParser: false } }; // the webhook needs the raw body to check Stripe's signature
 
